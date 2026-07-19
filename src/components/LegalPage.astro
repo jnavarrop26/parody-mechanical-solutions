@@ -1,0 +1,184 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+
+interface Props {
+  pageTitle: string;
+  pageDesc: string;
+  title: string;
+  updated: string;
+}
+
+const { pageTitle, pageDesc, title, updated } = Astro.props;
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <Header />
+  <main id="top" class="legal">
+    <section class="legal__hero">
+      <div class="wrap">
+        <a class="legal__back" href="/">← Back to home</a>
+        <h1 class="legal__title" data-text={title}>{title}</h1>
+        <p class="legal__updated">Last updated: {updated}</p>
+      </div>
+    </section>
+
+    <section class="legal__body">
+      <div class="wrap">
+        <div class="legal__prose">
+          <slot />
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .legal__hero {
+    padding-block: clamp(2.5rem, 7vw, 5rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .legal__back {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--steel);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .legal__back:hover {
+    color: var(--enamel);
+    border-color: var(--rust);
+  }
+
+  /* Mismo cartel con eco que las páginas de detalle */
+  .legal__title {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 7vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--enamel);
+    max-width: 16ch;
+  }
+
+  .legal__title::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    transform: translate(0.05em, 0.04em);
+    color: transparent;
+    -webkit-text-stroke: 2px var(--rust);
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .legal__updated {
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .legal__body {
+    padding-block: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  .legal__prose {
+    max-width: var(--measure);
+    color: var(--ink-soft);
+  }
+
+  .legal__prose :global(h2) {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .legal__prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .legal__prose :global(p) {
+    margin-top: 1rem;
+  }
+
+  .legal__prose :global(ul) {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.5rem;
+    padding-left: 1.25rem;
+    list-style: square;
+  }
+
+  .legal__prose :global(li::marker) {
+    color: var(--enamel);
+  }
+
+  .legal__prose :global(a) {
+    color: var(--ink);
+    text-decoration-color: var(--rust);
+  }
+
+  .legal__prose :global(a:hover) {
+    color: var(--enamel);
+  }
+
+  .legal__prose :global(strong) {
+    color: var(--ink);
+  }
+
+  .legal__prose :global(.legal-table-scroll) {
+    margin-top: 1.25rem;
+    overflow-x: auto;
+  }
+
+  .legal__prose :global(table) {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .legal__prose :global(th) {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 0.6rem 0.75rem;
+  }
+
+  .legal__prose :global(td) {
+    border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0.75rem;
+    vertical-align: top;
+  }
+
+  .legal__prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink);
+    background: var(--paper-dim);
+    padding: 0.1em 0.35em;
+  }
+</style>

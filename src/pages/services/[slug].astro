@@ -1,0 +1,25 @@
+---
+import DetailPage from '../../components/DetailPage.astro';
+import data from '../../data/ServicesTable.json';
+
+export function getStaticPaths() {
+  return data.categories.map((cat) => ({
+    params: { slug: cat.slug },
+    props: { cat },
+  }));
+}
+
+const { cat } = Astro.props;
+---
+
+<DetailPage
+  pageTitle={`${cat.name} — Parody Mechanical Solutions LLC`}
+  pageDesc={cat.longDesc}
+  kicker="Services"
+  backHref="/#services"
+  title={cat.name}
+  stamp={cat.mode}
+  intro={cat.longDesc}
+  itemsLabel="What's included"
+  items={cat.items}
+/>

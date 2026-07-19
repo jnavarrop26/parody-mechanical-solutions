@@ -1,0 +1,48 @@
+{
+  "title": "Maintenance services",
+  "intro": "",
+  "categories": [
+    {
+      "slug": "preventive-maintenance",
+      "name": "Preventive Maintenance",
+      "mode": "Scheduled",
+      "diagram": "varilla",
+      "longDesc": "A well-run preventive plan is the difference between scheduling a stop and suffering one. We define a calendar with you by mileage or operating hours, and every visit goes into the equipment's service record with a technical report.",
+      "items": [
+        "Scheduled inspections",
+        "Fluid and systems analysis",
+        "Lubrication and adjustments",
+        "Replacement of critical components",
+        "Reports and recommendations"
+      ]
+    },
+    {
+      "slug": "corrective-maintenance",
+      "name": "Corrective Maintenance",
+      "mode": "On demand",
+      "diagram": "amortiguador",
+      "longDesc": "When something has already failed, the goal is simple: get the equipment back in operation fast and right. We diagnose the root cause, repair on-site or in-shop, and hand over with documented functional testing.",
+      "items": [
+        "Diagnostics and failure resolution",
+        "On-site or in-shop repairs",
+        "Replacement of defective parts",
+        "System restoration",
+        "Functional testing and verification"
+      ]
+    },
+    {
+      "slug": "predictive-maintenance",
+      "name": "Predictive Maintenance",
+      "mode": "Continuous monitoring",
+      "diagram": "tacometro",
+      "longDesc": "We monitor equipment data in operation to intervene right before failure, not after: fewer unplanned stops, longer useful life, and maintenance decisions based on real trends.",
+      "items": [
+        "Real-time parameter monitoring",
+        "Data and trend analysis",
+        "Early fault detection",
+        "Reduction of equipment downtime",
+        "Extended equipment life"
+      ]
+    }
+  ]
+}

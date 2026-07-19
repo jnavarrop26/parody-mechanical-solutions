@@ -1,0 +1,469 @@
+---
+import data from "../data/Footer.json";
+
+const year = new Date().getFullYear();
+const {
+  mark,
+  tagline,
+  company,
+  nav,
+  contact,
+  registry,
+  legal,
+  copyName,
+  backToTop,
+} = data;
+
+/* Mismo tratamiento que el titular del hero: letras con índice para el stagger */
+let letterIndex = 0;
+const markWords = mark.word.split(" ").map((word: string) => ({
+  letters: word.split("").map((ch: string) => ({ ch, i: letterIndex++ })),
+}));
+---
+
+<footer class="footer">
+  <div class="footer__mark" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <!-- <div class="footer__brand">
+      <p class="footer__word" data-text={mark.word}>
+          {markWords.map((word, wi) => (
+            <Fragment>
+              <span class="footer__mword">
+                {word.letters.map((l) => (
+                  <span class="footer__ch" style={`--i: ${l.i}`}>{l.ch}</span>
+                ))}
+              </span>
+              {wi < markWords.length - 1 && ' '}
+            </Fragment>
+          ))}
+        </p>
+        <p class="footer__sub">{mark.sub}</p>
+        <p class="footer__tagline">{tagline}</p> 
+    </div> -->
+
+    <div class="footer__grid">
+      <nav class="footer__col" aria-label="Footer">
+        <p class="footer__col-label">{nav.label}</p>
+        <ul>
+          {
+            nav.links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <p class="footer__col-label">{contact.label}</p>
+        <ul>
+          {contact.lines.map((line) => <li class="footer__line">{line}</li>)}
+        </ul>
+      </div>
+
+      <div class="footer__col footer__company">
+        <p class="footer__col-label">{company.label}</p>
+        <dl class="footer__company-list">
+          {
+            company.rows.map((row) => (
+              <div class="footer__company-row">
+                <dt>{row.label}</dt>
+                <dd>{row.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="footer__col footer__registry">
+        <p class="footer__col-label">{registry.label}</p>
+        <ul class="footer__naics">
+          {
+            registry.naics.map((n) => (
+              <li>
+                <span class="footer__naics-code">{n.code}</span>
+                <span>{n.name}</span>
+                {n.primary && (
+                  <span class="footer__naics-primary">Primary</span>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bar">
+      <p class="footer__copy">&copy; {year} {copyName}</p>
+      <ul class="footer__legal">
+        {
+          legal.links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+        <li>
+          <button class="footer__legal-btn" type="button" data-cookies-open>
+            {legal.cookieSettings}
+          </button>
+        </li>
+      </ul>
+      <a class="footer__top" href={backToTop.href}>
+        {backToTop.label}
+        <span aria-hidden="true">↑</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const brand = document.querySelector(".footer__brand");
+
+  if (brand && "IntersectionObserver" in window) {
+    brand.classList.add("is-armed");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          /* Cruza el 75% de la pantalla: ya lo estás mirando */
+          brand.classList.add("is-stamped");
+        } else if (entry.boundingClientRect.top >= window.innerHeight) {
+          /* Salió del todo por abajo: se rearma para la próxima visita */
+          brand.classList.remove("is-stamped");
+        }
+      },
+      { rootMargin: "0px 0px -25% 0px" },
+    );
+
+    observer.observe(brand);
+  }
+</script>
+
+<style>
+  .footer {
+    position: relative;
+    overflow: hidden;
+    background: var(--enamel-dark);
+    color: var(--chrome);
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
+  }
+
+  /* Rin asomando por la esquina, medio enterrado como repuesto en estante */
+  .footer__mark {
+    position: absolute;
+    right: -5%;
+    bottom: -22%;
+    width: clamp(200px, 22vw, 360px);
+    aspect-ratio: 1;
+    background: var(--paper);
+    opacity: 0.07;
+    -webkit-mask: url('/icon/alloy-wheel-svgrepo-com.svg') no-repeat center / contain;
+    mask: url('/icon/alloy-wheel-svgrepo-com.svg') no-repeat center / contain;
+    transform: rotate(12deg);
+    pointer-events: none;
+  }
+
+  .footer__brand {
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1.3fr 1.2fr;
+    gap: clamp(1.5rem, 3.5vw, 3rem);
+    padding-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  /* Mismo estilo que el titular del hero, a escala contenida */
+  .footer__word {
+    position: relative;
+    width: 100%;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--paper);
+  }
+
+  /* Segunda pasada de tinta, corrida: el eco del hero */
+  .footer__word::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    transform: translate(0.05em, 0.04em);
+    color: transparent;
+    -webkit-text-stroke: 2px var(--rust);
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .footer__mword {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* Squash & stretch como el hero. Las letras solo se ocultan cuando el
+     script está armado; sin JS, el wordmark queda visible y estático. */
+  .footer__ch {
+    display: inline-block;
+    transform-origin: 50% 0;
+  }
+
+  .footer__brand.is-armed .footer__ch {
+    transform: translateY(0.12em) scaleY(2.1);
+    opacity: 0;
+  }
+
+  .footer__brand.is-armed .footer__word::after {
+    opacity: 0;
+  }
+
+  .footer__brand.is-stamped .footer__ch {
+    animation: footer-taffy 680ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: calc(var(--i) * 26ms);
+  }
+
+  /* El eco se estampa cuando las letras ya casi asentaron */
+  .footer__brand.is-stamped .footer__word::after {
+    animation: footer-stamp 400ms ease-out 550ms forwards;
+  }
+
+  @keyframes footer-stamp {
+    to {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes footer-taffy {
+    0% {
+      transform: translateY(0.12em) scaleY(2.1);
+      opacity: 0;
+    }
+    55% {
+      transform: translateY(0) scaleY(0.94);
+      opacity: 1;
+    }
+    100% {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__brand.is-armed .footer__ch,
+    .footer__brand.is-stamped .footer__ch {
+      transform: none;
+      opacity: 1;
+      animation: none;
+    }
+
+    .footer__brand.is-armed .footer__word::after,
+    .footer__brand.is-stamped .footer__word::after {
+      opacity: 0.5;
+      animation: none;
+    }
+  }
+
+  .footer__sub {
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+  }
+
+  .footer__tagline {
+    margin-top: 1rem;
+    max-width: 34ch;
+    font-size: 0.95rem;
+    color: rgba(246, 248, 250, 0.75);
+  }
+
+  .footer__col-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(246, 248, 250, 0.55);
+    margin-bottom: 0.9rem;
+  }
+
+  .footer__col ul {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  /* Toda la letra de las columnas al mismo tamaño */
+  .footer__col a,
+  .footer__line,
+  .footer__company-row dd,
+  .footer__naics li {
+    font-size: 0.9375rem;
+  }
+
+  .footer__col-label,
+  .footer__company-row dt {
+    font-size: 0.6875rem;
+  }
+
+  .footer__col a {
+    text-decoration: none;
+    color: var(--chrome);
+    border-bottom: 1px solid transparent;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .footer__col a:hover {
+    color: var(--paper);
+    border-color: var(--rust);
+  }
+
+  .footer__line {
+    color: var(--chrome);
+    overflow-wrap: anywhere;
+  }
+
+  .footer__company-list {
+    margin: 0;
+  }
+
+  .footer__company-row + .footer__company-row {
+    margin-top: 0.55rem;
+  }
+
+  .footer__company-row dt {
+    font-family: var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(246, 248, 250, 0.55);
+  }
+
+  .footer__company-row dd {
+    margin: 0.1rem 0 0;
+    color: var(--chrome);
+    overflow-wrap: anywhere;
+  }
+
+  .footer__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(246, 248, 250, 0.25);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+
+  .footer__naics {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .footer__naics li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    color: var(--chrome);
+  }
+
+  .footer__naics-code {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--paper);
+  }
+
+  .footer__naics-primary {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    /* Placa dorada: texto navy para mantener el contraste */
+    color: var(--enamel-dark);
+    background: var(--rust);
+    padding: 0.2em 0.5em;
+  }
+
+  .footer__copy {
+    color: rgba(246, 248, 250, 0.65);
+  }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .footer__legal a,
+  .footer__legal-btn {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: var(--chrome);
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .footer__legal a:hover,
+  .footer__legal-btn:hover {
+    color: var(--paper);
+    border-color: var(--rust);
+  }
+
+  .footer__top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  .footer__top:hover span {
+    transform: translateY(-2px);
+  }
+
+  .footer__top span {
+    transition: transform 0.2s ease;
+  }
+
+  @media (max-width: 1100px) {
+    .footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__top:hover span {
+      transform: none;
+    }
+  }
+</style>

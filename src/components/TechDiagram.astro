@@ -1,0 +1,93 @@
+---
+interface Props {
+  variant: 'disco' | 'amortiguador' | 'tacometro' | 'varilla';
+  label: string;
+}
+
+const { variant, label } = Astro.props;
+---
+
+<figure class="diagram">
+  <svg viewBox="0 0 160 160" role="img" aria-labelledby="diagram-title">
+    <title id="diagram-title">{label}</title>
+    {
+      variant === 'disco' && (
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="80" cy="80" r="58" />
+          <circle cx="80" cy="80" r="40" stroke-dasharray="3 5" />
+          <circle cx="80" cy="80" r="10" fill="currentColor" stroke="none" />
+          {Array.from({ length: 8 }).map((_, i) => {
+            const angle = (i / 8) * Math.PI * 2;
+            const x1 = 80 + Math.cos(angle) * 40;
+            const y1 = 80 + Math.sin(angle) * 40;
+            const x2 = 80 + Math.cos(angle) * 58;
+            const y2 = 80 + Math.sin(angle) * 58;
+            return <line x1={x1} y1={y1} x2={x2} y2={y2} />;
+          })}
+        </g>
+      )
+    }
+    {
+      variant === 'amortiguador' && (
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="80" y1="12" x2="80" y2="48" />
+          <path d="M80 48 q-16 8 0 16 q16 8 0 16 q-16 8 0 16 q16 8 0 16" />
+          <line x1="80" y1="112" x2="80" y2="148" />
+          <rect x="62" y="40" width="36" height="14" rx="3" />
+          <rect x="62" y="106" width="36" height="14" rx="3" />
+        </g>
+      )
+    }
+    {
+      variant === 'tacometro' && (
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M28 108a52 52 0 1 1 104 0" />
+          {Array.from({ length: 9 }).map((_, i) => {
+            const angle = Math.PI + (i / 8) * Math.PI;
+            const x1 = 80 + Math.cos(angle) * 44;
+            const y1 = 108 + Math.sin(angle) * 44;
+            const x2 = 80 + Math.cos(angle) * 54;
+            const y2 = 108 + Math.sin(angle) * 54;
+            return <line x1={x1} y1={y1} x2={x2} y2={y2} />;
+          })}
+          <line x1="80" y1="108" x2="112" y2="76" stroke-width="2.5" />
+          <circle cx="80" cy="108" r="5" fill="currentColor" stroke="none" />
+        </g>
+      )
+    }
+    {
+      variant === 'varilla' && (
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M68 16h24l4 8-6 78-10 42-10-42-6-78z" />
+          <line x1="62" y1="96" x2="98" y2="96" />
+          <line x1="65" y1="112" x2="95" y2="112" />
+          <line x1="68" y1="128" x2="92" y2="128" />
+        </g>
+      )
+    }
+  </svg>
+  <figcaption>{label}</figcaption>
+</figure>
+
+<style>
+  .diagram {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: center;
+    color: var(--enamel);
+  }
+
+  .diagram svg {
+    width: clamp(88px, 14vw, 140px);
+    height: auto;
+  }
+
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--steel);
+    text-align: center;
+  }
+</style>

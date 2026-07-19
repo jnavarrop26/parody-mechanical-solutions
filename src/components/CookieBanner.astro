@@ -1,0 +1,457 @@
+---
+/* Banner de consentimiento de cookies con panel de configuración.
+   El consentimiento se guarda en localStorage (`pms-cookie-consent`) y se
+   anuncia con el evento `pms:cookie-consent` para que futuros scripts
+   (analítica, marketing) solo carguen si su categoría está permitida. */
+---
+
+<div class="cookies" id="cookie-banner" role="region" aria-label="Cookie notice" hidden>
+  <div class="cookies__card">
+    <p class="cookies__label">Cookie notice</p>
+    <p class="cookies__text">
+      We use cookies that are necessary for this site to work and, only with
+      your permission, analytics and marketing cookies. You can change your
+      choice at any time. See our
+      <a href="/cookie-policy">cookie policy</a> for details.
+    </p>
+    <div class="cookies__actions">
+      <button class="btn btn-primary cookies__btn" type="button" data-cookies-accept>
+        Accept all
+      </button>
+      <button class="btn btn-ghost cookies__btn" type="button" data-cookies-reject>
+        Decline
+      </button>
+      <button class="btn btn-ghost cookies__btn" type="button" data-cookies-open>
+        Manage settings
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="cookies-modal"
+  id="cookie-preferences"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="cookie-preferences-title"
+  hidden
+>
+  <div class="cookies-modal__backdrop" data-cookies-close></div>
+  <div class="cookies-modal__panel">
+    <p class="cookies__label">Settings</p>
+    <h2 class="cookies-modal__title" id="cookie-preferences-title">
+      Cookie preferences
+    </h2>
+    <p class="cookies-modal__lede">
+      Turn each category on or off. Necessary cookies can't be disabled:
+      the site doesn't work without them.
+    </p>
+
+    <ul class="cookies-modal__list">
+      <li class="cookies-modal__row">
+        <div>
+          <p class="cookies-modal__cat">Necessary</p>
+          <p class="cookies-modal__desc">
+            Store your consent choice and enable basic site operation.
+            Always on.
+          </p>
+        </div>
+        <label class="cookies-switch cookies-switch--locked">
+          <input type="checkbox" checked disabled />
+          <span class="cookies-switch__track" aria-hidden="true"></span>
+          <span class="cookies-switch__state">Always</span>
+        </label>
+      </li>
+
+      <li class="cookies-modal__row">
+        <div>
+          <p class="cookies-modal__cat">Analytics</p>
+          <p class="cookies-modal__desc">
+            Help us understand which pages get visited and how to improve the
+            site. Aggregated data, never used to identify you.
+          </p>
+        </div>
+        <label class="cookies-switch">
+          <input type="checkbox" data-cookies-cat="analytics" />
+          <span class="cookies-switch__track" aria-hidden="true"></span>
+          <span class="cookies-switch__state" data-on="On" data-off="Off"></span>
+        </label>
+      </li>
+
+      <li class="cookies-modal__row">
+        <div>
+          <p class="cookies-modal__cat">Marketing</p>
+          <p class="cookies-modal__desc">
+            Would let us show you relevant communications about our services
+            on other platforms.
+          </p>
+        </div>
+        <label class="cookies-switch">
+          <input type="checkbox" data-cookies-cat="marketing" />
+          <span class="cookies-switch__track" aria-hidden="true"></span>
+          <span class="cookies-switch__state" data-on="On" data-off="Off"></span>
+        </label>
+      </li>
+    </ul>
+
+    <div class="cookies__actions cookies-modal__actions">
+      <button class="btn btn-primary cookies__btn" type="button" data-cookies-save>
+        Save selection
+      </button>
+      <button class="btn btn-ghost cookies__btn" type="button" data-cookies-accept>
+        Accept all
+      </button>
+      <button class="btn btn-ghost cookies__btn" type="button" data-cookies-reject>
+        Decline all
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'pms-cookie-consent';
+  /* v2: claves de categoría en inglés (analytics/marketing) */
+  const VERSION = 2;
+
+  const banner = document.getElementById('cookie-banner');
+  const modal = document.getElementById('cookie-preferences');
+  if (!banner || !modal) throw new Error('cookie UI missing');
+
+  const toggles = modal.querySelectorAll<HTMLInputElement>('[data-cookies-cat]');
+
+  function readConsent(): { version: number; categories: Record<string, boolean> } | null {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (parsed?.version !== VERSION) return null;
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveConsent(categories: Record<string, boolean>) {
+    const record = {
+      version: VERSION,
+      date: new Date().toISOString(),
+      categories: { necessary: true, ...categories },
+    };
+    try {
+      localStorage.setItem(KEY, JSON.stringify(record));
+    } catch {
+      /* almacenamiento bloqueado: el banner volverá a salir */
+    }
+    document.dispatchEvent(
+      new CustomEvent('pms:cookie-consent', { detail: record.categories })
+    );
+    banner.hidden = true;
+    closeModal();
+  }
+
+  function syncToggles(categories: Record<string, boolean>) {
+    toggles.forEach((input) => {
+      input.checked = Boolean(categories[input.dataset.cookiesCat ?? '']);
+    });
+  }
+
+  function collectToggles() {
+    const categories: Record<string, boolean> = {};
+    toggles.forEach((input) => {
+      categories[input.dataset.cookiesCat ?? ''] = input.checked;
+    });
+    return categories;
+  }
+
+  let lastFocused: Element | null = null;
+
+  function openModal() {
+    lastFocused = document.activeElement;
+    syncToggles(readConsent()?.categories ?? {});
+    modal.hidden = false;
+    modal.querySelector<HTMLButtonElement>('[data-cookies-save]')?.focus();
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    if (lastFocused instanceof HTMLElement) lastFocused.focus();
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+    if (target.closest('[data-cookies-accept]')) {
+      saveConsent({ analytics: true, marketing: true });
+    } else if (target.closest('[data-cookies-reject]')) {
+      saveConsent({ analytics: false, marketing: false });
+    } else if (target.closest('[data-cookies-save]')) {
+      saveConsent(collectToggles());
+    } else if (target.closest('[data-cookies-open]')) {
+      openModal();
+    } else if (target.closest('[data-cookies-close]')) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) closeModal();
+  });
+
+  const consent = readConsent();
+  if (consent) {
+    document.dispatchEvent(
+      new CustomEvent('pms:cookie-consent', { detail: consent.categories })
+    );
+  } else {
+    banner.hidden = false;
+  }
+</script>
+
+<style>
+  .cookies {
+    position: fixed;
+    inset: auto var(--gutter) clamp(1rem, 3vw, 1.75rem) var(--gutter);
+    z-index: 60;
+    display: flex;
+    justify-content: flex-start;
+    pointer-events: none;
+  }
+
+  /* Nuestro display: flex/grid pisa el [hidden] del user-agent;
+     sin esta regla el banner y el modal quedan visibles para siempre. */
+  .cookies[hidden],
+  .cookies-modal[hidden] {
+    display: none;
+  }
+
+  /* Entra como ficha que se asienta en el estante */
+  .cookies__card {
+    animation: cookies-in 480ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  @keyframes cookies-in {
+    from {
+      transform: translateY(16px);
+      opacity: 0;
+    }
+  }
+
+  /* Ficha troquelada, como las tarjetas de la landing */
+  .cookies__card {
+    pointer-events: auto;
+    max-width: 30rem;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-left: 5px solid var(--enamel);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.85rem), calc(100% - 0.85rem) 100%, 0 100%);
+    padding: 1.25rem 1.4rem 1.4rem;
+    box-shadow: 0 12px 32px rgba(16, 17, 19, 0.18);
+  }
+
+  .cookies__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--enamel);
+  }
+
+  .cookies__text {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+
+  .cookies__text a {
+    color: var(--ink);
+    text-decoration-color: var(--rust);
+  }
+
+  .cookies__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .cookies__btn {
+    padding: 0.7em 1.1em;
+    font-size: 0.75rem;
+  }
+
+  .cookies-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: grid;
+    place-items: center;
+    padding: var(--gutter);
+  }
+
+  .cookies-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(16, 17, 19, 0.55);
+  }
+
+  .cookies-modal__panel {
+    position: relative;
+    width: min(38rem, 100%);
+    max-height: min(85dvh, 44rem);
+    overflow-y: auto;
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    border-top: 5px solid var(--enamel);
+    padding: clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .cookies-modal__title {
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .cookies-modal__lede {
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+
+  .cookies-modal__list {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .cookies-modal__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    background: var(--paper-dim);
+    padding: 0.9rem 1.1rem;
+  }
+
+  .cookies-modal__cat {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cookies-modal__desc {
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .cookies-switch {
+    flex: none;
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+  }
+
+  .cookies-switch--locked {
+    cursor: default;
+  }
+
+  .cookies-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .cookies-switch__track {
+    display: block;
+    width: 2.9rem;
+    height: 1.5rem;
+    background: var(--steel);
+    position: relative;
+    transition: background-color 0.2s ease;
+  }
+
+  .cookies-switch__track::after {
+    content: '';
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    background: var(--paper);
+    transition: transform 0.2s ease;
+  }
+
+  .cookies-switch input:checked + .cookies-switch__track {
+    background: var(--enamel);
+  }
+
+  .cookies-switch input:checked + .cookies-switch__track::after {
+    transform: translateX(1.4rem);
+  }
+
+  .cookies-switch input:focus-visible + .cookies-switch__track {
+    outline: 3px solid var(--enamel);
+    outline-offset: 3px;
+  }
+
+  .cookies-switch__state {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .cookies-switch__state[data-off]::after {
+    content: attr(data-off);
+  }
+
+  .cookies-switch input:checked ~ .cookies-switch__state[data-on]::after {
+    content: attr(data-on);
+  }
+
+  .cookies-modal__actions {
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .cookies {
+      inset: auto 0 0 0;
+    }
+
+    .cookies__card {
+      max-width: none;
+      width: 100%;
+      clip-path: none;
+      border-left: none;
+      border-top: 5px solid var(--enamel);
+    }
+
+    .cookies-modal__row {
+      flex-direction: column;
+    }
+
+    .cookies-switch {
+      justify-items: start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cookies__card {
+      animation: none;
+    }
+
+    .cookies-switch__track,
+    .cookies-switch__track::after {
+      transition: none;
+    }
+  }
+</style>

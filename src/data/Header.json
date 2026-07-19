@@ -1,0 +1,35 @@
+{
+  "mark": {
+    "word": "Parody Mechanical Solutions",
+    "sub": ""
+  },
+  "menuLabel": "Menu",
+  "links": [
+    { "href": "/#about", "label": "About" },
+    {
+      "href": "/#competencies",
+      "label": "Competencies",
+      "children": [
+        { "href": "/competencies/system-diagnostics-scanning", "label": "System Diagnostics & Scanning" },
+        { "href": "/competencies/electrical-problem-solving", "label": "Electrical Problem Solving" },
+        { "href": "/competencies/high-pressure-hydraulic-systems", "label": "High-Pressure Hydraulic Systems" },
+        { "href": "/competencies/fleet-general-mechanics", "label": "Fleet General Mechanics" },
+        { "href": "/competencies/on-site-mobile-support", "label": "On-Site Mobile Support" },
+        { "href": "/competencies/roadside-mechanical-assistance", "label": "Roadside Mechanical Assistance" },
+        { "href": "/competencies/salvage-component-recovery", "label": "Salvage & Component Recovery" }
+      ]
+    },
+    {
+      "href": "/#services",
+      "label": "Services",
+      "children": [
+        { "href": "/services/preventive-maintenance", "label": "Preventive Maintenance" },
+        { "href": "/services/corrective-maintenance", "label": "Corrective Maintenance" },
+        { "href": "/services/predictive-maintenance", "label": "Predictive Maintenance" }
+      ]
+    },
+    { "href": "/#benefits", "label": "Why us" },
+    { "href": "/#coverage", "label": "Coverage" },
+    { "href": "/#contact", "label": "Contact" }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Contact",
+  "lede": "Tell us what equipment you run and what's going on. We reply within one business day with a preliminary quote.",
+  "form": {
+    "action": "#",
+    "fields": [
+      { "name": "name", "label": "Full name", "type": "text", "required": true },
+      { "name": "company", "label": "Company (if applicable)", "type": "text", "required": false },
+      { "name": "email", "label": "Email", "type": "email", "required": true },
+      { "name": "phone", "label": "Phone", "type": "tel", "required": true },
+      { "name": "city", "label": "City / Service location", "type": "text", "required": true }
+    ],
+    "service": {
+      "name": "service-type",
+      "label": "Service type",
+      "placeholder": "Select an option",
+      "required": true,
+      "options": [
+        "Preventive Maintenance",
+        "Corrective Maintenance",
+        "Predictive Maintenance",
+        "Fleet Maintenance",
+        "Hydraulic Systems Repair",
+        "Electrical Diagnostics",
+        "Mechanical Diagnostics",
+        "Roadside Assistance",
+        "Mobile Field Service",
+        "Other"
+      ]
+    },
+    "message": {
+      "name": "message",
+      "label": "Describe the problem or request",
+      "placeholder": "E.g., fleet of 8 diesel trucks, two units losing hydraulic pressure.",
+      "required": true
+    },
+    "additional": {
+      "label": "Additional information (optional)",
+      "fields": [
+        { "name": "equipment", "label": "Equipment or vehicle type", "type": "text" },
+        { "name": "make", "label": "Make", "type": "text" },
+        { "name": "model", "label": "Model", "type": "text" },
+        { "name": "year", "label": "Year", "type": "number" },
+        { "name": "units", "label": "Number of units (if a fleet)", "type": "number" }
+      ],
+      "urgency": {
+        "name": "urgency",
+        "label": "Urgency level",
+        "placeholder": "Select an option",
+        "options": [
+          "Emergency (Immediate)",
+          "Within 24 Hours",
+          "This Week",
+          "Flexible Schedule"
+        ]
+      }
+    },
+    "submit": "Request Service",
+    "note": "Your information is only used to respond to this request."
+  }
+}

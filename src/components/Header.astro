@@ -1,0 +1,471 @@
+---
+import data from '../data/Header.json';
+
+const { mark, menuLabel, links } = data;
+
+/* Mismo tratamiento que el titular del hero: letras con índice para el stagger */
+let letterIndex = 0;
+const markWords = mark.word.split(' ').map((word: string) => ({
+  letters: word.split('').map((ch: string) => ({ ch, i: letterIndex++ })),
+}));
+---
+
+<header class="header">
+  <div class="wrap header__row">
+    <a href="/" class="mark">
+      <span class="mark__word" data-text={mark.word}>
+        {markWords.map((word, wi) => (
+          <Fragment>
+            <span class="mark__mword">
+              {word.letters.map((l) => (
+                <span class="mark__ch" style={`--i: ${l.i}`}>{l.ch}</span>
+              ))}
+            </span>
+            {wi < markWords.length - 1 && ' '}
+          </Fragment>
+        ))}
+      </span>
+      <span class="mark__sub">{mark.sub}</span>
+    </a>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="main-menu"
+    >
+      <span class="header__toggle-icon" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span class="header__toggle-label">{menuLabel}</span>
+    </button>
+
+    <nav id="main-menu" class="header__nav" aria-label="Main">
+      <ul>
+        {
+          links.map((link) => (
+            <li class:list={['nav__item', link.children && 'nav__item--sub']}>
+              <a href={link.href}>
+                {link.label}
+                {link.children && (
+                  <span class="nav__caret" aria-hidden="true">
+                    ▾
+                  </span>
+                )}
+              </a>
+              {link.children && (
+                <ul class="nav__sub">
+                  {link.children.map((child) => (
+                    <li>
+                      <a href={child.href}>{child.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('.header');
+  const toggle = document.querySelector('.header__toggle');
+  const nav = document.querySelector('.header__nav');
+
+  if (header && toggle && nav) {
+    const setOpen = (open: boolean) => {
+      header.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(!header.classList.contains('is-open'));
+    });
+
+    /* Los enlaces son anclas de la misma página: al elegir una, el menú se cierra */
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && header.classList.contains('is-open')) {
+        setOpen(false);
+        (toggle as HTMLElement).focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .header__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+  }
+
+  .mark {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .mark__word {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    color: var(--enamel);
+    text-transform: uppercase;
+  }
+
+  /* Eco desregistrado a escala de barra */
+  .mark__word::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    transform: translate(0.06em, 0.05em);
+    color: transparent;
+    -webkit-text-stroke: 1px var(--rust);
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    animation: mark-stamp 400ms ease-out 600ms forwards;
+  }
+
+  @keyframes mark-stamp {
+    to {
+      opacity: 0.5;
+    }
+  }
+
+  /* Cada palabra es indivisible; solo se parte entre palabras */
+  .mark__mword {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* Squash & stretch: las letras caen estiradas hacia abajo y asientan */
+  .mark__ch {
+    display: inline-block;
+    transform-origin: 50% 0;
+    transform: translateY(0.12em) scaleY(2.1);
+    opacity: 0;
+    animation: mark-taffy 680ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: calc(var(--i) * 26ms);
+  }
+
+  @keyframes mark-taffy {
+    0% {
+      transform: translateY(0.12em) scaleY(2.1);
+      opacity: 0;
+    }
+    55% {
+      transform: translateY(0) scaleY(0.94);
+      opacity: 1;
+    }
+    100% {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  .mark__sub {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-top: 0.2rem;
+  }
+
+  /* ——— Botón hamburguesa (solo móvil) ——— */
+  .header__toggle {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: 1px solid var(--line-strong);
+    padding: 0.55rem 0.8rem;
+    cursor: pointer;
+    transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .header__toggle:active {
+    transform: scale(0.96);
+  }
+
+  .header__toggle-icon {
+    display: grid;
+    gap: 4px;
+    width: 20px;
+  }
+
+  .header__toggle-icon span {
+    height: 2px;
+    background: var(--ink);
+    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms ease;
+  }
+
+  .is-open .header__toggle-icon span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .is-open .header__toggle-icon span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .is-open .header__toggle-icon span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .header__toggle-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* ——— Navegación ——— */
+  .header__nav > ul {
+    display: flex;
+    gap: clamp(0.9rem, 2vw, 2rem);
+  }
+
+  nav a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-soft);
+    padding-block: 0.25rem;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  nav a:hover {
+    color: var(--enamel);
+    border-color: var(--rust);
+  }
+
+  /* ——— Dropdown de escritorio ——— */
+
+  .nav__item {
+    position: relative;
+  }
+
+  .nav__caret {
+    display: inline-block;
+    margin-left: 0.35em;
+    font-size: 0.85em;
+    color: var(--steel);
+    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .nav__sub {
+    display: block;
+    position: absolute;
+    top: calc(100% + 0.7rem);
+    left: -1rem;
+    min-width: 15rem;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    box-shadow: 0.35rem 0.35rem 0 var(--ink);
+    padding: 0.4rem 0;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+    transform-origin: top left;
+    transition:
+      opacity 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      visibility 0s 180ms;
+  }
+
+  /* Puente invisible: el cursor no pierde el panel al cruzar el hueco */
+  .nav__sub::before {
+    content: '';
+    position: absolute;
+    top: -0.8rem;
+    left: 0;
+    right: 0;
+    height: 0.8rem;
+  }
+
+  .nav__item--sub:hover .nav__sub,
+  .nav__item--sub:focus-within .nav__sub {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      visibility 0s;
+  }
+
+  .nav__item--sub:hover .nav__caret,
+  .nav__item--sub:focus-within .nav__caret {
+    transform: rotate(180deg);
+  }
+
+  .nav__sub li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .nav__sub a {
+    display: block;
+    padding: 0.6rem 1rem;
+    border-bottom: none;
+    white-space: nowrap;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .nav__sub a:hover {
+    color: var(--enamel);
+    background: var(--paper-dim);
+    border-color: transparent;
+  }
+
+  /* ——— Panel desplegable en móvil ——— */
+  @media (max-width: 920px) {
+    .header__toggle {
+      display: inline-flex;
+    }
+
+    .header__nav {
+      position: absolute;
+      top: 100%;
+      left: calc(-1 * var(--gutter));
+      right: calc(-1 * var(--gutter));
+      background: var(--paper);
+      border-bottom: 2px solid var(--ink);
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+        transform 200ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s 200ms;
+    }
+
+    .is-open .header__nav {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+        transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .header__nav > ul {
+      flex-direction: column;
+      gap: 0;
+      padding: 0.5rem var(--gutter) 1rem;
+    }
+
+    nav li + li {
+      border-top: 1px solid var(--line);
+    }
+
+    nav a {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      padding-block: 0.8rem;
+      border-bottom: none;
+    }
+
+    nav a:hover {
+      border-color: transparent;
+    }
+
+    /* En el panel móvil los hijos van indentados, siempre visibles */
+    .nav__caret {
+      display: none;
+    }
+
+    .nav__sub {
+      position: static;
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      min-width: 0;
+      border: none;
+      box-shadow: none;
+      background: none;
+      padding: 0 0 0.6rem;
+      transition: none;
+    }
+
+    .nav__sub::before {
+      display: none;
+    }
+
+    .nav__sub li + li {
+      border-top: none;
+    }
+
+    .nav__sub a {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+      padding: 0.45rem 0 0.45rem 1.1rem;
+      border-left: 2px solid var(--line-strong);
+      margin-left: 0.2rem;
+    }
+
+    .nav__sub a:hover {
+      background: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark__ch {
+      transform: none;
+      opacity: 1;
+      animation: none;
+    }
+
+    .mark__word::after {
+      opacity: 0.5;
+      animation: none;
+    }
+
+    .header__nav,
+    .is-open .header__nav,
+    .nav__sub,
+    .nav__item--sub:hover .nav__sub,
+    .nav__item--sub:focus-within .nav__sub,
+    .nav__caret {
+      transition: none;
+    }
+
+    .nav__sub {
+      transform: none;
+    }
+
+    .header__toggle-icon span {
+      transition: none;
+    }
+  }
+</style>

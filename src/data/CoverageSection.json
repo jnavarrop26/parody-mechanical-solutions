@@ -1,0 +1,21 @@
+{
+  "title": "Coverage",
+  "zones": [
+    {
+      "name": "Tooele County",
+      "response": "Home base",
+      "desc": "Headquarters and primary service area — shop and field service."
+    },
+    {
+      "name": "Salt Lake",
+      "response": "On-site",
+      "desc": "Field and roadside service for fleets and equipment across the area."
+    },
+    {
+      "name": "All of Utah",
+      "response": "Statewide",
+      "desc": "Fully equipped mobile units dispatched anywhere in the state."
+    }
+  ],
+  "note": "On-site service, field & roadside — our mobile units come to where your equipment operates."
+}

@@ -1,0 +1,451 @@
+---
+import data from '../data/CoreCompetencies.json';
+
+const { title, intro, items } = data;
+
+const code = (name: string, i: number) =>
+  `${name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()}-${String(i + 1).padStart(2, '0')}`;
+---
+
+<section id="competencies" class="competencies">
+  <div class="wrap">
+    <div class="competencies__head reveal">
+      <h2 class="competencies__title">{title}</h2>
+      {intro && <p class="competencies__intro">{intro}</p>}
+    </div>
+
+    <div class="competencies__body">
+      <ul class="competencies__list reveal">
+        {
+          items.map((item, i) => (
+            <li>
+              <a
+                class="competencies__row"
+                href={`/competencies/${item.slug}`}
+                data-comp-row={item.slug}
+                data-active={i === 0 ? '' : undefined}
+              >
+                <span class="competencies__name">{item.name}</span>
+                <span class="competencies__go" aria-hidden="true">→</span>
+              </a>
+
+              <div class="competencies__inline">
+                <p>{item.longDesc}</p>
+                {item.sub.length > 0 && (
+                  <p class="competencies__inlinesub">
+                    Covers: {item.sub.join(' · ')}
+                  </p>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="competencies__panel reveal">
+        {
+          items.map((item, i) => (
+            <article
+              class="plate"
+              data-comp-panel={item.slug}
+              data-active={i === 0 ? '' : undefined}
+            >
+              <p class="plate__ref">
+                <span>Spec sheet</span>
+                <span>Ref. {code(item.name, i)}</span>
+              </p>
+
+              <h3 class="plate__name">{item.name}</h3>
+              <p class="plate__desc">{item.longDesc}</p>
+
+              {item.sub.length > 0 && (
+                <div class="plate__spec">
+                  <p class="plate__speclabel">Covers</p>
+                  <ul class="plate__chips">
+                    {item.sub.map((s) => (
+                      <li>{s}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <a class="plate__go" href={`/competencies/${item.slug}`}>
+                View competency <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const section = document.getElementById('competencies');
+
+  if (section) {
+    const rows = Array.from(section.querySelectorAll<HTMLElement>('[data-comp-row]'));
+    const panels = Array.from(section.querySelectorAll<HTMLElement>('[data-comp-panel]'));
+
+    const activate = (slug: string | undefined) => {
+      if (!slug) return;
+      for (const row of rows) row.toggleAttribute('data-active', row.dataset.compRow === slug);
+      for (const panel of panels)
+        panel.toggleAttribute('data-active', panel.dataset.compPanel === slug);
+    };
+
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+    for (const row of rows) {
+      row.addEventListener('pointerenter', () => {
+        if (canHover.matches) activate(row.dataset.compRow);
+      });
+      row.addEventListener('focusin', () => activate(row.dataset.compRow));
+    }
+  }
+</script>
+
+<style>
+  .competencies {
+    padding-block: clamp(3rem, 8vw, 6rem);
+    border-top: 1px solid var(--line);
+    background: var(--paper-dim);
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .competencies__head {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .competencies__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .competencies__intro {
+    color: var(--ink-soft);
+  }
+
+  .competencies__body {
+    margin-top: clamp(1.75rem, 4vw, 3.5rem);
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 440px);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  /* ——— Índice (master) ——— */
+
+  .competencies__list {
+    border-top: 2px solid var(--ink);
+  }
+
+  .competencies__list li + li .competencies__row {
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .competencies__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: clamp(0.9rem, 2.2vw, 1.3rem);
+    text-decoration: none;
+  }
+
+  .competencies__name {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    transition: color 0.2s ease, transform 200ms var(--ease-out);
+  }
+
+  /* Tuerca hexagonal como viñeta: al activarse, gira como si se apretara */
+  .competencies__name::before {
+    content: '';
+    flex: none;
+    width: 0.5em;
+    height: 0.5em;
+    background: var(--rust);
+    clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
+    transform: translateY(0.02em);
+    transition: transform 200ms var(--ease-out);
+  }
+
+  .competencies__go {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    color: var(--steel);
+    transition: transform 200ms var(--ease-out), color 0.2s ease;
+  }
+
+  .competencies__row[data-active] .competencies__name {
+    color: var(--enamel);
+    transform: translateX(4px);
+  }
+
+  .competencies__row[data-active] .competencies__name::before {
+    transform: translateY(0.02em) rotate(90deg);
+  }
+
+  .competencies__row[data-active] .competencies__go {
+    color: var(--rust);
+    transform: translateX(6px);
+  }
+
+  /* Detalle inline: solo existe en móvil */
+  .competencies__inline {
+    display: none;
+  }
+
+  /* ——— Placa de identificación (detail) ——— */
+
+  .competencies__panel {
+    position: sticky;
+    top: 6.5rem;
+    display: grid;
+  }
+
+  .plate {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    background:
+      radial-gradient(circle 4px at 14px 14px, var(--steel) 0 2.5px, transparent 3px),
+      radial-gradient(circle 4px at calc(100% - 14px) 14px, var(--steel) 0 2.5px, transparent 3px),
+      radial-gradient(circle 4px at 14px calc(100% - 14px), var(--steel) 0 2.5px, transparent 3px),
+      radial-gradient(
+        circle 4px at calc(100% - 14px) calc(100% - 14px),
+        var(--steel) 0 2.5px,
+        transparent 3px
+      ),
+      var(--chrome);
+    border: 2px solid var(--ink);
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(3px);
+    transition:
+      opacity 160ms var(--ease-out),
+      transform 160ms var(--ease-out),
+      filter 160ms var(--ease-out),
+      visibility 0s linear 160ms;
+  }
+
+  .plate[data-active] {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition:
+      opacity 160ms var(--ease-out),
+      transform 160ms var(--ease-out),
+      filter 160ms var(--ease-out),
+      visibility 0s;
+  }
+
+  .plate__ref {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 0.8rem;
+  }
+
+  .plate__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .plate__desc {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .plate__spec {
+    display: grid;
+    gap: 0.6rem;
+    border-top: 1px solid var(--line-strong);
+    padding-top: 1rem;
+  }
+
+  .plate__speclabel {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .plate__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Misma ficha troquelada que las cards de maintenance services,
+     a escala de tag: borde navy, esquina recortada y tuerca dorada */
+  .plate__chips li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    background: var(--paper);
+    border-left: 4px solid var(--enamel);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.6rem), calc(100% - 0.6rem) 100%, 0 100%);
+    padding: 0.45em 0.9em;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .plate__chips li::before {
+    content: '';
+    flex: none;
+    width: 0.7em;
+    height: 0.7em;
+    background: var(--rust);
+    clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
+    transform: translateY(0.08em);
+  }
+
+  .plate__go {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.3em;
+  }
+
+  .plate__go span {
+    transition: transform 200ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .plate__go:hover span {
+      transform: translateX(5px);
+    }
+  }
+
+  /* ——— Móvil: sin panel, detalle inline bajo cada fila ——— */
+
+  @media (max-width: 880px) {
+    .competencies__body {
+      grid-template-columns: 1fr;
+    }
+
+    .competencies__panel {
+      display: none;
+    }
+
+    .competencies__inline {
+      display: grid;
+      gap: 0.5rem;
+      padding-bottom: clamp(0.9rem, 2.2vw, 1.3rem);
+    }
+
+    .competencies__inline p {
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      max-width: 55ch;
+    }
+
+    .competencies__inlinesub {
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .competencies__row {
+      padding-bottom: 0.6rem;
+    }
+
+    /* Sin panel no hay estado activo que señalar */
+    .competencies__row[data-active] .competencies__name {
+      color: var(--ink);
+      transform: none;
+    }
+
+    .competencies__row[data-active] .competencies__name::before {
+      transform: translateY(0.02em);
+    }
+
+    .competencies__row[data-active] .competencies__go {
+      color: var(--steel);
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plate {
+      transform: none;
+      filter: none;
+      transition: opacity 150ms ease, visibility 0s linear 150ms;
+    }
+
+    .plate[data-active] {
+      transform: none;
+      filter: none;
+      transition: opacity 150ms ease, visibility 0s;
+    }
+
+    .competencies__name,
+    .competencies__name::before,
+    .competencies__go,
+    .plate__go span {
+      transition: color 0.2s ease;
+    }
+
+    .competencies__row[data-active] .competencies__name,
+    .competencies__row[data-active] .competencies__name::before,
+    .competencies__row[data-active] .competencies__go {
+      transform: none;
+    }
+
+    .plate__go:hover span {
+      transform: none;
+    }
+  }
+</style>

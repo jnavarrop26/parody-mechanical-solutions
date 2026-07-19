@@ -1,0 +1,103 @@
+---
+import data from '../data/AboutSection.json';
+
+const { title, statement, paragraphs, facts } = data;
+---
+
+<section id="about" class="about">
+  <div class="about__mark" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <h2 class="about__title reveal">{title}</h2>
+
+    <div class="about__grid">
+      {statement && <p class="about__statement reveal">{statement}</p>}
+      <div class="about__copy reveal">
+        {paragraphs.map((p, i) => <p class={i === 0 ? 'about__lead-p' : undefined}>{p}</p>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3rem, 8vw, 6rem);
+    border-top: 1px solid var(--line);
+  }
+
+  /* Marca de agua: llaves cruzadas teñidas de esmalte vía máscara CSS */
+  .about__mark {
+    position: absolute;
+    left: -3%;
+    bottom: -12%;
+    width: clamp(240px, 30vw, 460px);
+    aspect-ratio: 1;
+    background: var(--enamel);
+    opacity: 0.08;
+    -webkit-mask: url('/icon/cross-of-double-side-wrenches-svgrepo-com.svg')
+      no-repeat center / contain;
+    mask: url('/icon/cross-of-double-side-wrenches-svgrepo-com.svg')
+      no-repeat center / contain;
+    transform: rotate(7deg);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .about > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Titular-cartel: el contenido se monta sobre la base de las letras */
+  .about__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .about__grid {
+    position: relative;
+    z-index: 1;
+    margin-top: clamp(1.75rem, 4vw, 3.5rem);
+    max-width: 72ch;
+    margin-inline: auto;
+  }
+
+  /* El slogan oficial abre la sección, como sello de la marca */
+  .about__statement {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--rust-dark);
+    margin-bottom: 1.25rem;
+  }
+
+  .about__copy p {
+    max-width: var(--measure);
+    color: var(--ink-soft);
+  }
+
+  .about__copy p + p {
+    margin-top: 0.9rem;
+  }
+
+  /* Capitular editorial en el primer párrafo */
+  .about__lead-p::first-letter {
+    font-family: var(--font-display);
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    padding-right: 0.12em;
+    padding-top: 0.05em;
+    color: var(--enamel);
+  }
+
+</style>

@@ -1,0 +1,14 @@
+{
+  "title": "About us",
+  "statement": "Smart Maintenance. Reliable Equipment. Always On.",
+  "paragraphs": [
+    "Parody Mechanical Solutions LLC is a contractor company specialized in providing comprehensive technical support for commercial fleets, heavy equipment, and industrial transportation.",
+    "We focus on preventive maintenance, rapid troubleshooting, and on-site assistance for critical mechanical failures — directly in the field, on infrastructure projects, or as roadside emergency service."
+  ],
+  "facts": [
+    { "label": "Location", "value": "Tooele, Utah, USA" },
+    { "label": "Structure", "value": "Limited Liability Company (LLC)" },
+    { "label": "Industry", "value": "Commercial & Industrial Equipment Maintenance" },
+    { "label": "Federal registry", "value": "Active in SAM.gov" }
+  ]
+}

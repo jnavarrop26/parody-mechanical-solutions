@@ -1,0 +1,243 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+
+interface Props {
+  pageTitle: string;
+  pageDesc: string;
+  kicker: string;
+  backHref: string;
+  title: string;
+  stamp?: string;
+  intro: string;
+  itemsLabel?: string;
+  items?: string[];
+}
+
+const {
+  pageTitle,
+  pageDesc,
+  kicker,
+  backHref,
+  title,
+  stamp,
+  intro,
+  itemsLabel = "What's included",
+  items = [],
+} = Astro.props;
+---
+
+<Layout title={pageTitle} description={pageDesc}>
+  <Header />
+  <main id="top" class="detail">
+    <section class="detail__hero">
+      <div class="wrap">
+        <a class="detail__back" href={backHref}>← {kicker}</a>
+        <h1 class="detail__title" data-text={title}>{title}</h1>
+        {stamp && <p class="detail__stamp">{stamp}</p>}
+        <p class="detail__intro">{intro}</p>
+      </div>
+    </section>
+
+    {
+      items.length > 0 && (
+        <section class="detail__scope">
+          <div class="wrap">
+            <h2 class="detail__scope-title">{itemsLabel}</h2>
+            <ul class="detail__items">
+              {items.map((item) => (
+                <li class="reveal">{item}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="detail__cta">
+      <div class="wrap detail__cta-row">
+        <div>
+          <h2 class="detail__cta-title">Let's get it running right</h2>
+          <p class="detail__cta-lede">
+            Tell us what equipment you run and we'll reply within one business
+            day with a preliminary quote.
+          </p>
+        </div>
+        <a class="btn detail__cta-btn" href="/#contact">Request a quote</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .detail__hero {
+    padding-block: clamp(2.5rem, 7vw, 5rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .detail__back {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--steel);
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .detail__back:hover {
+    color: var(--enamel);
+    border-color: var(--rust);
+  }
+
+  /* Mismo estilo de cartel que el hero, con su eco */
+  .detail__title {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 9vw, 8rem);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--enamel);
+    max-width: 14ch;
+  }
+
+  .detail__title::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    transform: translate(0.05em, 0.04em);
+    color: transparent;
+    -webkit-text-stroke: 2px var(--rust);
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .detail__stamp {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    outline: 1px solid var(--ink);
+    outline-offset: 3px;
+    padding: 0.35em 0.8em;
+    transform: rotate(-3deg);
+  }
+
+  .detail__intro {
+    margin-top: 1.75rem;
+    max-width: var(--measure);
+    font-size: 1.125rem;
+    color: var(--ink-soft);
+  }
+
+  .detail__scope {
+    padding-block: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  .detail__scope-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .detail__items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.5rem;
+  }
+
+  /* Ficha troquelada con tuerca, como en la landing */
+  .detail__items li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    background: var(--paper-dim);
+    border-left: 5px solid var(--enamel);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.85rem), calc(100% - 0.85rem) 100%, 0 100%);
+    padding: 0.9rem 1.1rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .detail__items li::before {
+    content: '';
+    flex: none;
+    width: 0.75em;
+    height: 0.75em;
+    background: var(--rust);
+    clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
+    transform: translateY(0.08em);
+  }
+
+  /* Banda CTA con cinta de precaución */
+  .detail__cta {
+    position: relative;
+    background: var(--enamel);
+    color: var(--paper);
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .detail__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 0.75rem;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--rust) 0 10px,
+      transparent 10px 20px
+    );
+  }
+
+  .detail__cta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    flex-wrap: wrap;
+  }
+
+  .detail__cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .detail__cta-lede {
+    margin-top: 0.6rem;
+    max-width: 44ch;
+    color: rgba(246, 248, 250, 0.85);
+  }
+
+  .detail__cta-btn {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .detail__cta-btn:hover {
+    background: var(--chrome);
+  }
+
+  @media (max-width: 720px) {
+    .detail__items {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

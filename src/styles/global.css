@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Paleta de la infografía: azul marino, dorado/ámbar y blanco frío.
+     Los nombres se conservan por compatibilidad:
+     enamel = navy primario, rust = dorado secundario,
+     rust-dark = dorado profundo (apto para texto grande sobre claro). */
+  --paper: #f6f8fa;
+  --paper-dim: #e9edf2;
+  --ink: #0e1c2c;
+  --ink-soft: #48586b;
+  --enamel: #14304f;
+  --enamel-dark: #0a1a2e;
+  --rust: #f0a500;
+  --rust-dark: #966800;
+  --steel: #8a95a3;
+  --chrome: #d6dce3;
+  --line: rgba(14, 28, 44, 0.16);
+  --line-strong: rgba(14, 28, 44, 0.3);
+
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-body: 'Work Sans', system-ui, -apple-system, sans-serif;
+
+  --fs-hero: clamp(3.25rem, 15vw, 10rem);
+  --fs-h2: clamp(2.75rem, 8.5vw, 8.5rem);
+  --fs-h3: clamp(1.375rem, 3vw, 1.875rem);
+  --fs-stat: clamp(3rem, 8vw, 5.5rem);
+  --fs-body: 1.125rem;
+  --fs-small: 0.8125rem;
+  --fs-mono: 0.8125rem;
+
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --measure: 68ch;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+  color-scheme: light;
+  scroll-behavior: smooth;
+  /* Cursor de marca; los navegadores sin soporte de cursor SVG (Safari) caen a `auto` */
+  cursor: url('/cursor.svg') 9 8, auto;
+}
+
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--enamel);
+  outline-offset: 3px;
+}
+
+.wrap {
+  width: min(1400px, 100% - var(--gutter) * 2);
+  margin-inline: auto;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--enamel);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--rust);
+  flex: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  border: none;
+  border-radius: 0;
+  padding: 0.9em 1.6em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--enamel);
+  color: var(--paper);
+}
+
+.btn-primary:hover {
+  background: var(--enamel-dark);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--ink);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .btn-primary:hover {
+    transform: none;
+  }
+}

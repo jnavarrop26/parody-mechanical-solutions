@@ -1,0 +1,20 @@
+{
+  "title": "Testimonios",
+  "items": [
+    {
+      "quote": "Nos entregan cada vehículo con reporte y fotos. La flota no ha vuelto a parar por mantenimiento atrasado.",
+      "author": "Coordinadora de flota",
+      "detail": "Empresa de logística · 34 vehículos"
+    },
+    {
+      "quote": "El diagnóstico fue exacto y la garantía es de verdad: volvió un ruido y lo resolvieron sin cobrar ni discutir.",
+      "author": "Dueño de camioneta particular",
+      "detail": "Cliente desde 2015"
+    },
+    {
+      "quote": "Cumplen las ventanas de mantenimiento que pactamos por contrato. Eso, en este gremio, no es común.",
+      "author": "Jefe de transporte",
+      "detail": "Entidad pública · 12 vehículos"
+    }
+  ]
+}

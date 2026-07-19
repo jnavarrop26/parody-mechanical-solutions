@@ -1,0 +1,70 @@
+{
+  "mark": {
+    "word": "Parody",
+    "sub": "Mechanical Solutions LLC"
+  },
+  "tagline": "Limited Liability Company (LLC).",
+  "company": {
+    "label": "Company information",
+    "rows": [
+      { "label": "Company Name", "value": "Parody Mechanical Solutions LLC" },
+      { "label": "Business Structure", "value": "Limited Liability Company (LLC)" },
+      { "label": "Location", "value": "Tooele, Utah, USA" },
+      { "label": "Industry", "value": "Commercial & Industrial Equipment Maintenance" },
+      { "label": "Registry", "value": "Active in SAM.gov" }
+    ]
+  },
+  "nav": {
+    "label": "Sections",
+    "links": [
+      { "href": "/#about", "label": "About us" },
+      { "href": "/#competencies", "label": "Core competencies" },
+      { "href": "/#services", "label": "Services" },
+      { "href": "/#benefits", "label": "Why choose us" },
+      { "href": "/#coverage", "label": "Coverage" },
+      { "href": "/#contact", "label": "Contact" }
+    ]
+  },
+  "contact": {
+    "label": "Points of contact",
+    "lines": [
+      "Tooele, Utah, USA",
+      "Kevin Parody (Owner) · +1 (385) 589-2318",
+      "Damian Muñoz (Manager) · +1 (385) 391-6049",
+      "kevinparody135@gmail.com"
+    ]
+  },
+  "registry": {
+    "label": "Industry Codes (NAICS)",
+    "naics": [
+      {
+        "code": "811310",
+        "name": "Commercial & Industrial Machinery Repair and Maintenance",
+        "primary": true
+      },
+      {
+        "code": "811111",
+        "name": "General Automotive Repair",
+        "primary": false
+      },
+      {
+        "code": "811118",
+        "name": "Specialized Automotive Mechanical & Electrical Repair",
+        "primary": false
+      }
+    ]
+  },
+  "legal": {
+    "links": [
+      { "href": "/capabilities-statement.png", "label": "Capabilities Statement" },
+      { "href": "/privacy-policy", "label": "Privacy Policy" },
+      { "href": "/cookie-policy", "label": "Cookie Policy" }
+    ],
+    "cookieSettings": "Cookie Settings"
+  },
+  "copyName": "Parody Mechanical Solutions LLC",
+  "backToTop": {
+    "href": "#top",
+    "label": "Back to top"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "title": "Why choose us?",
+  "reasons": [
+    {
+      "name": "Fast Response",
+      "desc": "",
+      "icon": "ignition-svgrepo-com.svg"
+    },
+    {
+      "name": "On-Site Service",
+      "desc": "",
+      "icon": "steering-wheel-svgrepo-com.svg"
+    },
+    {
+      "name": "Certified Diagnostics",
+      "desc": "",
+      "icon": "diagnostic-svgrepo-com.svg"
+    },
+    {
+      "name": "Heavy Equipment Experience",
+      "desc": "",
+      "icon": "piston-svgrepo-com.svg"
+    },
+    {
+      "name": "Commercial Fleet Specialists",
+      "desc": "",
+      "icon": "tire-svgrepo-com.svg"
+    },
+    {
+      "name": "Preventive & Predictive Maintenance",
+      "desc": "",
+      "icon": "oil-svgrepo-com.svg"
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+---
+import TechDiagram from './TechDiagram.astro';
+import data from '../data/BenefitsSection.json';
+
+const { title, reasons } = data;
+---
+
+<section id="benefits" class="benefits">
+  <div class="benefits__mark" aria-hidden="true">
+    <TechDiagram variant="disco" label={title} />
+  </div>
+
+  <div class="wrap">
+    <div class="benefits__head reveal">
+      <h2 class="benefits__title">{title}</h2>
+    </div>
+
+    <div class="benefits__list reveal" role="list">
+      {
+        reasons.map((r) => (
+          <div class="benefits__row" role="listitem">
+            {r.icon && (
+              <span
+                class="benefits__icon"
+                aria-hidden="true"
+                style={`--icon: url('/icon/${r.icon}')`}
+              />
+            )}
+            <h3 class="benefits__name">{r.name}</h3>
+            <p class="benefits__desc">{r.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .benefits {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 9vw, 6.5rem);
+    background: var(--enamel);
+    color: var(--paper);
+  }
+
+  /* Cinta de precaución: entrada a zona ruidosa */
+  .benefits::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 0.75rem;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--rust) 0 10px,
+      transparent 10px 20px
+    );
+  }
+
+  /* Disco de freno como marca de agua */
+  .benefits__mark {
+    position: absolute;
+    left: -6%;
+    bottom: -18%;
+    width: clamp(240px, 30vw, 440px);
+    color: var(--paper);
+    opacity: 0.12;
+    transform: rotate(-8deg);
+    pointer-events: none;
+  }
+
+  .benefits__mark :global(svg) {
+    width: 100%;
+  }
+
+  .benefits__mark :global(figcaption) {
+    display: none;
+  }
+
+  .benefits__head {
+    text-align: center;
+  }
+
+  /* Titular-cartel: las fichas se montan sobre la base de las letras */
+  .benefits__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--paper);
+  }
+
+  /* Fichas con sombra dura sobre el campo esmaltado */
+  .benefits__list {
+    position: relative;
+    z-index: 1;
+    margin-top: clamp(1.75rem, 4vw, 3.5rem);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .benefits__row {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    min-height: clamp(8rem, 14vw, 10.5rem);
+    background: var(--paper);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    box-shadow: 0.4rem 0.4rem 0 var(--rust-dark);
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+  }
+
+  /* Icono como marca de agua: silueta grande asomando por la esquina,
+     igual que las marcas del hero y el footer; el texto va por encima */
+  .benefits__icon {
+    position: absolute;
+    right: -6%;
+    bottom: -14%;
+    width: clamp(6.5rem, 10vw, 9.5rem);
+    aspect-ratio: 1;
+    background: var(--enamel);
+    opacity: 0.1;
+    -webkit-mask: var(--icon) no-repeat center / contain;
+    mask: var(--icon) no-repeat center / contain;
+    transform: rotate(-8deg);
+    pointer-events: none;
+  }
+
+  .benefits__name,
+  .benefits__desc {
+    position: relative;
+    z-index: 1;
+  }
+
+  .benefits__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--enamel);
+  }
+
+  .benefits__desc {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    max-width: var(--measure);
+  }
+
+  /* Stagger de las fichas al entrar en pantalla */
+  .reveal .benefits__row {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 300ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .reveal.is-visible .benefits__row {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal.is-visible .benefits__row:nth-child(2) { transition-delay: 40ms; }
+  .reveal.is-visible .benefits__row:nth-child(3) { transition-delay: 80ms; }
+  .reveal.is-visible .benefits__row:nth-child(4) { transition-delay: 120ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal .benefits__row {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .benefits__list {
+      grid-template-columns: 1fr;
+    }
+
+    .benefits__mark {
+      left: -24%;
+      opacity: 0.08;
+    }
+  }
+</style>

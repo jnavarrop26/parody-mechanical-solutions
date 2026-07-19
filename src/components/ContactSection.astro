@@ -1,0 +1,300 @@
+---
+import data from '../data/ContactSection.json';
+
+const { title, lede, form } = data;
+---
+
+<section id="contact" class="contact">
+  <div class="contact__mark" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="contact__head reveal">
+      <h2 class="contact__title" data-text={title}>{title}</h2>
+    </div>
+
+    <form class="form reveal" action={form.action} method="post">
+      <p class="contact__lede">{lede}</p>
+
+      <div class="form__fields">
+        {
+          form.fields.map((f) => (
+            <div class="form__group">
+              <label for={`campo-${f.name}`}>{f.label}</label>
+              <input
+                id={`campo-${f.name}`}
+                name={f.name}
+                type={f.type}
+                required={f.required}
+                autocomplete="on"
+              />
+            </div>
+          ))
+        }
+
+        <div class="form__group">
+          <label for={`campo-${form.service.name}`}>{form.service.label}</label>
+          <select
+            id={`campo-${form.service.name}`}
+            name={form.service.name}
+            required={form.service.required}
+          >
+            <option value="" disabled selected>{form.service.placeholder}</option>
+            {form.service.options.map((option) => <option value={option}>{option}</option>)}
+          </select>
+        </div>
+      </div>
+
+      <div class="form__group">
+        <label for={`campo-${form.message.name}`}>{form.message.label}</label>
+        <textarea
+          id={`campo-${form.message.name}`}
+          name={form.message.name}
+          rows="5"
+          placeholder={form.message.placeholder}
+          required={form.message.required}></textarea>
+      </div>
+
+      <details class="form__extra">
+        <summary>{form.additional.label}</summary>
+        <div class="form__fields form__extra-fields">
+          {
+            form.additional.fields.map((f) => (
+              <div class="form__group">
+                <label for={`campo-${f.name}`}>{f.label}</label>
+                <input id={`campo-${f.name}`} name={f.name} type={f.type} />
+              </div>
+            ))
+          }
+
+          <div class="form__group">
+            <label for={`campo-${form.additional.urgency.name}`}>
+              {form.additional.urgency.label}
+            </label>
+            <select
+              id={`campo-${form.additional.urgency.name}`}
+              name={form.additional.urgency.name}
+            >
+              <option value="" disabled selected>
+                {form.additional.urgency.placeholder}
+              </option>
+              {
+                form.additional.urgency.options.map((option) => (
+                  <option value={option}>{option}</option>
+                ))
+              }
+            </select>
+          </div>
+        </div>
+      </details>
+
+      <div class="form__foot">
+        <button class="btn btn-primary" type="submit">{form.submit}</button>
+        <p class="form__note">{form.note}</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 9vw, 7rem);
+    background: var(--rust);
+    color: var(--ink);
+  }
+
+  /* Cinta de precaución: entrada a zona ruidosa */
+  .contact::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 0.75rem;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--ink) 0 10px,
+      transparent 10px 20px
+    );
+  }
+
+  /* Batería como marca de agua: energía para arrancar la conversación */
+  .contact__mark {
+    position: absolute;
+    left: -3%;
+    bottom: 4%;
+    width: clamp(220px, 24vw, 400px);
+    aspect-ratio: 1;
+    background: var(--paper);
+    opacity: 0.1;
+    -webkit-mask: url('/icon/battery-svgrepo-com.svg') no-repeat center / contain;
+    mask: url('/icon/battery-svgrepo-com.svg') no-repeat center / contain;
+    transform: rotate(-8deg);
+    pointer-events: none;
+  }
+
+  .contact__head {
+    text-align: center;
+  }
+
+  /* Titular-cartel: el formulario se monta sobre la base de las letras */
+  .contact__title {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  /* Eco desregistrado, como en el hero: la página abre y cierra igual */
+  .contact__title::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    transform: translate(0.05em, 0.04em);
+    color: transparent;
+    -webkit-text-stroke: 2px var(--ink);
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .contact__lede {
+    color: var(--ink-soft);
+    max-width: 54ch;
+  }
+
+  /* Ficha de papel con sombra dura, montada sobre el titular */
+  .form {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1.25rem;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    box-shadow: 0.5rem 0.5rem 0 var(--ink);
+    padding: clamp(1.25rem, 3.5vw, 2.25rem);
+    max-width: 760px;
+    margin-inline: auto;
+    margin-top: clamp(1.75rem, 4vw, 3.5rem);
+  }
+
+  .form__fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .form__group {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .form__group label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .form__group input,
+  .form__group textarea,
+  .form__group select {
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper-dim);
+    border: 1px solid var(--line-strong);
+    border-radius: 0;
+    padding: 0.7em 0.85em;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+  }
+
+  .form__group textarea {
+    resize: vertical;
+  }
+
+  .form__group select:invalid {
+    color: var(--steel);
+  }
+
+  .form__group input:focus,
+  .form__group textarea:focus,
+  .form__group select:focus {
+    border-color: var(--enamel);
+    outline: none;
+  }
+
+  .form__group input:focus-visible,
+  .form__group textarea:focus-visible,
+  .form__group select:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  /* Información adicional: plegada por defecto para no asustar */
+  .form__extra {
+    border-top: 1px solid var(--line-strong);
+    padding-top: 1rem;
+  }
+
+  .form__extra summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .form__extra summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .form__extra summary::after {
+    content: '+';
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--rust);
+  }
+
+  .form__extra[open] summary::after {
+    content: '−';
+  }
+
+  .form__extra-fields {
+    margin-top: 1.25rem;
+  }
+
+  .form__group ::placeholder {
+    color: var(--steel);
+    opacity: 1;
+  }
+
+  .form__foot {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .form__note {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 860px) {
+    .form__fields {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
