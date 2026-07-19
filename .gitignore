@@ -12,6 +12,9 @@ npm-debug.log*
 .env
 .env.production
 
+# vercel (IDs locales del proyecto; en CI van como secretos)
+.vercel/
+
 # editors / OS
 .DS_Store
 .vscode/*
@@ -24,3 +27,5 @@ CLAUDE.MD
 #Docs
 .docs/
 
+.vercel
+.env*
