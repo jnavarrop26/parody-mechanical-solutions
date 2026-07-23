@@ -1,0 +1,15 @@
+{
+  "name": "Parody Mechanical Solutions LLC",
+  "short_name": "Parody Mechanical",
+  "description": "Fleet and heavy equipment maintenance, diagnostics and on-site support across Utah.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#272c34",
+  "icons": [
+    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

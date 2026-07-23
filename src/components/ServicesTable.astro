@@ -1,6 +1,6 @@
 ---
 import TechDiagram from './TechDiagram.astro';
-import data from '../data/ServicesTable.json';
+import data from '@/data/ServicesTable.json';
 
 type Diagram = 'varilla' | 'disco' | 'amortiguador' | 'tacometro';
 
@@ -100,10 +100,10 @@ const themes = ['svc-max--enamel', 'svc-max--rust', 'svc-max--ink'];
     --panel-stripe: var(--rust);
   }
 
-  /* Panel dorado: tinta navy encima para conservar contraste */
+  /* Panel rojo de marca: blanco encima, la tinta oscura no daría contraste */
   .svc-max--rust {
     --panel-bg: var(--rust);
-    --panel-fg: var(--ink);
+    --panel-fg: var(--paper);
     --panel-stripe: var(--ink);
   }
 

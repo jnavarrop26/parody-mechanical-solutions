@@ -1,31 +1,13 @@
 ---
-import data from '../data/Header.json';
+import data from '@/data/Header.json';
 
 const { mark, menuLabel, links } = data;
-
-/* Mismo tratamiento que el titular del hero: letras con índice para el stagger */
-let letterIndex = 0;
-const markWords = mark.word.split(' ').map((word: string) => ({
-  letters: word.split('').map((ch: string) => ({ ch, i: letterIndex++ })),
-}));
 ---
 
 <header class="header">
   <div class="wrap header__row">
     <a href="/" class="mark">
-      <span class="mark__word" data-text={mark.word}>
-        {markWords.map((word, wi) => (
-          <Fragment>
-            <span class="mark__mword">
-              {word.letters.map((l) => (
-                <span class="mark__ch" style={`--i: ${l.i}`}>{l.ch}</span>
-              ))}
-            </span>
-            {wi < markWords.length - 1 && ' '}
-          </Fragment>
-        ))}
-      </span>
-      <span class="mark__sub">{mark.sub}</span>
+      <img class="mark__logo" src="/img/logo.webp" alt={mark.word} width="871" height="1080" />
     </a>
 
     <button
@@ -35,9 +17,8 @@ const markWords = mark.word.split(' ').map((word: string) => ({
       aria-controls="main-menu"
     >
       <span class="header__toggle-icon" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
+        <img class="header__toggle-open" src="/icon/menu.svg" alt="" />
+        <img class="header__toggle-close" src="/icon/x-menu.svg" alt="" />
       </span>
       <span class="header__toggle-label">{menuLabel}</span>
     </button>
@@ -122,79 +103,17 @@ const markWords = mark.word.split(' ').map((word: string) => ({
 
   .mark {
     display: flex;
-    flex-direction: column;
-    line-height: 1;
+    align-items: center;
     text-decoration: none;
     color: var(--ink);
   }
 
-  .mark__word {
-    position: relative;
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    letter-spacing: 0.04em;
-    color: var(--enamel);
-    text-transform: uppercase;
-  }
-
-  /* Eco desregistrado a escala de barra */
-  .mark__word::after {
-    content: attr(data-text);
-    position: absolute;
-    inset: 0;
-    transform: translate(0.06em, 0.05em);
-    color: transparent;
-    -webkit-text-stroke: 1px var(--rust);
-    opacity: 0;
-    z-index: -1;
-    pointer-events: none;
-    animation: mark-stamp 400ms ease-out 600ms forwards;
-  }
-
-  @keyframes mark-stamp {
-    to {
-      opacity: 0.5;
-    }
-  }
-
-  /* Cada palabra es indivisible; solo se parte entre palabras */
-  .mark__mword {
-    display: inline-block;
-    white-space: nowrap;
-  }
-
-  /* Squash & stretch: las letras caen estiradas hacia abajo y asientan */
-  .mark__ch {
-    display: inline-block;
-    transform-origin: 50% 0;
-    transform: translateY(0.12em) scaleY(2.1);
-    opacity: 0;
-    animation: mark-taffy 680ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    animation-delay: calc(var(--i) * 26ms);
-  }
-
-  @keyframes mark-taffy {
-    0% {
-      transform: translateY(0.12em) scaleY(2.1);
-      opacity: 0;
-    }
-    55% {
-      transform: translateY(0) scaleY(0.94);
-      opacity: 1;
-    }
-    100% {
-      transform: none;
-      opacity: 1;
-    }
-  }
-
-  .mark__sub {
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-top: 0.2rem;
+  /* El emblema completo es ilegible por debajo de ~64px (probado al generar
+     el favicon); a esta altura se reconoce como marca aunque el texto
+     interno no se lea — es su función aquí, no sustituir el <h1> del hero */
+  .mark__logo {
+    height: 44px;
+    width: auto;
   }
 
   /* ——— Botón hamburguesa (solo móvil) ——— */
@@ -213,28 +132,34 @@ const markWords = mark.word.split(' ').map((word: string) => ({
     transform: scale(0.96);
   }
 
+  /* Ambos íconos ocupan la misma celda de grid y se cruzan en opacidad;
+     evita el salto de layout que daría alternar display */
   .header__toggle-icon {
     display: grid;
-    gap: 4px;
-    width: 20px;
+    width: 18px;
+    height: 18px;
   }
 
-  .header__toggle-icon span {
-    height: 2px;
-    background: var(--ink);
-    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms ease;
+  .header__toggle-icon img {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
+    transition: opacity 150ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  .is-open .header__toggle-icon span:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
-  }
-
-  .is-open .header__toggle-icon span:nth-child(2) {
+  .header__toggle-close {
     opacity: 0;
+    transform: rotate(-45deg) scale(0.7);
   }
 
-  .is-open .header__toggle-icon span:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
+  .is-open .header__toggle-open {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.7);
+  }
+
+  .is-open .header__toggle-close {
+    opacity: 1;
+    transform: none;
   }
 
   .header__toggle-label {
@@ -440,17 +365,6 @@ const markWords = mark.word.split(' ').map((word: string) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .mark__ch {
-      transform: none;
-      opacity: 1;
-      animation: none;
-    }
-
-    .mark__word::after {
-      opacity: 0.5;
-      animation: none;
-    }
-
     .header__nav,
     .is-open .header__nav,
     .nav__sub,
@@ -464,7 +378,7 @@ const markWords = mark.word.split(' ').map((word: string) => ({
       transform: none;
     }
 
-    .header__toggle-icon span {
+    .header__toggle-icon img {
       transition: none;
     }
   }

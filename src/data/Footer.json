@@ -11,7 +11,7 @@
       { "label": "Business Structure", "value": "Limited Liability Company (LLC)" },
       { "label": "Location", "value": "Tooele, Utah, USA" },
       { "label": "Industry", "value": "Commercial & Industrial Equipment Maintenance" },
-      { "label": "Registry", "value": "Active in SAM.gov" }
+      { "label": "Registry", "value": "Active in SAM.gov - U3P" }
     ]
   },
   "nav": {
@@ -56,7 +56,7 @@
   },
   "legal": {
     "links": [
-      { "href": "/capabilities-statement.png", "label": "Capabilities Statement" },
+      { "href": "/doc/capabilities-statement.png", "label": "Capabilities Statement" },
       { "href": "/privacy-policy", "label": "Privacy Policy" },
       { "href": "/cookie-policy", "label": "Cookie Policy" }
     ],

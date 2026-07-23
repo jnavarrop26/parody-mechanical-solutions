@@ -1,6 +1,6 @@
 ---
-import DetailPage from '../../components/DetailPage.astro';
-import data from '../../data/ServicesTable.json';
+import DetailPage from '@/components/DetailPage.astro';
+import data from '@/data/ServicesTable.json';
 
 export function getStaticPaths() {
   return data.categories.map((cat) => ({

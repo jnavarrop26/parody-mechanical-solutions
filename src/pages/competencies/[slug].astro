@@ -1,6 +1,6 @@
 ---
-import DetailPage from '../../components/DetailPage.astro';
-import data from '../../data/CoreCompetencies.json';
+import DetailPage from '@/components/DetailPage.astro';
+import data from '@/data/CoreCompetencies.json';
 
 export function getStaticPaths() {
   return data.items.map((item) => ({

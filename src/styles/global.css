@@ -1,22 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap');
+/* Las fuentes se cargan con <link> en Layout.astro, no con @import:
+   el @import obliga a bajar y parsear este CSS antes de pedirlas. */
 
 :root {
-  /* Paleta de la infografía: azul marino, dorado/ámbar y blanco frío.
+  /* Paleta muestreada del logo de la casa: el emblema es mayoritariamente
+     carbón y plata, con el rojo como golpe de acento — así se reparten aquí.
      Los nombres se conservan por compatibilidad:
-     enamel = navy primario, rust = dorado secundario,
-     rust-dark = dorado profundo (apto para texto grande sobre claro). */
-  --paper: #f6f8fa;
-  --paper-dim: #e9edf2;
-  --ink: #0e1c2c;
-  --ink-soft: #48586b;
-  --enamel: #14304f;
-  --enamel-dark: #0a1a2e;
-  --rust: #f0a500;
-  --rust-dark: #966800;
-  --steel: #8a95a3;
-  --chrome: #d6dce3;
-  --line: rgba(14, 28, 44, 0.16);
-  --line-strong: rgba(14, 28, 44, 0.3);
+     enamel = carbón primario, rust = rojo de marca,
+     rust-dark = rojo profundo (apto para texto sobre claro),
+     steel/chrome = los plateados del emblema.
+     Nota de contraste: el rojo NO es legible como texto sobre carbón (2.4:1);
+     sobre fondo oscuro el acento de texto es --chrome, igual que en el logo. */
+  --paper: #f4f6f8;
+  --paper-dim: #e4e8ec;
+  --ink: #16191f;
+  --ink-soft: #4e5861;
+  --enamel: #272c34;
+  --enamel-dark: #101318;
+  --rust: #c41f2b;
+  --rust-dark: #99131f;
+  --steel: #7f8991;
+  --chrome: #d2d9de;
+  --line: rgba(22, 25, 31, 0.16);
+  --line-strong: rgba(22, 25, 31, 0.3);
 
   --font-display: 'Anton', 'Arial Narrow', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;

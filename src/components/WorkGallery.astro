@@ -1,0 +1,372 @@
+---
+import TechDiagram from './TechDiagram.astro';
+import data from '@/data/WorkGallery.json';
+
+type Diagram = 'varilla' | 'disco' | 'amortiguador' | 'tacometro';
+
+const { title, intro, items } = data;
+---
+
+<section id="work" class="work">
+  <div class="wrap">
+    <div class="work__head reveal">
+      <h2 class="work__title">{title}</h2>
+      {intro && <p class="work__intro">{intro}</p>}
+    </div>
+
+    <div class="work__grid reveal">
+      {
+        items.map((item) => (
+          <article class="wg-card">
+            <button
+              type="button"
+              class="wg-card__trigger"
+              aria-haspopup="dialog"
+              aria-label={`View photo — ${item.title}`}
+            >
+              <div class="wg-card__frame">
+                {item.image ? (
+                  <img class="wg-card__photo" src={item.image} alt="" loading="lazy" />
+                ) : (
+                  <>
+                    <div class="wg-card__mark" aria-hidden="true">
+                      <TechDiagram variant={item.diagram as Diagram} label={item.title} />
+                    </div>
+                    <span class="wg-card__pending">Photo pending</span>
+                  </>
+                )}
+              </div>
+            </button>
+
+            <div class="wg-card__plate">
+              <p class="wg-card__ref">{item.ref}</p>
+              <h3 class="wg-card__title">{item.title}</h3>
+              <p class="wg-card__tag">{item.tag}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <dialog class="wg-lightbox" aria-label="Photo viewer">
+    <button type="button" class="wg-lightbox__close" aria-label="Close">
+      <img src="/icon/x-menu.svg" alt="" />
+    </button>
+    <div class="wg-lightbox__stage"></div>
+    <div class="wg-lightbox__plate">
+      <p class="wg-lightbox__ref"></p>
+      <h3 class="wg-lightbox__title"></h3>
+      <p class="wg-lightbox__tag"></p>
+    </div>
+  </dialog>
+</section>
+
+<script>
+  const section = document.getElementById('work');
+  const dialog = section?.querySelector<HTMLDialogElement>('.wg-lightbox');
+  const stage = dialog?.querySelector<HTMLElement>('.wg-lightbox__stage');
+  const refEl = dialog?.querySelector<HTMLElement>('.wg-lightbox__ref');
+  const titleEl = dialog?.querySelector<HTMLElement>('.wg-lightbox__title');
+  const tagEl = dialog?.querySelector<HTMLElement>('.wg-lightbox__tag');
+  const closeBtn = dialog?.querySelector<HTMLButtonElement>('.wg-lightbox__close');
+
+  if (section && dialog && stage && refEl && titleEl && tagEl && closeBtn) {
+    let lastTrigger: HTMLElement | null = null;
+
+    const triggers = Array.from(section.querySelectorAll<HTMLButtonElement>('.wg-card__trigger'));
+
+    for (const trigger of triggers) {
+      trigger.addEventListener('click', () => {
+        const card = trigger.closest('.wg-card');
+        if (!card) return;
+
+        const sourceFrame = card.querySelector('.wg-card__frame');
+        stage.replaceChildren();
+        if (sourceFrame) stage.append(sourceFrame.cloneNode(true));
+
+        refEl.textContent = card.querySelector('.wg-card__ref')?.textContent ?? '';
+        titleEl.textContent = card.querySelector('.wg-card__title')?.textContent ?? '';
+        tagEl.textContent = card.querySelector('.wg-card__tag')?.textContent ?? '';
+
+        lastTrigger = trigger;
+        dialog.showModal();
+      });
+    }
+
+    closeBtn.addEventListener('click', () => dialog.close());
+
+    /* El ::backdrop no es un nodo del DOM: un clic ahí llega al propio
+       <dialog> como target, nunca a .wg-lightbox__stage/plate */
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    /* Devuelve el foco a la tarjeta que abrió el popup, sin importar si se
+       cerró con el botón, Escape (evento nativo "cancel") o clic afuera */
+    dialog.addEventListener('close', () => {
+      lastTrigger?.focus();
+    });
+  }
+</script>
+
+<style>
+  .work {
+    padding-block: clamp(3rem, 8vw, 5.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .work__head {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .work__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h2);
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .work__intro {
+    color: var(--ink-soft);
+  }
+
+  .work__grid {
+    margin-top: clamp(1.75rem, 4vw, 3.5rem);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  /* Misma ficha que las cards de servicios: borde ink, sombra dura sin blur */
+  .wg-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    box-shadow: 0.4rem 0.4rem 0 var(--ink);
+  }
+
+  /* El marco entero es el botón que abre el popup */
+  .wg-card__trigger {
+    all: unset;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .wg-card__trigger:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  /* Marco de la foto: mientras no hay foto real, cinta de precaución de
+     fondo + el mismo diagrama técnico que ya sirve de marca de agua en
+     Services/Benefits, para no meter una caja gris genérica */
+  .wg-card__frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--paper-dim) 0 14px,
+      var(--chrome) 14px 28px
+    );
+  }
+
+  .wg-card__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .wg-card__mark {
+    width: 52%;
+    color: var(--steel);
+    opacity: 0.55;
+  }
+
+  .wg-card__mark :global(figcaption) {
+    display: none;
+  }
+
+  .wg-card__pending {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: color-mix(in srgb, var(--paper) 80%, transparent);
+    border: 1px solid var(--line-strong);
+    padding: 0.3em 0.6em;
+  }
+
+  .wg-card__plate {
+    display: grid;
+    gap: 0.35rem;
+    border-top: 2px solid var(--ink);
+    padding: 1rem 1.1rem 1.2rem;
+  }
+
+  .wg-card__ref {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rust-dark);
+  }
+
+  .wg-card__title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* Tuerca hexagonal como viñeta, mismo motivo que el resto del sitio */
+  .wg-card__tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .wg-card__tag::before {
+    content: '';
+    flex: none;
+    width: 0.6em;
+    height: 0.6em;
+    background: var(--rust);
+    clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
+  }
+
+  /* Stagger de entrada, mismo patrón que benefits__row */
+  .reveal .wg-card {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 300ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .reveal.is-visible .wg-card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal.is-visible .wg-card:nth-child(2) { transition-delay: 40ms; }
+  .reveal.is-visible .wg-card:nth-child(3) { transition-delay: 80ms; }
+  .reveal.is-visible .wg-card:nth-child(4) { transition-delay: 120ms; }
+  .reveal.is-visible .wg-card:nth-child(5) { transition-delay: 160ms; }
+  .reveal.is-visible .wg-card:nth-child(6) { transition-delay: 200ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal .wg-card {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media (max-width: 780px) {
+    .work__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ——— Popup ———
+     <dialog> nativo: showModal() ya trae focus trap, Escape para cerrar y
+     el ::backdrop, sin JS extra para nada de eso. */
+  .wg-lightbox {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    padding: 0;
+    max-width: min(600px, calc(100vw - 2 * var(--gutter)));
+    max-height: calc(100vh - 2 * var(--gutter));
+    overflow: auto;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 0.6rem 0.6rem 0 var(--ink);
+  }
+
+  .wg-lightbox::backdrop {
+    background: color-mix(in srgb, var(--ink) 72%, transparent);
+  }
+
+  /* Cierra como una etiqueta troquelada en la esquina, no como una × flotante */
+  .wg-lightbox__close {
+    position: absolute;
+    top: -17px;
+    right: -17px;
+    z-index: 1;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: var(--rust);
+    border: 2px solid var(--ink);
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .wg-lightbox__close img {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* El nodo clonado (.wg-card__frame) trae su propio estilo consigo, al
+     conservar el atributo de scope de Astro tras el cloneNode */
+  .wg-lightbox__stage {
+    width: 100%;
+  }
+
+  .wg-lightbox__plate {
+    display: grid;
+    gap: 0.4rem;
+    border-top: 2px solid var(--ink);
+    padding: 1.1rem 1.3rem 1.3rem;
+  }
+
+  .wg-lightbox__ref {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rust-dark);
+  }
+
+  .wg-lightbox__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .wg-lightbox__tag {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+</style>

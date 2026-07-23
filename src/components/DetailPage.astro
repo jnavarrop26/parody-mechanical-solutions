@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@/layouts/Layout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
@@ -223,7 +223,7 @@ const {
   .detail__cta-lede {
     margin-top: 0.6rem;
     max-width: 44ch;
-    color: rgba(246, 248, 250, 0.85);
+    color: color-mix(in srgb, var(--paper) 85%, transparent);
   }
 
   .detail__cta-btn {

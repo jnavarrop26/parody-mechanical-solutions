@@ -1,0 +1,81 @@
+---
+import data from '@/data/BrandsSection.json';
+
+const { title, intro, brands } = data;
+---
+
+<section id="brands" class="brands">
+  <div class="wrap">
+    <div class="brands__head reveal">
+      <h2 class="brands__title">{title}</h2>
+      {intro && <p class="brands__intro">{intro}</p>}
+    </div>
+
+    <ul class="brands__chips reveal">
+      {brands.map((b) => <li>{b}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .brands {
+    padding-block: clamp(2.25rem, 6vw, 4rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .brands__head {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .brands__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    line-height: 1;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .brands__intro {
+    color: var(--ink-soft);
+    max-width: var(--measure);
+  }
+
+  /* Mismo lenguaje visual que las etiquetas de spec en las placas de
+     competencias (plate__chips): ficha troquelada con tuerca dorada. */
+  .brands__chips {
+    margin-top: clamp(1.5rem, 3.5vw, 2.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .brands__chips li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    background: var(--paper-dim);
+    border-left: 4px solid var(--enamel);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.6rem), calc(100% - 0.6rem) 100%, 0 100%);
+    padding: 0.55em 1.1em;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-size: 0.9375rem;
+    color: var(--ink);
+  }
+
+  .brands__chips li::before {
+    content: '';
+    flex: none;
+    width: 0.7em;
+    height: 0.7em;
+    background: var(--rust);
+    clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
+    transform: translateY(0.08em);
+  }
+</style>

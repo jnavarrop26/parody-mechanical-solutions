@@ -277,14 +277,14 @@ const markWords = mark.word.split(" ").map((word: string) => ({
     font-size: 0.6875rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--rust);
+    color: var(--chrome);
   }
 
   .footer__tagline {
     margin-top: 1rem;
     max-width: 34ch;
     font-size: 0.95rem;
-    color: rgba(246, 248, 250, 0.75);
+    color: color-mix(in srgb, var(--paper) 75%, transparent);
   }
 
   .footer__col-label {
@@ -292,7 +292,7 @@ const markWords = mark.word.split(" ").map((word: string) => ({
     font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(246, 248, 250, 0.55);
+    color: color-mix(in srgb, var(--paper) 55%, transparent);
     margin-bottom: 0.9rem;
   }
 
@@ -345,7 +345,7 @@ const markWords = mark.word.split(" ").map((word: string) => ({
     font-family: var(--font-mono);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(246, 248, 250, 0.55);
+    color: color-mix(in srgb, var(--paper) 55%, transparent);
   }
 
   .footer__company-row dd {
@@ -361,7 +361,7 @@ const markWords = mark.word.split(" ").map((word: string) => ({
     justify-content: space-between;
     gap: 0.75rem 1.5rem;
     padding-top: 1.25rem;
-    border-top: 1px solid rgba(246, 248, 250, 0.25);
+    border-top: 1px solid color-mix(in srgb, var(--paper) 25%, transparent);
     font-family: var(--font-mono);
     font-size: 0.75rem;
     letter-spacing: 0.04em;
@@ -393,14 +393,14 @@ const markWords = mark.word.split(" ").map((word: string) => ({
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    /* Placa dorada: texto navy para mantener el contraste */
-    color: var(--enamel-dark);
+    /* Placa roja: en blanco. Con tinta oscura encima se queda en 3.2:1 */
+    color: var(--paper);
     background: var(--rust);
     padding: 0.2em 0.5em;
   }
 
   .footer__copy {
-    color: rgba(246, 248, 250, 0.65);
+    color: color-mix(in srgb, var(--paper) 65%, transparent);
   }
 
   .footer__legal {

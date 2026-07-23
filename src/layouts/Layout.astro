@@ -1,14 +1,39 @@
 ---
-import '../styles/global.css';
-import CookieBanner from '../components/CookieBanner.astro';
+import '@/styles/global.css';
+import CookieBanner from '@/components/CookieBanner.astro';
 
 interface Props {
   title: string;
   description: string;
+  /* Solo la home publica la ficha de negocio, para no duplicarla en cada URL */
+  businessSchema?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, businessSchema = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+/* Las redes sociales exigen URL absoluta: se deriva de `site` en astro.config */
+const ogImage = new URL('/img/og-cover.png', Astro.site);
+
+/* Datos de negocio para resultados enriquecidos. Solo campos verificables en
+   src/data/Footer.json: sin horarios, coordenadas ni dirección inventados. */
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AutoRepair',
+  name: 'Parody Mechanical Solutions LLC',
+  description,
+  url: new URL('/', Astro.site).href,
+  image: ogImage.href,
+  logo: new URL('/img/logo.webp', Astro.site).href,
+  telephone: '+1-385-589-2318',
+  email: 'kevinparody135@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Tooele',
+    addressRegion: 'UT',
+    addressCountry: 'US',
+  },
+  areaServed: { '@type': 'State', name: 'Utah' },
+};
 ---
 
 <!doctype html>
@@ -16,7 +41,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#272c34" />
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="canonical" href={canonical} />
@@ -26,9 +54,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Parody Mechanical Solutions LLC — fleet and heavy equipment maintenance in Utah" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- En el <head>, no como @import de CSS: el @import serializa la descarga
+         (el navegador debe bajar y parsear el CSS antes de pedir las fuentes) -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap"
+    />
+    {
+      businessSchema && (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      )
+    }
   </head>
   <body>
     <slot />

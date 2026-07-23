@@ -1,0 +1,12 @@
+{
+  "title": "Field Work",
+  "intro": "A sample of recent jobs across Utah.",
+  "items": [
+    { "ref": "WO-01", "title": "Fleet General Mechanics", "tag": "Commercial Fleet Vehicle", "image": "/img/img1.jpeg" },
+    { "ref": "WO-02", "title": "Cooling System Repair", "tag": "Radiator & Coolant Lines", "image": "/img/img2.jpeg" },
+    { "ref": "WO-03", "title": "Engine Diagnostics", "tag": "Fan Clutch & Cooling Assembly", "image": "/img/img3.jpeg" },
+    { "ref": "WO-04", "title": "Component Teardown", "tag": "Salvage & Component Recovery", "image": "/img/img4.jpeg" },
+    { "ref": "WO-05", "title": "Corrective Maintenance", "tag": "On-Demand Engine Repair", "image": "/img/img5.jpeg" },
+    { "ref": "WO-06", "title": "Preventive Maintenance", "tag": "Engine Bay Inspection", "image": "/img/img6.jpeg" }
+  ]
+}

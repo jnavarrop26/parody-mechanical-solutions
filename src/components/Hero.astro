@@ -1,7 +1,7 @@
 ---
-import data from '../data/Hero.json';
+import data from '@/data/Hero.json';
 
-const { title, lede, cta } = data;
+const { title, lede, credentials, cta } = data;
 
 /* Palabras indivisibles; el índice de letra corre a través de todas para el stagger */
 let letterIndex = 0;
@@ -11,35 +11,44 @@ const words = title.split(' ').map((word) => ({
 ---
 
 <section id="top" class="hero">
-  <img
-    class="hero__mark"
-    src="/motor-combustion-interna.webp"
-    alt=""
-    aria-hidden="true"
-    decoding="async"
-  />
-
   <div class="wrap hero__grid">
-    <h1 class="hero__title" data-text={title}>
-      {words.map((word, wi) => (
-        <Fragment>
-          <span class="hero__word">
-            {word.letters.map((l) => (
-              <span class="hero__ch" style={`--i: ${l.i}`}>{l.ch}</span>
-            ))}
-          </span>
-          {wi < words.length - 1 && ' '}
-        </Fragment>
-      ))}
-    </h1>
+    <div class="hero__body">
+      <h1 class="hero__title">
+        {words.map((word, wi) => (
+          <Fragment>
+            <span class="hero__word">
+              {word.letters.map((l) => (
+                <span class="hero__ch" style={`--i: ${l.i}`}>{l.ch}</span>
+              ))}
+            </span>
+            {wi < words.length - 1 && ' '}
+          </Fragment>
+        ))}
+      </h1>
 
-    <div class="hero__foot">
-      <p class="hero__lede">{lede}</p>
-      <a class="btn btn-primary hero__cta" href={cta.href}>
-        {cta.label}
-        <span aria-hidden="true">→</span>
-      </a>
+      <div class="hero__foot">
+        <p class="hero__lede">{lede}</p>
+        <a class="btn btn-primary hero__cta" href={cta.href}>
+          {cta.label}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
+
+    {/* Decorativo para lectores de pantalla: el h1 ya dice el nombre que lleva el emblema */}
+    <img
+      class="hero__logo"
+      src="/img/logo.webp"
+      alt=""
+      decoding="async"
+      fetchpriority="high"
+      width="871"
+      height="1080"
+    />
+
+    <ul class="hero__credentials">
+      {credentials.map((c) => <li>{c}</li>)}
+    </ul>
   </div>
 </section>
 
@@ -48,46 +57,58 @@ const words = title.split(' ').map((word) => ({
     position: relative;
     overflow: hidden;
     padding-block: clamp(3rem, 9vw, 6rem) clamp(3.5rem, 8vw, 6rem);
+    background: var(--enamel);
+    color: var(--paper);
   }
 
-  /* Marca de agua: plano técnico del motor. El dibujo viene en tinta sobre
-     blanco; multiply funde el blanco con el papel y deja solo las líneas */
-  .hero__mark {
-    position: absolute;
-    right: -2vw;
-    top: 50%;
-    width: clamp(300px, 48vw, 900px);
-    max-height: 94%;
-    object-fit: contain;
-    mix-blend-mode: multiply;
-    opacity: 0.14;
-    transform: translateY(-50%) rotate(-6deg);
-    pointer-events: none;
+  /* El logo es el protagonista del hero: a tamaño completo y en color, no
+     como textura. Ocupa su propia columna en lugar de ir detrás del texto */
+  .hero__logo {
+    grid-area: logo;
+    width: clamp(280px, 44vw, 660px);
+    height: auto;
+    justify-self: end;
+    align-self: center;
     user-select: none;
-    z-index: 0;
   }
 
   .hero__grid {
     position: relative;
     z-index: 1;
     display: grid;
-    align-content: space-between;
-    row-gap: clamp(2rem, 5vw, 3.5rem);
-    justify-items: start;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'body logo'
+      'creds creds';
+    align-items: center;
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    row-gap: clamp(2rem, 5vw, 3rem);
     min-height: min(70vh, 780px);
   }
 
-  /* El título ES el hero: cartel a todo el ancho */
+  /* La columna de texto conserva el reparto vertical que tenía el hero entero */
+  .hero__body {
+    grid-area: body;
+    display: grid;
+    align-content: center;
+    row-gap: clamp(1.5rem, 3.5vw, 2.75rem);
+    justify-items: start;
+  }
+
+  /* El título ES el hero: cartel a todo el ancho, letras troqueladas con
+     sombra dura — misma placa que las cards de beneficios/servicios */
   .hero__title {
     position: relative;
     width: 100%;
     font-family: var(--font-display);
-    font-size: var(--fs-hero);
+    /* Baja de --fs-hero: ahora comparte fila con el logo, que es quien manda */
+    font-size: clamp(2.5rem, 6vw, 5rem);
     line-height: 0.9;
     letter-spacing: 0.01em;
-    color: var(--ink);
+    color: var(--paper);
     text-transform: uppercase;
     text-wrap: balance;
+    text-shadow: 0.045em 0.05em 0 var(--rust);
   }
 
   /* Cada palabra es indivisible; solo se parte entre palabras */
@@ -121,6 +142,54 @@ const words = title.split(' ').map((word) => ({
     }
   }
 
+  /* Ficha técnica bajo el titular: los datos que un coordinador de flota
+     necesita ver sin hacer scroll. Regla superior como hoja de especificaciones */
+  .hero__credentials {
+    grid-area: creds;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    border-top: 2px solid var(--paper);
+    padding-top: clamp(0.9rem, 2vw, 1.25rem);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chrome);
+    opacity: 0;
+    animation: hero-fade 500ms cubic-bezier(0.23, 1, 0.32, 1) 700ms forwards;
+  }
+
+  .hero__credentials li {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  /* Tuerca dorada como separador, igual que las viñetas de competencias */
+  .hero__credentials li + li::before {
+    content: '';
+    flex: none;
+    width: 0.55em;
+    height: 0.55em;
+    background: var(--rust);
+    clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
+  }
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   /* Lede a la izquierda, CTA anclado a la derecha: la fila usa todo el ancho
      del cartel para que el botón no quede huérfano junto al texto */
   .hero__foot {
@@ -132,10 +201,19 @@ const words = title.split(' ').map((word) => ({
     flex-wrap: wrap;
   }
 
-  /* En el hero el botón sube de escala: compite con el titular, no con el pie */
+  /* En el hero el botón sube de escala: compite con el titular, no con el pie.
+     Sobre navy el btn-primary (fondo navy) desaparecería, así que se invierte
+     a rojo de marca con blanco encima (5.4:1; con tinta oscura no pasaría) */
   .hero__cta {
     font-size: 0.9375rem;
     padding: 1.15em 2.1em;
+    background: var(--rust);
+    color: var(--paper);
+  }
+
+  .hero__cta:hover {
+    background: var(--paper);
+    color: var(--ink);
   }
 
   .hero__cta span {
@@ -146,43 +224,40 @@ const words = title.split(' ').map((word) => ({
     transform: translateX(4px);
   }
 
-  /* Segunda pasada de tinta, corrida: se estampa al final */
-  .hero__title::after {
-    content: attr(data-text);
-    position: absolute;
-    inset: 0;
-    transform: translate(0.05em, 0.04em);
-    color: transparent;
-    -webkit-text-stroke: 2px var(--rust);
-    opacity: 0;
-    z-index: -1;
-    pointer-events: none;
-    animation: hero-stamp 400ms ease-out 750ms forwards;
-  }
-
-  @keyframes hero-stamp {
-    to {
-      opacity: 0.7;
-    }
-  }
-
-  /* Tagline en dorado profundo: acento de marca, en caja y flujo normales */
+  /* Plata sobre carbón: el par del propio logo. El rojo aquí no sería legible */
   .hero__lede {
-    max-width: 44ch;
-    color: var(--rust-dark);
+    max-width: 50ch;
+    color: var(--chrome);
     font-weight: 500;
     font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
     text-wrap: pretty;
   }
 
-  @media (max-width: 720px) {
-    .hero__mark {
-      right: -14%;
-      top: auto;
-      bottom: 8%;
-      width: clamp(240px, 68vw, 360px);
-      transform: rotate(-6deg);
-      opacity: 0.1;
+  /* Una sola columna: el logo encabeza la composición y el texto va debajo */
+  @media (max-width: 880px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'logo'
+        'body'
+        'creds';
+      min-height: 0;
+    }
+
+    .hero__logo {
+      justify-self: center;
+      width: clamp(220px, 58vw, 380px);
+    }
+
+    /* Al envolverse, la fila se lee como lista: que todas lleven tuerca,
+       no solo las que caen después de un salto */
+    .hero__credentials li:first-child::before {
+      content: '';
+      flex: none;
+      width: 0.55em;
+      height: 0.55em;
+      background: var(--rust);
+      clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
     }
   }
 
@@ -199,8 +274,9 @@ const words = title.split(' ').map((word) => ({
       animation: none;
     }
 
-    .hero__title::after {
-      opacity: 0.7;
+    .hero__credentials {
+      opacity: 1;
+      transform: none;
       animation: none;
     }
   }

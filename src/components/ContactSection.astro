@@ -1,5 +1,5 @@
 ---
-import data from '../data/ContactSection.json';
+import data from '@/data/ContactSection.json';
 
 const { title, lede, form } = data;
 ---
@@ -101,7 +101,7 @@ const { title, lede, form } = data;
     overflow: hidden;
     padding-block: clamp(3.5rem, 9vw, 7rem);
     background: var(--rust);
-    color: var(--ink);
+    color: var(--paper);
   }
 
   /* Cinta de precaución: entrada a zona ruidosa */
@@ -159,6 +159,7 @@ const { title, lede, form } = data;
     pointer-events: none;
   }
 
+  /* Va dentro de la ficha de papel, no sobre el rojo: mantiene tinta suave */
   .contact__lede {
     color: var(--ink-soft);
     max-width: 54ch;
@@ -216,7 +217,11 @@ const { title, lede, form } = data;
     resize: vertical;
   }
 
-  .form__group select:invalid {
+  /* Urgency Level no lleva `required` (vive en "optional"), así que nunca
+     entra en :invalid como Service Type — sin este segundo selector se
+     queda con el texto en tinta oscura en vez del gris de placeholder */
+  .form__group select:invalid,
+  .form__group select:has(option:checked[value='']) {
     color: var(--steel);
   }
 
