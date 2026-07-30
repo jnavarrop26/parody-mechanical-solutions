@@ -1,5 +1,7 @@
 ---
 import LegalPage from '@/components/LegalPage.astro';
+
+const alternates = { en: '/privacy-policy/', es: '/es/privacidad/' };
 ---
 
 <LegalPage
@@ -7,6 +9,7 @@ import LegalPage from '@/components/LegalPage.astro';
   pageDesc="How we handle the personal information you share through this site: what we collect, why, how long we keep it, and your choices."
   title="Privacy Policy"
   updated="July 19, 2026"
+  alternates={alternates}
 >
   <h2>1. Who we are</h2>
   <p>

@@ -2,64 +2,107 @@
 import '@/styles/global.css';
 import CookieBanner from '@/components/CookieBanner.astro';
 
+import {
+  defaultLocale,
+  localeMeta,
+  locales,
+  localizePath,
+  toLocale,
+  type Locale,
+} from '@/i18n/config';
+import { businessSchema as buildBusinessSchema } from '@/lib/business';
+
 interface Props {
   title: string;
   description: string;
   /* Solo la home publica la ficha de negocio, para no duplicarla en cada URL */
   businessSchema?: boolean;
+  /* Rutas equivalentes por idioma, para el hreflang. Solo hace falta pasarlas
+     cuando los slugs difieren entre idiomas (/services/… vs /es/servicios/…).
+     Si se omite, se derivan del path actual, que sirve para las páginas cuya
+     ruta es idéntica salvo el prefijo. */
+  alternates?: Partial<Record<Locale, string>>;
+  /* Schema extra de la página (Service, BreadcrumbList…) */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  /* Páginas que no deben indexarse (la 404). Además de robots, se les quita
+     el canonical y el hreflang: apuntaban a /404/ y /es/404/, que no existen
+     como URL — el 404 se sirve por status, no por ruta. */
+  noindex?: boolean;
 }
 
-const { title, description, businessSchema = false } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-/* Las redes sociales exigen URL absoluta: se deriva de `site` en astro.config */
-const ogImage = new URL('/img/og-cover.png', Astro.site);
-
-/* Datos de negocio para resultados enriquecidos. Solo campos verificables en
-   src/data/Footer.json: sin horarios, coordenadas ni dirección inventados. */
-const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'AutoRepair',
-  name: 'Parody Mechanical Solutions LLC',
+const {
+  title,
   description,
-  url: new URL('/', Astro.site).href,
-  image: ogImage.href,
-  logo: new URL('/img/logo.webp', Astro.site).href,
-  telephone: '+1-385-589-2318',
-  email: 'kevinparody135@gmail.com',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Tooele',
-    addressRegion: 'UT',
-    addressCountry: 'US',
-  },
-  areaServed: { '@type': 'State', name: 'Utah' },
-};
+  businessSchema = false,
+  alternates,
+  schema: pageSchema,
+  noindex = false,
+} = Astro.props;
+
+const locale = toLocale(Astro.currentLocale);
+const meta = localeMeta[locale];
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+/* Path sin el prefijo de idioma, para poder reconstruir el equivalente en el
+   otro idioma cuando no se pasan alternates explícitos */
+const basePath =
+  locale === defaultLocale
+    ? Astro.url.pathname
+    : Astro.url.pathname.replace(new RegExp(`^/${locale}`), '') || '/';
+
+const alternateLinks = locales.map((l) => ({
+  hreflang: localeMeta[l].hreflang,
+  href: new URL(alternates?.[l] ?? localizePath(l, basePath), Astro.site).href,
+}));
+
+/* x-default marca la versión a servir cuando el idioma del usuario no coincide
+   con ninguna: es el inglés, que es donde opera y factura el negocio */
+const xDefault = new URL(
+  alternates?.[defaultLocale] ?? localizePath(defaultLocale, basePath),
+  Astro.site
+).href;
+
+const schemaBlocks = [
+  businessSchema
+    ? buildBusinessSchema({ site: Astro.site, description, locale })
+    : null,
+  ...(Array.isArray(pageSchema) ? pageSchema : pageSchema ? [pageSchema] : []),
+].filter(Boolean);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={meta.lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#272c34" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {/* hreflang: le dice a Google que estas páginas son traducciones una de
+       otra y no contenido duplicado. Cada versión debe listarse a sí misma
+       además de a las otras, o el grupo no se valida. */}
+    {
+      !noindex &&
+        alternateLinks.map((alt) => (
+          <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+        ))
+    }
+    {!noindex && <link rel="alternate" hreflang="x-default" href={xDefault} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Parody Mechanical Solutions LLC" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={meta.ogLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Parody Mechanical Solutions LLC — fleet and heavy equipment maintenance in Utah" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={ogImage} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    {/* Sin og:image: el /img/og-cover.png que apuntaban estas etiquetas nunca
+       existió, así que anunciaban una imagen rota. Cuando haya una tarjeta
+       real de 1200×630 se reponen acá y en el `image` de business.ts. */}
+    <meta name="twitter:card" content="summary" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- En el <head>, no como @import de CSS: el @import serializa la descarga
@@ -69,9 +112,9 @@ const schema = {
       href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap"
     />
     {
-      businessSchema && (
-        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-      )
+      schemaBlocks.map((block) => (
+        <script type="application/ld+json" set:html={JSON.stringify(block)} />
+      ))
     }
   </head>
   <body>

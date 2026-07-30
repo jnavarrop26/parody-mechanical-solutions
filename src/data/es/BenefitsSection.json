@@ -1,0 +1,35 @@
+{
+  "title": "¿Por qué elegirnos?",
+  "reasons": [
+    {
+      "name": "Respuesta rápida",
+      "desc": "",
+      "icon": "ignition-svgrepo-com.svg"
+    },
+    {
+      "name": "Mecánico a domicilio",
+      "desc": "",
+      "icon": "steering-wheel-svgrepo-com.svg"
+    },
+    {
+      "name": "Diagnóstico certificado",
+      "desc": "",
+      "icon": "diagnostic-svgrepo-com.svg"
+    },
+    {
+      "name": "Experiencia en maquinaria pesada",
+      "desc": "",
+      "icon": "piston-svgrepo-com.svg"
+    },
+    {
+      "name": "Especialistas en flotas comerciales",
+      "desc": "",
+      "icon": "tire-svgrepo-com.svg"
+    },
+    {
+      "name": "Mantenimiento preventivo y predictivo",
+      "desc": "",
+      "icon": "oil-svgrepo-com.svg"
+    }
+  ]
+}

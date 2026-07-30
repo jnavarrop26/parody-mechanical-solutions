@@ -1,5 +1,7 @@
 ---
 import LegalPage from '@/components/LegalPage.astro';
+
+const alternates = { en: '/cookie-policy/', es: '/es/cookies/' };
 ---
 
 <LegalPage
@@ -7,6 +9,7 @@ import LegalPage from '@/components/LegalPage.astro';
   pageDesc="What cookies and storage technologies this site uses, what they do, and how you can manage or decline them."
   title="Cookie Policy"
   updated="July 19, 2026"
+  alternates={alternates}
 >
   <h2>1. What cookies are</h2>
   <p>

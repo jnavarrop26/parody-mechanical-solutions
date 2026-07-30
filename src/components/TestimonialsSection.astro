@@ -1,5 +1,7 @@
 ---
-import data from '@/data/TestimonialsSection.json';
+import { content } from '@/i18n/content';
+
+const data = content<any>('TestimonialsSection', Astro.currentLocale);
 
 const { title, items } = data;
 ---

@@ -1,5 +1,7 @@
 ---
-import data from '@/data/ContactSection.json';
+import { content } from '@/i18n/content';
+
+const data = content<any>('ContactSection', Astro.currentLocale);
 
 const { title, lede, form } = data;
 ---

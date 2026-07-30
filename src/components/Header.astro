@@ -1,13 +1,42 @@
 ---
-import data from '@/data/Header.json';
+import { content } from '@/i18n/content';
+import { ui } from '@/i18n/ui';
+import { localizePath, toLocale } from '@/i18n/config';
+
+const data = content<any>('Header', Astro.currentLocale);
 
 const { mark, menuLabel, links } = data;
+
+/* El emblema vuelve a la home del idioma que se está leyendo, no siempre a la inglesa */
+const locale = toLocale(Astro.currentLocale);
+
+/* El lockup se arma desde `mark.sub`, no con dos campos en el JSON: la
+   primera palabra es el nombre y el resto la especialidad, que es como se
+   pinta en la puerta de un camión de taller. Si algún día la razón social
+   cambia, sigue siendo un solo string el que manda. */
+const [markName, ...markRest] = mark.sub.split(' ');
+const markDescriptor = markRest.join(' ');
 ---
 
 <header class="header">
-  <div class="wrap header__row">
-    <a href="/" class="mark">
-      <img class="mark__logo" src="/img/logo.webp" alt={mark.word} width="871" height="1080" />
+  {/* Sin .wrap a propósito: la banda es una placa pintada de borde a borde,
+     así que el lockup se apoya en el filo izquierdo y la nav en el derecho,
+     con el gutter como único margen. Con .wrap (max 1400px) en un monitor
+     ancho ambos quedaban flotando hacia el centro */}
+  <div class="header__row">
+    <a href={localizePath(locale, '/')} class="mark">
+      {/* Ruta absoluta: `./public/…` se resolvía contra la URL de la página
+         (404 en la home y en cada subpágina) y public/ se copia a la raíz.
+         Las medidas son las del viewBox del SVG, que es cuadrado — con las
+         de logo.webp (871×1080) el hueco reservado quedaba angosto.
+
+         alt vacío a propósito: el nombre ya va escrito al lado, y con alt
+         el enlace a la home se anunciaría dos veces la misma razón social */}
+      <img class="mark__logo" src="/favicon.svg" alt="" width="169" height="169" />
+      <span class="mark__lockup">
+        <span class="mark__name">{markName}</span>
+        <span class="mark__descriptor">{markDescriptor}</span>
+      </span>
     </a>
 
     <button
@@ -23,7 +52,7 @@ const { mark, menuLabel, links } = data;
       <span class="header__toggle-label">{menuLabel}</span>
     </button>
 
-    <nav id="main-menu" class="header__nav" aria-label="Main">
+    <nav id="main-menu" class="header__nav" aria-label={ui('navLabel', Astro.currentLocale)}>
       <ul>
         {
           links.map((link) => (
@@ -83,13 +112,29 @@ const { mark, menuLabel, links } = data;
 </script>
 
 <style>
+  /* Banda roja de marca, opaca y con filo duro: el mismo borde de 2px en
+     tinta que llevan las cards, el dropdown y el panel móvil, para que se
+     lea como placa pintada y no como navbar genérica.
+
+     Sin backdrop-filter a propósito: a este nivel de opacidad el rojo no
+     deja ver nada detrás, y al ser sticky se le nota el cambio de tono
+     según si pasa sobre el hero oscuro o sobre una sección clara.
+
+     Sobre este rojo solo --paper pasa AA para texto chico (5.42:1);
+     --chrome se queda en 4.11:1 y la tinta oscura en 3.00:1. Por eso todo
+     lo que va encima de la barra es --paper. */
   .header {
     position: sticky;
     top: 0;
     z-index: 10;
-    background: color-mix(in srgb, var(--paper) 92%, transparent);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--line);
+    background: var(--rust);
+    border-bottom: 2px solid var(--ink);
+  }
+
+  /* El foco global es --enamel (2.39:1 sobre el rojo, no llega al 3:1 que
+     pide WCAG para indicadores); sobre la barra se invierte a papel */
+  .header :focus-visible {
+    outline-color: var(--paper);
   }
 
   .header__row {
@@ -98,31 +143,81 @@ const { mark, menuLabel, links } = data;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    padding-block: 1.1rem;
+    width: 100%;
+    /* El mismo gutter que usa .wrap, pero aplicado a un bloque de ancho
+       completo: los extremos quedan a la misma distancia del filo que el
+       resto del sitio, sin el tope de 1400px que los recogía al centro */
+    padding-inline: var(--gutter);
+    /* El aire vertical lo fija el emblema (40px), la pieza más alta; el
+       padding solo lo despega del filo. Total ~69px */
+    padding-block: 0.85rem;
   }
 
+  /* Emblema y tipografía separados por un filete de papel: el logo deja de
+     ser un icono pegado al texto y el conjunto se lee como una calcomanía
+     de puerta de camión, con la marca a un lado de la línea y el oficio al
+     otro. Es el único adorno del lockup */
   .mark {
     display: flex;
     align-items: center;
+    gap: 0.7rem;
     text-decoration: none;
-    color: var(--ink);
+    color: var(--paper);
   }
 
   /* El emblema completo es ilegible por debajo de ~64px (probado al generar
      el favicon); a esta altura se reconoce como marca aunque el texto
-     interno no se lea — es su función aquí, no sustituir el <h1> del hero */
+     interno no se lea — de eso se encarga ahora el lockup de al lado.
+
+     Va con sus colores de origen (contorno carbón, relleno blanco). El
+     carbón sobre el rojo da 3.8:1: suficiente para un gráfico, y los
+     rellenos blancos son los que arman la silueta a este tamaño. */
   .mark__logo {
-    height: 44px;
+    height: 40px;
     width: auto;
   }
 
+  /* El filete se recorta a la altura del emblema en vez de crecer con la
+     barra: es un separador de lockup, no un divisor de la banda */
+  .mark__lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+    padding-left: 0.65rem;
+    border-left: 1px solid color-mix(in srgb, var(--paper) 45%, transparent);
+  }
+
+  /* Anton condensada: "Parody" en una línea corta deja al descriptor en
+     mono marcar el ancho del bloque, y el lockup completo cabe junto a la
+     nav de seis ítems sin desbordar en el filo de los 920px */
+  .mark__name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 0.85;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .mark__descriptor {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    line-height: 1;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    /* Papel al 82% sobre el rojo son 4.6:1; a 9px hace falta el AA de 4.5:1
+       largo, así que no baja de ahí */
+    color: color-mix(in srgb, var(--paper) 82%, var(--rust));
+  }
+
   /* ——— Botón hamburguesa (solo móvil) ——— */
+  /* --line-strong es tinta translúcida: sobre el rojo daba un borde sucio.
+     Papel al 55% se lee como filo claro sin pesar como un botón sólido */
   .header__toggle {
     display: none;
     align-items: center;
     gap: 0.6rem;
     background: none;
-    border: 1px solid var(--line-strong);
+    border: 1px solid color-mix(in srgb, var(--paper) 55%, transparent);
     padding: 0.55rem 0.8rem;
     cursor: pointer;
     transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
@@ -140,10 +235,13 @@ const { mark, menuLabel, links } = data;
     height: 18px;
   }
 
+  /* Mismo truco que el logo: los dos SVG son de contorno negro y sobre el
+     rojo casi no se veían; así quedan como siluetas blancas plenas */
   .header__toggle-icon img {
     grid-area: 1 / 1;
     width: 100%;
     height: 100%;
+    filter: brightness(0) invert(1);
     transition: opacity 150ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
@@ -167,7 +265,7 @@ const { mark, menuLabel, links } = data;
     font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: var(--paper);
   }
 
   /* ——— Navegación ——— */
@@ -182,15 +280,16 @@ const { mark, menuLabel, links } = data;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--ink-soft);
+    color: var(--paper);
     padding-block: 0.25rem;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease, color 0.2s ease;
   }
 
+  /* El hover ya no puede cambiar de color: papel es el único tono que pasa
+     contraste sobre el rojo, así que la señal es el subrayado */
   nav a:hover {
-    color: var(--enamel);
-    border-color: var(--rust);
+    border-color: var(--paper);
   }
 
   /* ——— Dropdown de escritorio ——— */
@@ -199,11 +298,14 @@ const { mark, menuLabel, links } = data;
     position: relative;
   }
 
+  /* --steel sobre el rojo da 1.65:1 (invisible). Papel algo apagado lo
+     mantiene por debajo de la etiqueta sin desaparecer */
   .nav__caret {
     display: inline-block;
     margin-left: 0.35em;
     font-size: 0.85em;
-    color: var(--steel);
+    color: var(--paper);
+    opacity: 0.7;
     transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
@@ -257,9 +359,13 @@ const { mark, menuLabel, links } = data;
     border-top: 1px solid var(--line);
   }
 
+  /* El color va explícito, no heredado: el panel es blanco pero `nav a` ya
+     pinta en papel para la barra roja, y sin esto los enlaces del dropdown
+     quedarían blanco sobre blanco */
   .nav__sub a {
     display: block;
     padding: 0.6rem 1rem;
+    color: var(--ink-soft);
     border-bottom: none;
     white-space: nowrap;
     transition: color 0.2s ease, background-color 0.2s ease;
@@ -271,10 +377,22 @@ const { mark, menuLabel, links } = data;
     border-color: transparent;
   }
 
+  /* El panel cuelga de la barra pero es blanco: el foco vuelve a la tinta,
+     que en papel sí contrasta (el override en papel es solo para el rojo) */
+  .nav__sub :focus-visible {
+    outline-color: var(--enamel);
+  }
+
   /* ——— Panel desplegable en móvil ——— */
   @media (max-width: 920px) {
     .header__toggle {
       display: inline-flex;
+    }
+
+    /* Acá el panel entero es claro, así que ningún enlace queda sobre el
+       rojo: el foco en papel sería invisible y vuelve a la tinta */
+    .header__nav :focus-visible {
+      outline-color: var(--enamel);
     }
 
     .header__nav {
@@ -361,6 +479,37 @@ const { mark, menuLabel, links } = data;
 
     .nav__sub a:hover {
       background: none;
+    }
+  }
+
+  /* En teléfonos angostos el lockup y el botón Menu llegan justos al ancho
+     útil (~320px en un viewport de 360). Se aprieta el tracking del
+     descriptor, que es lo que marca el ancho del bloque, antes que partirlo
+     en dos líneas o esconderlo */
+  @media (max-width: 420px) {
+    .header__row {
+      gap: 0.9rem;
+    }
+
+    .mark {
+      gap: 0.55rem;
+    }
+
+    .mark__logo {
+      height: 34px;
+    }
+
+    .mark__lockup {
+      padding-left: 0.55rem;
+    }
+
+    .mark__name {
+      font-size: 1.05rem;
+    }
+
+    .mark__descriptor {
+      font-size: 0.5rem;
+      letter-spacing: 0.12em;
     }
   }
 

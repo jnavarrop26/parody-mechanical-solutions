@@ -3,6 +3,9 @@ import Layout from '@/layouts/Layout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
+import { localizePath, toLocale, type Locale } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+
 interface Props {
   pageTitle: string;
   pageDesc: string;
@@ -13,6 +16,10 @@ interface Props {
   intro: string;
   itemsLabel?: string;
   items?: string[];
+  /* Se reenvían al Layout: los slugs difieren entre idiomas, así que el
+     hreflang no se puede derivar del path y hay que pasarlo explícito */
+  alternates?: Partial<Record<Locale, string>>;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -23,12 +30,21 @@ const {
   title,
   stamp,
   intro,
-  itemsLabel = "What's included",
+  itemsLabel = ui('included', Astro.currentLocale),
   items = [],
+  alternates,
+  schema,
 } = Astro.props;
+
+const locale = toLocale(Astro.currentLocale);
 ---
 
-<Layout title={pageTitle} description={pageDesc}>
+<Layout
+  title={pageTitle}
+  description={pageDesc}
+  alternates={alternates}
+  schema={schema}
+>
   <Header />
   <main id="top" class="detail">
     <section class="detail__hero">
@@ -58,13 +74,14 @@ const {
     <section class="detail__cta">
       <div class="wrap detail__cta-row">
         <div>
-          <h2 class="detail__cta-title">Let's get it running right</h2>
-          <p class="detail__cta-lede">
-            Tell us what equipment you run and we'll reply within one business
-            day with a preliminary quote.
-          </p>
+          <h2 class="detail__cta-title">{ui('ctaTitle', locale)}</h2>
+          <p class="detail__cta-lede">{ui('ctaLede', locale)}</p>
         </div>
-        <a class="btn detail__cta-btn" href="/#contact">Request a quote</a>
+        {/* El ancla apunta a la home del idioma que se está leyendo: desde una
+           página en español, `/#contact` mandaba al formulario en inglés */}
+        <a class="btn detail__cta-btn" href={`${localizePath(locale, '/')}#contact`}>
+          {ui('ctaButton', locale)}
+        </a>
       </div>
     </section>
   </main>

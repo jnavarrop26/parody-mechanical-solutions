@@ -1,0 +1,49 @@
+{
+  "cities": [
+    {
+      "slug": "tooele",
+      "name": "Tooele",
+      "title": "Diesel & Fleet Mechanic in Tooele, Utah",
+      "stamp": "Home base",
+      "intro": "Tooele is where our shop is and where our mobile units start their day. For fleets and heavy equipment based in Tooele County, that means the shortest response time we offer — and the option of shop work or field service, whichever keeps your equipment moving.",
+      "items": [
+        "Shop and field service across Tooele County",
+        "Scheduled preventive maintenance by mileage or operating hours",
+        "Diesel engine diagnostics and fault-code work",
+        "High-pressure hydraulic repair on heavy equipment",
+        "Roadside assistance on I-80 and SR-36",
+        "Service record and technical report per unit"
+      ]
+    },
+    {
+      "slug": "salt-lake-city",
+      "name": "Salt Lake City",
+      "title": "Mobile Diesel Mechanic in Salt Lake City",
+      "stamp": "On-site service",
+      "intro": "We run field and roadside service throughout the Salt Lake area. Our units carry the diagnostic and hydraulic tooling to close most jobs where the equipment sits, so a truck down at a yard, a job site or the shoulder of I-15 does not have to be towed first.",
+      "items": [
+        "Mobile service to yards, job sites and terminals",
+        "Commercial fleet maintenance contracts",
+        "Electrical diagnostics: alternators, sensors, relays, shorts",
+        "Roadside response on I-15, I-80 and I-215",
+        "Multi-brand coverage: Cummins, Detroit Diesel, CAT, PACCAR and more",
+        "Preliminary quote within one business day"
+      ]
+    },
+    {
+      "slug": "west-valley-city",
+      "name": "West Valley City",
+      "title": "Fleet & Heavy Equipment Mechanic in West Valley City",
+      "stamp": "Mobile units",
+      "intro": "West Valley City sits inside our Salt Lake County service radius. We dispatch fully equipped mobile units to warehouses, distribution yards and industrial sites there — the same field service, diagnostics and hydraulic work we run out of Tooele, brought to where the equipment operates.",
+      "items": [
+        "Mobile units dispatched to industrial and distribution sites",
+        "Preventive and corrective maintenance for commercial fleets",
+        "Diesel and gasoline utility vehicle repair",
+        "Hydraulic system diagnostics and leak repair",
+        "Emergency response for critical mechanical failures",
+        "Documented work with parts and labor detailed"
+      ]
+    }
+  ]
+}

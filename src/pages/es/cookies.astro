@@ -1,0 +1,138 @@
+---
+import LegalPage from '@/components/LegalPage.astro';
+
+const alternates = { en: '/cookie-policy/', es: '/es/cookies/' };
+---
+
+<LegalPage
+  pageTitle="Política de cookies — Parody Mechanical Solutions LLC"
+  pageDesc="Qué cookies y tecnologías de almacenamiento usa este sitio, para qué sirven y cómo puedes gestionarlas o rechazarlas."
+  title="Política de cookies"
+  updated="19 de julio de 2026"
+  alternates={alternates}
+>
+  <h2>1. Qué son las cookies</h2>
+  <p>
+    Las cookies son archivos pequeños que un sitio web guarda en tu navegador
+    para recordar información entre visitas. En esta política usamos «cookies»
+    en sentido amplio: incluye también tecnologías similares como el
+    almacenamiento local del navegador (<code>localStorage</code>).
+  </p>
+
+  <h2>2. Quiénes somos</h2>
+  <p>
+    Este sitio lo opera <strong>Parody Mechanical Solutions LLC</strong>, una
+    sociedad de responsabilidad limitada con sede en Tooele, Utah, EE. UU. Para
+    cualquier duda sobre esta política, escríbenos a
+    <a href="mailto:kevinparody135@gmail.com">kevinparody135@gmail.com</a>.
+  </p>
+
+  <h2>3. Cookies que usamos</h2>
+  <p>
+    Este es sobre todo un sitio informativo y usa muy pocas cookies. Estas son
+    las tecnologías de almacenamiento que empleamos:
+  </p>
+  <div class="legal-table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Categoría</th>
+          <th>Finalidad</th>
+          <th>Duración</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>pms-cookie-consent</code></td>
+          <td>Almacenamiento local (propio)</td>
+          <td>Necesaria</td>
+          <td>
+            Recuerda qué categorías de cookies aceptaste o rechazaste, para no
+            volver a preguntártelo en cada visita.
+          </td>
+          <td>Hasta que borres los datos de tu navegador</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Si en el futuro incorporamos herramientas de analítica o marketing que
+    instalen cookies, solo se activarán si diste tu consentimiento a esa
+    categoría, y esta tabla se actualizará antes de que entren en
+    funcionamiento.
+  </p>
+  <p>
+    Las tipografías del sitio se cargan desde Google Fonts. Esa petición llega a
+    los servidores de Google (que reciben tu dirección IP), pero no instala
+    cookies en tu navegador.
+  </p>
+
+  <h2>4. Categorías</h2>
+  <ul>
+    <li>
+      <strong>Necesarias:</strong> imprescindibles para que el sitio funcione y
+      para recordar tu decisión sobre el consentimiento. No se pueden desactivar.
+    </li>
+    <li>
+      <strong>Analíticas:</strong> nos permitirían medir de forma agregada cómo
+      se usa el sitio para poder mejorarlo. Solo se usan con tu permiso.
+    </li>
+    <li>
+      <strong>Marketing:</strong> nos permitirían mostrarte comunicaciones
+      relevantes sobre nuestros servicios en otras plataformas. Solo se usan con
+      tu permiso.
+    </li>
+  </ul>
+
+  <h2>5. Cómo gestionar o retirar tu decisión</h2>
+  <p>Puedes cambiar tu selección cuando quieras desde el panel de preferencias:</p>
+  <p>
+    <button class="btn btn-primary" type="button" data-cookies-open>
+      Configurar cookies
+    </button>
+  </p>
+  <p>
+    También puedes eliminar o bloquear cookies desde la configuración de tu
+    navegador. Ten en cuenta que bloquear las cookies necesarias puede afectar al
+    funcionamiento del sitio. Instrucciones por navegador:
+  </p>
+  <ul>
+    <li>
+      <a href="https://support.google.com/chrome/answer/95647" rel="noopener noreferrer" target="_blank">Google Chrome</a>
+    </li>
+    <li>
+      <a href="https://support.mozilla.org/es/kb/Borrar%20cookies" rel="noopener noreferrer" target="_blank">Mozilla Firefox</a>
+    </li>
+    <li>
+      <a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" rel="noopener noreferrer" target="_blank">Safari</a>
+    </li>
+    <li>
+      <a href="https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" rel="noopener noreferrer" target="_blank">Microsoft Edge</a>
+    </li>
+  </ul>
+
+  <h2>6. Tus opciones de privacidad (leyes estatales de EE. UU.)</h2>
+  <p>
+    No vendemos ni compartimos tu información personal en el sentido que dan a
+    esos términos las leyes de privacidad estatales de EE. UU. (como la Ley de
+    Privacidad del Consumidor de California). Si eso llegara a cambiar,
+    actualizaremos esta política y habilitaremos antes el mecanismo de exclusión
+    que corresponda.
+  </p>
+
+  <h2>7. Cambios en esta política</h2>
+  <p>
+    Si cambiamos las cookies que usamos o su finalidad, actualizaremos esta
+    página y, cuando el cambio lo requiera, volveremos a pedirte tu
+    consentimiento. La fecha de la última revisión aparece al inicio.
+  </p>
+
+  <h2>8. Más información</h2>
+  <p>
+    Para saber cómo tratamos la información personal que nos envías (por ejemplo,
+    a través del formulario de contacto), consulta nuestro
+    <a href="/es/privacidad/">aviso de privacidad</a>.
+  </p>
+</LegalPage>

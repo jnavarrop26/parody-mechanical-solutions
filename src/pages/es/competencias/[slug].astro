@@ -6,8 +6,8 @@ import { pairEntries, altPaths, servicePageSchema } from '@/lib/detail-paths';
 
 export function getStaticPaths() {
   return pairEntries(en.items, es.items).map((pair) => ({
-    params: { slug: pair.en.slug },
-    props: { item: pair.en, alternates: altPaths({ en: 'competencies', es: 'competencias' }, { en: pair.en.slug, es: pair.es.slug }) },
+    params: { slug: pair.es.slug },
+    props: { item: pair.es, alternates: altPaths({ en: 'competencies', es: 'competencias' }, { en: pair.en.slug, es: pair.es.slug }) },
   }));
 }
 
@@ -17,21 +17,21 @@ const schema = servicePageSchema({
   site: Astro.site,
   name: item.name,
   description: item.longDesc,
-  path: alternates.en,
-  sectionLabel: 'Competencies',
-  sectionPath: '/#competencies',
-  homePath: '/',
+  path: alternates.es,
+  sectionLabel: 'Especialidades',
+  sectionPath: '/es/#competencies',
+  homePath: '/es/',
 });
 ---
 
 <DetailPage
-  pageTitle={`${item.name} — Parody Mechanical Solutions LLC`}
+  pageTitle={`${item.name} — Mecánicos en Utah`}
   pageDesc={item.longDesc}
-  kicker="Competencies"
-  backHref="/#competencies"
+  kicker="Especialidades"
+  backHref="/es/#competencies"
   title={item.name}
   intro={item.longDesc}
-  itemsLabel="Scope"
+  itemsLabel="Alcance"
   items={item.sub}
   alternates={alternates}
   schema={schema}

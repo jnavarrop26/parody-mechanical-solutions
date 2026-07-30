@@ -1,0 +1,77 @@
+{
+  "mark": {
+    "word": "Parody Mechanical Solutions",
+    "sub": "Parody Mechanical Solutions"
+  },
+  "menuLabel": "Menú",
+  "links": [
+    {
+      "href": "/es/#about",
+      "label": "Nosotros"
+    },
+    {
+      "href": "/es/#competencies",
+      "label": "Especialidades",
+      "children": [
+        {
+          "href": "/es/competencias/diagnostico-y-escaneo",
+          "label": "Diagnóstico y escaneo"
+        },
+        {
+          "href": "/es/competencias/electricidad-automotriz",
+          "label": "Electricidad automotriz"
+        },
+        {
+          "href": "/es/competencias/sistemas-hidraulicos",
+          "label": "Sistemas hidráulicos"
+        },
+        {
+          "href": "/es/competencias/mecanica-de-flotas",
+          "label": "Mecánica de flotas"
+        },
+        {
+          "href": "/es/competencias/servicio-a-domicilio",
+          "label": "Servicio a domicilio"
+        },
+        {
+          "href": "/es/competencias/asistencia-en-carretera",
+          "label": "Asistencia en carretera"
+        },
+        {
+          "href": "/es/competencias/recuperacion-de-componentes",
+          "label": "Recuperación de componentes"
+        }
+      ]
+    },
+    {
+      "href": "/es/#services",
+      "label": "Servicios",
+      "children": [
+        {
+          "href": "/es/servicios/mantenimiento-preventivo",
+          "label": "Mantenimiento preventivo"
+        },
+        {
+          "href": "/es/servicios/mantenimiento-correctivo",
+          "label": "Mantenimiento correctivo"
+        },
+        {
+          "href": "/es/servicios/mantenimiento-predictivo",
+          "label": "Mantenimiento predictivo"
+        }
+      ]
+    },
+    {
+      "href": "/es/#benefits",
+      "label": "Por qué nosotros"
+    },
+    {
+      "href": "/es/#coverage",
+      "label": "Cobertura"
+    },
+    {
+      "href": "/es/#contact",
+      "label": "Contacto"
+    }
+  ]
+}

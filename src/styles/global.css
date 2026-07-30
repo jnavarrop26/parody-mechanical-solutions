@@ -18,6 +18,12 @@
   --enamel-dark: #101318;
   --rust: #c41f2b;
   --rust-dark: #99131f;
+  /* Rojo de señal: mismo tono (~357°), subido de luminosidad para tipografía
+     de despliegue sobre el carbón oscuro, donde --rust se apaga a 3.17:1.
+     Este llega a 4.60:1. Se usa SOLO en texto enorme — cualquier cosa con
+     etiqueta chica (botones) se queda en --rust, porque encima lleva papel
+     y ahí el que pasa AA es el rojo profundo, no este. */
+  --rust-signal: #f5252d;
   --steel: #7f8991;
   --chrome: #d2d9de;
   --line: rgba(22, 25, 31, 0.16);
@@ -54,7 +60,9 @@ html {
 }
 
 [id] {
-  scroll-margin-top: 6rem;
+  /* La barra sticky mide ~69px: 5.25rem deja el título de la sección con un
+     dedo de aire por debajo del filo rojo al saltar por ancla */
+  scroll-margin-top: 5.25rem;
 }
 
 body {

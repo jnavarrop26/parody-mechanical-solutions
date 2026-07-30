@@ -1,0 +1,48 @@
+{
+  "title": "Servicios de mantenimiento",
+  "intro": "",
+  "categories": [
+    {
+      "slug": "mantenimiento-preventivo",
+      "name": "Mantenimiento preventivo",
+      "mode": "Programado",
+      "longDesc": "Un buen plan preventivo es la diferencia entre programar una parada y sufrirla. Definimos contigo un calendario por kilometraje u horas de operación, y cada visita queda en el historial de servicio del equipo con su reporte técnico.",
+      "items": [
+        "Inspecciones programadas",
+        "Análisis de fluidos y sistemas",
+        "Lubricación y ajustes",
+        "Reemplazo de componentes críticos",
+        "Reportes y recomendaciones"
+      ],
+      "diagram": "varilla"
+    },
+    {
+      "slug": "mantenimiento-correctivo",
+      "name": "Mantenimiento correctivo",
+      "mode": "Bajo demanda",
+      "longDesc": "Cuando algo ya falló, el objetivo es simple: devolver el equipo a operación rápido y bien. Diagnosticamos la causa raíz, reparamos en sitio o en taller, y entregamos con constancia de lo que se hizo.",
+      "items": [
+        "Diagnóstico de causa raíz",
+        "Reparación en sitio o en taller",
+        "Reemplazo de partes",
+        "Pruebas de funcionamiento",
+        "Constancia de la intervención"
+      ],
+      "diagram": "amortiguador"
+    },
+    {
+      "slug": "mantenimiento-predictivo",
+      "name": "Mantenimiento predictivo",
+      "mode": "Monitoreo continuo",
+      "longDesc": "Medimos para anticipar. Con seguimiento de parámetros y análisis de tendencias detectamos el desgaste antes de que se convierta en una falla, y programamos la intervención cuando a tu operación le sirve.",
+      "items": [
+        "Monitoreo de parámetros",
+        "Análisis de tendencias",
+        "Detección temprana de desgaste",
+        "Programación de intervenciones",
+        "Informes de estado"
+      ],
+      "diagram": "tacometro"
+    }
+  ]
+}

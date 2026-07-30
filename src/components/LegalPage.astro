@@ -1,5 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { ui } from '@/i18n/ui';
+import { localizePath, toLocale } from '@/i18n/config';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
@@ -8,19 +10,23 @@ interface Props {
   pageDesc: string;
   title: string;
   updated: string;
+  alternates?: Record<string, string>;
 }
 
-const { pageTitle, pageDesc, title, updated } = Astro.props;
+const { pageTitle, pageDesc, title, updated, alternates } = Astro.props;
+const locale = toLocale(Astro.currentLocale);
 ---
 
-<Layout title={pageTitle} description={pageDesc}>
+<Layout title={pageTitle} description={pageDesc} alternates={alternates}>
   <Header />
   <main id="top" class="legal">
     <section class="legal__hero">
       <div class="wrap">
-        <a class="legal__back" href="/">← Back to home</a>
+        <a class="legal__back" href={localizePath(locale, '/')}>
+          ← {ui('backHome', locale)}
+        </a>
         <h1 class="legal__title" data-text={title}>{title}</h1>
-        <p class="legal__updated">Last updated: {updated}</p>
+        <p class="legal__updated">{ui('lastUpdated', locale)}: {updated}</p>
       </div>
     </section>
 

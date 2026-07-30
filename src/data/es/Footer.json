@@ -1,0 +1,112 @@
+{
+  "mark": {
+    "word": "Parody",
+    "sub": "Mechanical Solutions LLC"
+  },
+  "tagline": "Limited Liability Company (LLC).",
+  "company": {
+    "label": "Información de la empresa",
+    "rows": [
+      {
+        "label": "Razón social",
+        "value": "Parody Mechanical Solutions LLC"
+      },
+      {
+        "label": "Estructura",
+        "value": "Limited Liability Company (LLC)"
+      },
+      {
+        "label": "Ubicación",
+        "value": "Tooele, Utah, EE. UU."
+      },
+      {
+        "label": "Sector",
+        "value": "Mantenimiento de equipo comercial e industrial"
+      },
+      {
+        "label": "Registro",
+        "value": "Activo en SAM.gov - U3P"
+      }
+    ]
+  },
+  "nav": {
+    "label": "Secciones",
+    "links": [
+      {
+        "href": "/es/#about",
+        "label": "Nosotros"
+      },
+      {
+        "href": "/es/#competencies",
+        "label": "Especialidades"
+      },
+      {
+        "href": "/es/#services",
+        "label": "Servicios"
+      },
+      {
+        "href": "/es/#benefits",
+        "label": "Por qué elegirnos"
+      },
+      {
+        "href": "/es/#coverage",
+        "label": "Cobertura"
+      },
+      {
+        "href": "/es/#contact",
+        "label": "Contacto"
+      }
+    ]
+  },
+  "contact": {
+    "label": "Puntos de contacto",
+    "lines": [
+      "Tooele, Utah, EE. UU.",
+      "Kevin Parody (Propietario) · +1 (385) 589-2318",
+      "Damian Muñoz (Gerente) · +1 (385) 391-6049",
+      "kevinparody135@gmail.com"
+    ]
+  },
+  "registry": {
+    "label": "Códigos de industria (NAICS)",
+    "naics": [
+      {
+        "code": "811310",
+        "name": "Reparación y mantenimiento de maquinaria comercial e industrial",
+        "primary": true
+      },
+      {
+        "code": "811111",
+        "name": "Reparación automotriz general",
+        "primary": false
+      },
+      {
+        "code": "811118",
+        "name": "Reparación mecánica y eléctrica automotriz especializada",
+        "primary": false
+      }
+    ]
+  },
+  "legal": {
+    "links": [
+      {
+        "href": "/doc/capabilities-statement.png",
+        "label": "Capabilities Statement"
+      },
+      {
+        "href": "/es/privacidad",
+        "label": "Aviso de privacidad"
+      },
+      {
+        "href": "/es/cookies",
+        "label": "Política de cookies"
+      }
+    ],
+    "cookieSettings": "Configurar cookies"
+  },
+  "copyName": "Parody Mechanical Solutions LLC",
+  "backToTop": {
+    "href": "#top",
+    "label": "Volver arriba"
+  }
+}

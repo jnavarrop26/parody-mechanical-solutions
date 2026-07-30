@@ -1,0 +1,38 @@
+{
+  "title": "Cobertura",
+  "zones": [
+    {
+      "name": "Condado de Tooele",
+      "response": "Base",
+      "desc": "Sede y zona de servicio principal — taller y servicio en campo."
+    },
+    {
+      "name": "Salt Lake City",
+      "response": "En sitio",
+      "desc": "Servicio en campo y en carretera para flotas y maquinaria de toda el área."
+    },
+    {
+      "name": "Todo Utah",
+      "response": "Estatal",
+      "desc": "Unidades móviles totalmente equipadas a cualquier punto del estado."
+    }
+  ],
+  "note": "Servicio a domicilio, en campo y en carretera — nuestras unidades móviles llegan a donde opera tu equipo.",
+  "cities": {
+    "label": "Zonas de servicio",
+    "links": [
+      {
+        "href": "/es/utah/tooele/",
+        "label": "Tooele"
+      },
+      {
+        "href": "/es/utah/salt-lake-city/",
+        "label": "Salt Lake City"
+      },
+      {
+        "href": "/es/utah/west-valley-city/",
+        "label": "West Valley City"
+      }
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+---
+import LegalPage from '@/components/LegalPage.astro';
+
+/* Los slugs no se corresponden entre idiomas (/privacy-policy vs
+   /es/privacidad), así que el par va explícito o el hreflang apuntaría a una
+   URL que no existe */
+const alternates = { en: '/privacy-policy/', es: '/es/privacidad/' };
+---
+
+<LegalPage
+  pageTitle="Aviso de privacidad — Parody Mechanical Solutions LLC"
+  pageDesc="Cómo tratamos la información personal que compartes en este sitio: qué recogemos, para qué, cuánto tiempo la guardamos y qué opciones tienes."
+  title="Aviso de privacidad"
+  updated="19 de julio de 2026"
+  alternates={alternates}
+>
+  <h2>1. Quiénes somos</h2>
+  <p>
+    <strong>Parody Mechanical Solutions LLC</strong> es una sociedad de
+    responsabilidad limitada con sede en Tooele, Utah, EE. UU. Contacto:
+    <a href="mailto:kevinparody135@gmail.com">kevinparody135@gmail.com</a>.
+  </p>
+
+  <h2>2. Información que recogemos</h2>
+  <p>Solo tratamos la información que nos proporcionas voluntariamente:</p>
+  <ul>
+    <li>
+      <strong>Formulario de contacto:</strong> nombre, empresa (opcional), correo
+      electrónico, teléfono, ciudad, tipo de servicio, la descripción de tu
+      solicitud y, si los incluyes, los datos de tu equipo o flota.
+    </li>
+    <li>
+      <strong>Comunicaciones directas:</strong> lo que incluyas al escribirnos por
+      correo o al llamarnos.
+    </li>
+  </ul>
+  <p>
+    El uso de cookies y tecnologías similares se describe en la
+    <a href="/es/cookies/">política de cookies</a>.
+  </p>
+
+  <h2>3. Para qué la usamos</h2>
+  <ul>
+    <li>Para responder tu solicitud y preparar una cotización.</li>
+    <li>Para programar y prestar el servicio que nos contrates.</li>
+    <li>Para cumplir obligaciones legales, contables o fiscales.</li>
+  </ul>
+  <p>
+    No usamos tu información para enviarte publicidad que no hayas pedido, y no
+    vendemos ni compartimos tu información personal en el sentido que dan a esos
+    términos las leyes de privacidad estatales de EE. UU. (como la CCPA).
+  </p>
+
+  <h2>4. Con quién la compartimos</h2>
+  <p>
+    No revelamos tu información a terceros, salvo a los proveedores de servicio
+    que necesitamos para operar (por ejemplo, de correo electrónico u
+    alojamiento web) y a las autoridades cuando la ley lo exige. Nuestros
+    proveedores tratan los datos únicamente siguiendo nuestras instrucciones.
+  </p>
+
+  <h2>5. Cuánto tiempo la guardamos</h2>
+  <p>
+    Conservamos la información de tu solicitud mientras dure la relación
+    comercial y, después, el tiempo necesario para atender posibles obligaciones
+    legales. Las solicitudes que no derivan en un servicio se eliminan en un
+    plazo razonable.
+  </p>
+
+  <h2>6. Tus opciones y derechos</h2>
+  <p>
+    Puedes pedirnos en cualquier momento acceder a tu información, corregirla,
+    eliminarla o que dejemos de tratarla, escribiendo a
+    <a href="mailto:kevinparody135@gmail.com">kevinparody135@gmail.com</a>.
+    Según el estado en el que residas puedes tener derechos adicionales bajo las
+    leyes estatales de privacidad; atendemos esas solicitudes sin importar en
+    qué parte de EE. UU. vivas. Responderemos lo antes posible y dentro del plazo
+    que exija la ley.
+  </p>
+
+  <h2>7. Seguridad</h2>
+  <p>
+    Aplicamos medidas técnicas y organizativas razonables para proteger tu
+    información frente a accesos no autorizados, pérdida o alteración.
+  </p>
+
+  <h2>8. Menores</h2>
+  <p>
+    Este sitio está dirigido a empresas y a personas adultas. No recogemos de
+    forma consciente información personal de menores de 13 años.
+  </p>
+
+  <h2>9. Cambios en este aviso</h2>
+  <p>
+    Si modificamos este aviso, publicaremos la versión actualizada en esta página
+    con la fecha de revisión al inicio.
+  </p>
+</LegalPage>

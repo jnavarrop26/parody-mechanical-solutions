@@ -17,5 +17,22 @@
       "desc": "Fully equipped mobile units dispatched anywhere in the state."
     }
   ],
-  "note": "On-site service, field & roadside — our mobile units come to where your equipment operates."
+  "note": "On-site service, field & roadside — our mobile units come to where your equipment operates.",
+  "cities": {
+    "label": "Service areas",
+    "links": [
+      {
+        "href": "/utah/tooele/",
+        "label": "Tooele"
+      },
+      {
+        "href": "/utah/salt-lake-city/",
+        "label": "Salt Lake City"
+      },
+      {
+        "href": "/utah/west-valley-city/",
+        "label": "West Valley City"
+      }
+    ]
+  }
 }

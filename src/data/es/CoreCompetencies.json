@@ -1,0 +1,76 @@
+{
+  "title": "Especialidades",
+  "intro": "",
+  "items": [
+    {
+      "slug": "diagnostico-y-escaneo",
+      "name": "Diagnóstico y escaneo de sistemas",
+      "desc": "Monitoreo en tiempo real de líneas y flujos de datos, detección de códigos de falla activos y restauración de las redes de comunicación del vehículo.",
+      "longDesc": "Monitoreo en tiempo real de líneas y flujos de datos, detección de códigos de falla activos y restauración de las redes de comunicación del vehículo — encontramos la causa raíz antes de tocar una sola pieza, y te la explicamos antes de cotizar.",
+      "sub": [
+        "Monitoreo de líneas de datos",
+        "Detección de códigos de falla",
+        "Redes de comunicación del vehículo"
+      ]
+    },
+    {
+      "slug": "electricidad-automotriz",
+      "name": "Electricidad automotriz e industrial",
+      "desc": "Rastreo y reparación de cortocircuitos, diagnóstico avanzado de alternadores, conectores, sensores y relés automotrices e industriales.",
+      "longDesc": "Rastreo y reparación de cortocircuitos, más diagnóstico avanzado de alternadores, conectores, sensores y relés automotrices e industriales, con verificación documentada del circuito antes de la entrega.",
+      "sub": [
+        "Cortocircuitos",
+        "Alternadores",
+        "Conectores",
+        "Sensores",
+        "Relés"
+      ]
+    },
+    {
+      "slug": "sistemas-hidraulicos",
+      "name": "Sistemas hidráulicos de alta presión",
+      "desc": "Diagnóstico y reparación de fugas en líneas, mangueras, bombas de presión, cilindros hidráulicos, válvulas y sistemas de control de maquinaria pesada.",
+      "longDesc": "Diagnóstico y reparación de fugas en líneas, mangueras, bombas de presión, cilindros hidráulicos, válvulas y sistemas de control de maquinaria pesada — presión estable, sin fugas y probado con carga antes de entregar.",
+      "sub": [
+        "Líneas y mangueras",
+        "Bombas de presión",
+        "Cilindros hidráulicos",
+        "Válvulas",
+        "Sistemas de control"
+      ]
+    },
+    {
+      "slug": "mecanica-de-flotas",
+      "name": "Mecánica general de flotas",
+      "desc": "Servicios mecánicos correctivos y preventivos para camiones diésel de carga pesada, vehículos a gasolina y utilitarios.",
+      "longDesc": "Servicios mecánicos correctivos y preventivos para camiones diésel de carga pesada, vehículos a gasolina y utilitarios, con historial de servicio por unidad y ventanas de mantenimiento pactadas por contrato.",
+      "sub": [
+        "Camiones diésel",
+        "Vehículos a gasolina",
+        "Utilitarios",
+        "Flotas comerciales"
+      ]
+    },
+    {
+      "slug": "servicio-a-domicilio",
+      "name": "Servicio mecánico a domicilio",
+      "desc": "Despliegue de unidades móviles totalmente equipadas con herramienta avanzada para resolver fallas en zonas de difícil acceso o proyectos remotos.",
+      "longDesc": "Despliegue de unidades móviles totalmente equipadas con herramienta avanzada para resolver fallas en zonas de difícil acceso o proyectos remotos: el taller llega a donde opera tu equipo.",
+      "sub": []
+    },
+    {
+      "slug": "asistencia-en-carretera",
+      "name": "Asistencia mecánica en carretera",
+      "desc": "Respuesta rápida en carreteras y rutas de transporte para reducir al mínimo el tiempo detenido de vehículos comerciales y maquinaria pesada.",
+      "longDesc": "Respuesta rápida en carreteras y rutas de transporte para reducir al mínimo el tiempo detenido de vehículos comerciales y maquinaria pesada. Un solo objetivo: que tu operación vuelva a moverse.",
+      "sub": []
+    },
+    {
+      "slug": "recuperacion-de-componentes",
+      "name": "Recuperación de piezas y componentes",
+      "desc": "Recuperación, desarme y evaluación de piezas y componentes reutilizables para bajar costos y alargar la vida útil del equipo.",
+      "longDesc": "Recuperación, desarme y evaluación de piezas y componentes reutilizables para bajar costos y alargar la vida útil del equipo — valor rescatado de máquinas que otros darían de baja.",
+      "sub": []
+    }
+  ]
+}

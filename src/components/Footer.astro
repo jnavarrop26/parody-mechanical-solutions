@@ -1,5 +1,7 @@
 ---
-import data from "../data/Footer.json";
+import { content } from '@/i18n/content';
+
+const data = content<any>('Footer', Astro.currentLocale);
 
 const year = new Date().getFullYear();
 const {

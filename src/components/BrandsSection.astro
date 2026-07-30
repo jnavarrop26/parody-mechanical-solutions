@@ -1,11 +1,48 @@
 ---
-import data from '@/data/BrandsSection.json';
+import { content } from '@/i18n/content';
+
+const data = content<any>('BrandsSection', Astro.currentLocale);
 
 const { title, intro, brands } = data;
+
+/* Marcas de agua de los fabricantes que cubrimos, repartidas por la sección.
+   x/y son el centro de cada silueta en % de la sección, así las que caen
+   en el borde se recortan solas y la mancha no queda encajonada.
+
+   `size` es el ancho del dibujo, no de la caja: con aspect-ratio igual al
+   viewBox, mask-size:contain hace que coincidan. Los logotipos apaisados
+   (bowtie de Chevrolet, óvalo de Ford, PACCAR) van más anchos a propósito:
+   a igual ancho tienen mucha menos tinta que una insignia cuadrada y se
+   perderían al lado de Cummins.
+
+   `o` ronda 0.15 y no 0.08 como cuando eran grises: el rojo de marca sobre
+   papel casi blanco se va a rosa pálido si baja de ahí (a 0.08 daba #F0E5E8,
+   indistinguible del fondo). Verificado que el titular queda en 12.5:1 y el
+   intro en 5.2:1 sobre la mancha, así que la copia sigue holgada. */
+const marks = [
+  { icon: 'caterpillar-svgrepo-com.svg', x: 5, y: 18, size: 8.4, rot: -12, o: 0.17 },
+  { icon: 'PACCAR.svg', x: 46, y: 7, size: 13, rot: -4, o: 0.15, ratio: 4.82 },
+  { icon: 'cummins-logo.svg', x: 93, y: 26, size: 7, rot: 11, o: 0.16 },
+  { icon: 'ford-svgrepo-com.svg', x: 19, y: 63, size: 9.8, rot: -7, o: 0.16 },
+  { icon: 'isuzu-svgrepo-com.svg', x: 62, y: 85, size: 7.5, rot: 14, o: 0.14 },
+  { icon: 'chevrolet-svgrepo-com.svg', x: 88, y: 75, size: 10, rot: -9, o: 0.15 },
+  { icon: 'scania-svgrepo-com.svg', x: 32, y: 95, size: 7.2, rot: 8, o: 0.16 },
+];
 ---
 
 <section id="brands" class="brands">
-  <div class="wrap">
+  <div class="brands__marks" aria-hidden="true">
+    {
+      marks.map((m) => (
+        <span
+          class="brands__mark"
+          style={`--icon: url('/icon/${m.icon}'); --x: ${m.x}%; --y: ${m.y}%; --size: ${m.size}rem; --rot: ${m.rot}deg; --o: ${m.o};${m.ratio ? ` --ratio: ${m.ratio};` : ''}`}
+        />
+      ))
+    }
+  </div>
+
+  <div class="wrap brands__inner">
     <div class="brands__head reveal">
       <h2 class="brands__title">{title}</h2>
       {intro && <p class="brands__intro">{intro}</p>}
@@ -19,8 +56,43 @@ const { title, intro, brands } = data;
 
 <style>
   .brands {
+    position: relative;
+    overflow: hidden;
     padding-block: clamp(2.25rem, 6vw, 4rem);
     border-top: 1px solid var(--line);
+  }
+
+  /* ——— Capa de marcas de agua ———
+     Los SVG entran como máscara, no como imagen: así se pintan en el rojo
+     de marca y quedan como textura, en vez de siete logos a color
+     compitiendo entre sí y con los chips. */
+  .brands__marks {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .brands__mark {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: calc(var(--size) * var(--mark-scale, 1));
+    aspect-ratio: var(--ratio, 1);
+    background: var(--rust);
+    opacity: var(--o);
+    -webkit-mask: var(--icon) no-repeat center / contain;
+    mask: var(--icon) no-repeat center / contain;
+    /* x/y apuntan al centro de la silueta, no a su esquina */
+    transform: translate(-50%, -50%) rotate(var(--rot));
+  }
+
+  /* La capa va detrás por z-index, no por orden en el DOM: un absoluto
+     pinta encima del contenido estático aunque esté antes */
+  .brands__inner {
+    position: relative;
+    z-index: 1;
   }
 
   .brands__head {
@@ -77,5 +149,17 @@ const { title, intro, brands } = data;
     background: var(--rust);
     clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
     transform: translateY(0.08em);
+  }
+
+  /* En móvil la sección se angosta pero las siluetas no: sin bajarlas de
+     escala, una sola taparía media pantalla y el titular perdería aire */
+  @media (max-width: 720px) {
+    .brands__marks {
+      --mark-scale: 0.6;
+    }
+
+    .brands__mark {
+      opacity: calc(var(--o) * 0.8);
+    }
   }
 </style>

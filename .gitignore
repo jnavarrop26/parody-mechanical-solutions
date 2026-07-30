@@ -29,3 +29,5 @@ CLAUDE.MD
 
 .vercel
 .env*
+
+*.txt

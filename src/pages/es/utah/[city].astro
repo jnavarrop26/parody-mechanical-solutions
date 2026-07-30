@@ -1,0 +1,67 @@
+---
+import DetailPage from '@/components/DetailPage.astro';
+import en from '@/data/en/Cities.json';
+import es from '@/data/es/Cities.json';
+import { pairEntries } from '@/lib/detail-paths';
+import { business } from '@/lib/business';
+
+/* El slug de ciudad es el mismo en los dos idiomas (es un nombre propio):
+   solo cambia el prefijo /es/ y el idioma del contenido. */
+export function getStaticPaths() {
+  return pairEntries(en.cities as any, es.cities as any).map((pair) => ({
+    params: { city: pair.en.slug },
+    props: {
+      city: pair.es,
+      alternates: {
+        en: `/utah/${pair.en.slug}/`,
+        es: `/es/utah/${pair.es.slug}/`,
+      },
+    },
+  }));
+}
+
+const { city, alternates } = Astro.props;
+const abs = (p: string) => new URL(p, Astro.site).href;
+
+/* Service anclado a la ciudad: es lo que conecta esta URL con las búsquedas
+   de "mecánico + ciudad". El provider apunta al @id del negocio de la home,
+   así Google une los nodos sin que se repita la ficha completa. */
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: city.title,
+    description: city.intro,
+    url: abs(alternates.es),
+    provider: { '@id': abs('/#business') },
+    areaServed: {
+      '@type': 'City',
+      name: city.name,
+      containedInPlace: { '@type': 'State', name: business.regionName },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: business.shortName, item: abs('/es/') },
+      { '@type': 'ListItem', position: 2, name: 'Cobertura', item: abs('/es/#coverage') },
+      { '@type': 'ListItem', position: 3, name: city.name },
+    ],
+  },
+];
+---
+
+<DetailPage
+  pageTitle={`${city.title} | Parody Mechanical Solutions`}
+  pageDesc={city.intro}
+  kicker="Cobertura"
+  backHref="/es/#coverage"
+  title={city.title}
+  stamp={city.stamp}
+  intro={city.intro}
+  itemsLabel="Qué hacemos aquí"
+  items={city.items}
+  alternates={alternates}
+  schema={schema}
+/>

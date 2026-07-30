@@ -1,0 +1,26 @@
+{
+  "title": "Nosotros",
+  "statement": "Mantenimiento inteligente. Equipos confiables. Siempre operando.",
+  "paragraphs": [
+    "Parody Mechanical Solutions LLC es una empresa contratista de mecánica diésel especializada en soporte técnico integral para flotas comerciales, maquinaria pesada y transporte industrial en Utah.",
+    "Trabajamos el mantenimiento preventivo, el diagnóstico rápido de fallas y la asistencia mecánica en sitio ante fallas críticas — en campo, en obra o como servicio de emergencia en carretera."
+  ],
+  "facts": [
+    {
+      "label": "Ubicación",
+      "value": "Tooele, Utah, EE. UU."
+    },
+    {
+      "label": "Estructura",
+      "value": "Limited Liability Company (LLC)"
+    },
+    {
+      "label": "Sector",
+      "value": "Mantenimiento de equipo comercial e industrial"
+    },
+    {
+      "label": "Registro federal",
+      "value": "Activo en SAM.gov"
+    }
+  ]
+}

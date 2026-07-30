@@ -1,0 +1,49 @@
+{
+  "cities": [
+    {
+      "slug": "tooele",
+      "name": "Tooele",
+      "title": "Mecánico Diésel y de Flotas en Tooele, Utah",
+      "stamp": "Base de operaciones",
+      "intro": "En Tooele está nuestro taller y de ahí salen las unidades móviles cada mañana. Para flotas y maquinaria pesada con base en el condado de Tooele, eso significa el tiempo de respuesta más corto que ofrecemos — y la opción de trabajar en taller o en campo, lo que mantenga tu equipo operando.",
+      "items": [
+        "Servicio en taller y en campo en todo el condado de Tooele",
+        "Mantenimiento preventivo programado por kilometraje u horas de operación",
+        "Diagnóstico de motor diésel y códigos de falla",
+        "Reparación hidráulica de alta presión en maquinaria pesada",
+        "Asistencia en carretera sobre la I-80 y la SR-36",
+        "Historial de servicio y reporte técnico por unidad"
+      ]
+    },
+    {
+      "slug": "salt-lake-city",
+      "name": "Salt Lake City",
+      "title": "Mecánico Diésel a Domicilio en Salt Lake City",
+      "stamp": "Servicio en sitio",
+      "intro": "Damos servicio en campo y en carretera en toda el área de Salt Lake. Nuestras unidades llevan la herramienta de diagnóstico e hidráulica para cerrar la mayoría de los trabajos donde está el equipo, así un camión detenido en un patio, en obra o en el acotamiento de la I-15 no tiene que remolcarse primero.",
+      "items": [
+        "Servicio móvil a patios, obras y terminales",
+        "Contratos de mantenimiento para flotas comerciales",
+        "Diagnóstico eléctrico: alternadores, sensores, relés, cortos",
+        "Respuesta en carretera sobre la I-15, I-80 e I-215",
+        "Cobertura multimarca: Cummins, Detroit Diesel, CAT, PACCAR y más",
+        "Cotización preliminar en un día hábil"
+      ]
+    },
+    {
+      "slug": "west-valley-city",
+      "name": "West Valley City",
+      "title": "Mecánico de Flotas y Maquinaria Pesada en West Valley City",
+      "stamp": "Unidades móviles",
+      "intro": "West Valley City queda dentro de nuestro radio de servicio en el condado de Salt Lake. Enviamos unidades móviles totalmente equipadas a bodegas, patios de distribución y sitios industriales — el mismo servicio en campo, diagnóstico y trabajo hidráulico que operamos desde Tooele, llevado a donde trabaja el equipo.",
+      "items": [
+        "Unidades móviles a sitios industriales y de distribución",
+        "Mantenimiento preventivo y correctivo para flotas comerciales",
+        "Reparación de vehículos diésel y utilitarios a gasolina",
+        "Diagnóstico de sistemas hidráulicos y reparación de fugas",
+        "Respuesta de emergencia ante fallas mecánicas críticas",
+        "Trabajo documentado con partes y mano de obra detalladas"
+      ]
+    }
+  ]
+}

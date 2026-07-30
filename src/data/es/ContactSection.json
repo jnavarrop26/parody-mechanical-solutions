@@ -1,0 +1,106 @@
+{
+  "title": "Contacto",
+  "lede": "Cuéntanos qué equipo manejas y qué está pasando. Respondemos en un día hábil con una cotización preliminar.",
+  "form": {
+    "action": "#",
+    "fields": [
+      {
+        "name": "name",
+        "label": "Nombre completo",
+        "type": "text",
+        "required": true
+      },
+      {
+        "name": "company",
+        "label": "Empresa (si aplica)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "name": "email",
+        "label": "Correo electrónico",
+        "type": "email",
+        "required": true
+      },
+      {
+        "name": "phone",
+        "label": "Teléfono",
+        "type": "tel",
+        "required": true
+      },
+      {
+        "name": "city",
+        "label": "Ciudad / Lugar del servicio",
+        "type": "text",
+        "required": true
+      }
+    ],
+    "service": {
+      "name": "service-type",
+      "label": "Tipo de servicio",
+      "placeholder": "Elige una opción",
+      "required": true,
+      "options": [
+        "Mantenimiento preventivo",
+        "Mantenimiento correctivo",
+        "Mantenimiento predictivo",
+        "Mantenimiento de flotas",
+        "Reparación de sistemas hidráulicos",
+        "Diagnóstico eléctrico",
+        "Diagnóstico mecánico",
+        "Asistencia en carretera",
+        "Servicio móvil en campo",
+        "Otro"
+      ]
+    },
+    "message": {
+      "name": "message",
+      "label": "Describe el problema o la solicitud",
+      "placeholder": "Ej.: flota de 8 camiones diésel, dos unidades perdiendo presión hidráulica.",
+      "required": true
+    },
+    "additional": {
+      "label": "Información adicional (opcional)",
+      "fields": [
+        {
+          "name": "equipment",
+          "label": "Tipo de equipo o vehículo",
+          "type": "text"
+        },
+        {
+          "name": "make",
+          "label": "Marca",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "label": "Modelo",
+          "type": "text"
+        },
+        {
+          "name": "year",
+          "label": "Año",
+          "type": "number"
+        },
+        {
+          "name": "units",
+          "label": "Número de unidades (si es flota)",
+          "type": "number"
+        }
+      ],
+      "urgency": {
+        "name": "urgency",
+        "label": "Nivel de urgencia",
+        "placeholder": "Elige una opción",
+        "options": [
+          "Emergencia (inmediato)",
+          "En 24 horas",
+          "Esta semana",
+          "Horario flexible"
+        ]
+      }
+    },
+    "submit": "Solicitar servicio",
+    "note": "Tus datos se usan únicamente para responder esta solicitud."
+  }
+}

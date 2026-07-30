@@ -12,9 +12,13 @@ import ContactSection from '@/components/ContactSection.astro';
 import Footer from '@/components/Footer.astro';
 ---
 
+{/* El título abre con la consulta que se busca, no con la marca: en un
+   resultado, "Mecánicos en Utah" gana la mirada antes que un nombre propio
+   que todavía nadie conoce. La razón social va al final, que es donde la
+   necesita quien ya llegó por marca. */}
 <Layout
-  title="Diesel Mechanic in Utah — Fleet & Heavy Equipment Repair | Parody Mechanical Solutions"
-  description="Diesel mechanics, electrical and hydraulic diagnostics for commercial fleets and heavy equipment in Tooele, Salt Lake City and across Utah. On-site field and roadside service. SAM.gov registered."
+  title="Mecánicos en Utah — Mecánica Diésel y Flotas | Parody Mechanical Solutions"
+  description="Mecánica diésel, diagnóstico eléctrico e hidráulico para flotas y maquinaria pesada en Tooele, Salt Lake City y todo Utah. Servicio a domicilio y asistencia en carretera. Cotiza en un día hábil."
   businessSchema
 >
   <Header />

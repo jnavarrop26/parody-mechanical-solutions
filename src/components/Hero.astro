@@ -1,50 +1,73 @@
 ---
-import data from '@/data/Hero.json';
+import { content } from '@/i18n/content';
+
+const data = content<any>('Hero', Astro.currentLocale);
 
 const { title, lede, credentials, cta } = data;
 
-/* Palabras indivisibles; el índice de letra corre a través de todas para el stagger */
-let letterIndex = 0;
-const words = title.split(' ').map((word) => ({
-  letters: word.split('').map((ch) => ({ ch, i: letterIndex++ })),
-}));
+/* Cartel de dos pisos: arriba el oficio, abajo el nombre de la casa en
+   grande. Del título salen las tres piezas — "Parody" baja al piso grande
+   porque es la palabra que la marca quiere que quede, y "Mechanical" es la
+   que lleva el círculo: es el oficio, no un adorno sobre una palabra
+   cualquiera. El orden de lectura correcto vive en el <h1> oculto. */
+const [name, trade, ...rest] = title.split(' ');
+const tail = rest.join(' ');
 ---
 
 <section id="top" class="hero">
-  <div class="wrap hero__grid">
-    <div class="hero__body">
-      <h1 class="hero__title">
-        {words.map((word, wi) => (
-          <Fragment>
-            <span class="hero__word">
-              {word.letters.map((l) => (
-                <span class="hero__ch" style={`--i: ${l.i}`}>{l.ch}</span>
-              ))}
-            </span>
-            {wi < words.length - 1 && ' '}
-          </Fragment>
-        ))}
-      </h1>
+  <div class="hero__content">
+    {/* El h1 lleva el nombre completo y en orden para lectores de pantalla;
+       el cartel de abajo es su versión visual, reordenada */}
+    <h1 class="hero__sr">{title}</h1>
 
-      <div class="hero__foot">
-        <p class="hero__lede">{lede}</p>
-        <a class="btn btn-primary hero__cta" href={cta.href}>
-          {cta.label}
-          <span aria-hidden="true">→</span>
-        </a>
+    <div class="hero__lockup" aria-hidden="true">
+      <div class="hero__row hero__row--trade">
+        <span class="hero__line">
+          <span class="hero__rise">{trade} {tail}</span>
+        </span>
+
+        {/* Círculo a mano alzada sobre el oficio: dos pasadas de marcador que
+           se cruzan y se pasan de largo, como quien remarca una línea en una
+           orden de trabajo. El viewBox tiene la misma proporción (3.92:1) que
+           la caja en em, así que la escala es uniforme y el trazo no se
+           deforma. pathLength="1" normaliza el largo: el dibujado se anima
+           con dashoffset sin medir el path desde JS */}
+        <svg
+          class="hero__loop"
+          viewBox="0 0 392 100"
+          preserveAspectRatio="none"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            pathLength="1"
+            d="M296 92C232 99 116 97 50 85C8 77 -1 55 24 37C70 10 208 2 300 8C364 12 393 29 386 49C379 67 340 83 280 91"
+            stroke="currentColor"
+            stroke-width="3.6"
+            stroke-linecap="round"></path>
+          <path
+            pathLength="1"
+            d="M282 96C196 103 92 98 40 83C10 74 5 53 32 33"
+            stroke="currentColor"
+            stroke-width="2.8"
+            stroke-linecap="round"></path>
+        </svg>
+      </div>
+
+      <div class="hero__row hero__row--name">
+        <span class="hero__line">
+          <span class="hero__rise">{name}</span>
+        </span>
       </div>
     </div>
 
-    {/* Decorativo para lectores de pantalla: el h1 ya dice el nombre que lleva el emblema */}
-    <img
-      class="hero__logo"
-      src="/img/logo.webp"
-      alt=""
-      decoding="async"
-      fetchpriority="high"
-      width="871"
-      height="1080"
-    />
+    <div class="hero__foot">
+      <p class="hero__lede">{lede}</p>
+      <a class="btn btn-primary hero__cta" href={cta.href}>
+        {cta.label}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
 
     <ul class="hero__credentials">
       {credentials.map((c) => <li>{c}</li>)}
@@ -52,104 +75,323 @@ const words = title.split(' ').map((word) => ({
   </div>
 </section>
 
+{/* Sin JS la entrada corre igual: se ve el salto de la fuente de respaldo,
+   que es exactamente el comportamiento de antes */}
+<noscript>
+  <style is:inline>
+    .hero__rise,
+    .hero__loop path {
+      animation-play-state: running !important;
+    }
+  </style>
+</noscript>
+
+<script>
+  /* El cuerpo de las dos líneas se calcula con las métricas de Anton. Con la
+     fuente de respaldo (más ancha) el cartel desborda y el overflow del hero
+     le corta la última letra: un salto feo justo en lo primero que se ve.
+
+     Las animaciones arrancan en pausa desde el primer pintado — el texto ya
+     está detrás de su máscara — y se sueltan cuando Anton está lista. Se
+     pide solo Anton, no document.fonts.ready, que espera también a las otras
+     dos familias. El timeout de 600ms es el tope: si la fuente tarda o falla,
+     el cartel entra igual antes de castigar el LCP. */
+  const lockup = document.querySelector('.hero__lockup');
+
+  const start = () => lockup?.classList.add('is-ready');
+
+  if (document.fonts?.load) {
+    Promise.race([
+      document.fonts.load('1em Anton'),
+      new Promise((resolve) => setTimeout(resolve, 600)),
+    ]).then(start, start);
+  } else {
+    start();
+  }
+</script>
+
 <style>
+  /* Carbón oscuro, no el carbón medio del resto del sitio: el cartel es rojo
+     sobre negro y necesita el fondo más profundo de la paleta para que el
+     rojo de señal encienda */
   .hero {
     position: relative;
     overflow: hidden;
-    padding-block: clamp(3rem, 9vw, 6rem) clamp(3.5rem, 8vw, 6rem);
-    background: var(--enamel);
+    padding-block: clamp(2.5rem, 7vw, 4.5rem) clamp(3.5rem, 8vw, 6rem);
+    background: var(--enamel-dark);
     color: var(--paper);
+
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  /* El logo es el protagonista del hero: a tamaño completo y en color, no
-     como textura. Ocupa su propia columna en lugar de ir detrás del texto */
-  .hero__logo {
-    grid-area: logo;
-    width: clamp(280px, 44vw, 660px);
-    height: auto;
-    justify-self: end;
-    align-self: center;
-    user-select: none;
+  /* ——— Textura de engranajes ———
+     El SVG entra como máscara, no como <img> ni background-image: viene con
+     relleno #000 y sobre este carbón sería invisible. Enmascarado se pinta
+     en el plateado del emblema, que es el material del oficio, y el rojo
+     sigue siendo el único acento de color del hero.
+
+     Mismo recurso que la capa de marcas de BrandsSection. El mosaico repite:
+     el patrón trae engranajes cortados en los cuatro bordes, así que empalma
+     sin costura visible. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--steel);
+    opacity: 0.15;
+    -webkit-mask: url('/bg-hero.svg') repeat center / clamp(200px, 20vw, 340px);
+    mask: url('/bg-hero.svg') repeat center / clamp(200px, 20vw, 340px);
+    pointer-events: none;
   }
 
-  .hero__grid {
+  /* La textura se apaga hacia abajo con el propio color de fondo.
+     El corte no va detrás del cartel: esas letras son macizas y tapan lo que
+     tengan atrás — de hecho la textura asomando entre ellas es lo que le da
+     profundidad. Lo que sí necesita piso limpio es el texto chico de abajo,
+     el lede en plata y la ficha técnica en mono, que a 17px sí compiten con
+     un patrón. Así la maquinaria queda arriba y los datos sobre suelo liso.
+
+     Va en un segundo pseudo-elemento y no como capa de máscara compuesta
+     porque mask-composite todavía pide prefijos con valores distintos según
+     el motor; dos capas apiladas hacen lo mismo sin esa deuda. */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 46%,
+      var(--enamel-dark) 86%
+    );
+    pointer-events: none;
+  }
+
+  /* Solo para lectores de pantalla: el nombre completo, sin el partido visual */
+  .hero__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Sin .wrap: el cartel va de filo a filo con el gutter como único margen,
+     igual que la banda del header. Con el tope de 1400px las dos líneas
+     dejaban de tocar los bordes, que es de dónde sale el efecto */
+  /* z-index, no orden en el DOM: los dos pseudo-elementos son absolutos y
+     pintarían encima de este bloque estático aunque vayan antes */
+  .hero__content {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      'body logo'
-      'creds creds';
-    align-items: center;
-    column-gap: clamp(2rem, 5vw, 4.5rem);
-    row-gap: clamp(2rem, 5vw, 3rem);
-    min-height: min(70vh, 780px);
-  }
-
-  /* La columna de texto conserva el reparto vertical que tenía el hero entero */
-  .hero__body {
-    grid-area: body;
-    display: grid;
-    align-content: center;
-    row-gap: clamp(1.5rem, 3.5vw, 2.75rem);
-    justify-items: start;
-  }
-
-  /* El título ES el hero: cartel a todo el ancho, letras troqueladas con
-     sombra dura — misma placa que las cards de beneficios/servicios */
-  .hero__title {
-    position: relative;
     width: 100%;
-    font-family: var(--font-display);
-    /* Baja de --fs-hero: ahora comparte fila con el logo, que es quien manda */
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    line-height: 0.9;
-    letter-spacing: 0.01em;
-    color: var(--paper);
-    text-transform: uppercase;
-    text-wrap: balance;
-    text-shadow: 0.045em 0.05em 0 var(--rust);
+    padding-inline: var(--gutter);
+    display: grid;
+    justify-items: center;
+    row-gap: clamp(2rem, 5vw, 3.25rem);
+    align-content: center;
   }
 
-  /* Cada palabra es indivisible; solo se parte entre palabras */
-  .hero__word {
-    display: inline-block;
+  /* ——— Cartel de dos pisos ———
+     Las dos líneas llegan exactas a los bordes. El cuerpo no se estima con
+     un clamp(): sale de dividir el ancho disponible por el ancho real de
+     cada cadena en Anton, medido sobre el TTF (hmtx + cmap):
+
+       "MECHANICAL SOLUTIONS"  9.5688em  con tracking .02em y word .35em
+       "PARODY"                2.9799em  con tracking .02em
+
+     Los dos anchos incluyen el tracking que el navegador agrega también
+     después del último carácter, así que la caja cierra exacta.
+
+     container-type: inline-size hace que 100cqw sea el ancho real de esta
+     caja — no del viewport, así que la barra de scroll no mete overflow. */
+  .hero__lockup {
+    container-type: inline-size;
+    width: 100%;
+    display: grid;
+    row-gap: clamp(0.3rem, 1vw, 0.9rem);
+  }
+
+  .hero__row {
+    position: relative;
+    font-family: var(--font-display);
+    line-height: 0.85;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     white-space: nowrap;
   }
 
-  /* Squash & stretch: las letras caen estiradas hacia abajo y asientan */
-  .hero__ch {
-    display: inline-block;
-    transform-origin: 50% 0;
-    transform: translateY(0.12em) scaleY(2.1);
-    opacity: 0;
-    animation: hero-taffy 680ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    animation-delay: calc(var(--i) * 26ms);
+  .hero__row--trade {
+    /* Ancho de tinta de "MECHANICAL" sola (4.8978em menos el tracking que
+       cuelga del último carácter). De acá sale el tamaño del lazo: si algún
+       día cambia la palabra, este es el único número que hay que recalcular */
+    --trade-word: 4.878em;
+    font-size: calc(100cqw / 9.5688);
+    word-spacing: 0.35em;
+    color: var(--paper);
   }
 
-  @keyframes hero-taffy {
-    0% {
-      transform: translateY(0.12em) scaleY(2.1);
-      opacity: 0;
-    }
-    55% {
-      transform: translateY(0) scaleY(0.94);
-      opacity: 1;
-    }
-    100% {
+  .hero__row--name {
+    font-size: calc(100cqw / 2.9799);
+    color: var(--rust-signal);
+  }
+
+  /* ——— Reveal enmascarado: cada línea sube desde detrás de un borde oculto.
+     El clip necesita un margen de sangrado (--bleed) o cortaría los
+     ascendentes; se compensa con margen negativo para que la línea siga
+     ocupando exactamente su alto y el círculo pueda centrarse contra ella ——— */
+  .hero__line {
+    --bleed: 0.12em;
+    display: block;
+    overflow: hidden;
+    padding: var(--bleed) var(--bleed) var(--bleed) 0;
+    margin: calc(var(--bleed) * -1) calc(var(--bleed) * -1) calc(var(--bleed) * -1) 0;
+  }
+
+  .hero__rise {
+    display: block;
+    /* 160%: más que el alto de la caja más su sangrado, así arranca
+       completamente oculto detrás del borde sin importar la métrica */
+    transform: translateY(160%);
+    animation: hero-rise 620ms var(--ease-out) forwards;
+    /* En pausa hasta que Anton esté cargada (ver el script). Una animación
+       pausada se queda en su fotograma inicial, así que el texto espera
+       oculto detrás de la máscara en vez de aparecer con el ancho errado */
+    animation-play-state: paused;
+  }
+
+  .hero__lockup.is-ready .hero__rise,
+  .hero__lockup.is-ready .hero__loop path {
+    animation-play-state: running;
+  }
+
+  .hero__row--name .hero__rise {
+    animation-duration: 680ms;
+    animation-delay: 110ms;
+  }
+
+  /* ——— El círculo ———
+     Va fuera de .hero__line a propósito: esa caja recorta para el reveal y
+     se comería el trazo, que se pasa de la línea por arriba y por abajo.
+
+     Medidas en em contra la fila: "MECHANICAL" mide 4.878em de tinta, así
+     que el lazo abre 0.09em a cada lado. Anton tiene capHeight .8594 y con
+     line-height .85 las mayúsculas quedan centradas en la caja con 0.006em
+     de diferencia — por eso el translateY(-50%) cae donde tiene que caer. */
+  .hero__loop {
+    position: absolute;
+    left: -0.09em;
+    top: 50%;
+    width: calc(var(--trade-word) + 0.18em);
+    height: 1.29em;
+    transform: translateY(-50%);
+    color: var(--paper);
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .hero__loop path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: loop-draw 560ms var(--ease-out) 560ms forwards;
+    animation-play-state: paused;
+  }
+
+  /* La segunda pasada entra cuando la primera ya cerró: se lee como dos
+     trazos del mismo marcador, no como dos líneas dibujándose a la vez */
+  .hero__loop path + path {
+    animation-duration: 380ms;
+    animation-delay: 800ms;
+  }
+
+  @keyframes hero-rise {
+    to {
       transform: none;
-      opacity: 1;
     }
   }
 
-  /* Ficha técnica bajo el titular: los datos que un coordinador de flota
-     necesita ver sin hacer scroll. Regla superior como hoja de especificaciones */
+  @keyframes loop-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes hero-fade {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Pie centrado bajo el cartel. Entra antes que el círculo: el CTA está
+     disponible a los ~880ms y el lazo termina de dibujarse después, como
+     remate, sin retener nada */
+  .hero__foot {
+    width: 100%;
+    max-width: 46rem;
+    display: grid;
+    justify-items: center;
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: hero-fade 500ms var(--ease-out) 380ms forwards;
+  }
+
+  /* Plata sobre carbón: el par del propio logo. El rojo aquí no sería legible */
+  .hero__lede {
+    max-width: 50ch;
+    color: var(--chrome);
+    font-weight: 500;
+    font-size: clamp(1.0625rem, 1.4vw, 1.3125rem);
+    text-wrap: pretty;
+  }
+
+  /* El botón se queda en --rust, no en --rust-signal: encima lleva papel a
+     cuerpo chico y ahí el que pasa AA (5.42:1) es el rojo profundo. El rojo
+     de señal es solo para la tipografía enorme */
+  .hero__cta {
+    font-size: 0.9375rem;
+    padding: 1.15em 2.1em;
+    background: var(--rust);
+    color: var(--paper);
+    transition: transform 160ms var(--ease-out), background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .hero__cta:active {
+    transform: scale(0.97);
+  }
+
+  .hero__cta span {
+    transition: transform 0.2s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hero__cta:hover {
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .hero__cta:hover span {
+      transform: translateX(4px);
+    }
+  }
+
+  /* Ficha técnica al pie: los datos que un coordinador de flota necesita ver
+     sin hacer scroll. Regla superior como hoja de especificaciones */
   .hero__credentials {
-    grid-area: creds;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: 0.75rem 1.25rem;
     border-top: 2px solid var(--paper);
     padding-top: clamp(0.9rem, 2vw, 1.25rem);
@@ -160,7 +402,8 @@ const words = title.split(' ').map((word) => ({
     text-transform: uppercase;
     color: var(--chrome);
     opacity: 0;
-    animation: hero-fade 500ms cubic-bezier(0.23, 1, 0.32, 1) 700ms forwards;
+    transform: translateY(8px);
+    animation: hero-fade 460ms var(--ease-out) 460ms forwards;
   }
 
   .hero__credentials li {
@@ -169,7 +412,7 @@ const words = title.split(' ').map((word) => ({
     gap: 1.25rem;
   }
 
-  /* Tuerca dorada como separador, igual que las viñetas de competencias */
+  /* Tuerca hexagonal como separador, igual que las viñetas de competencias */
   .hero__credentials li + li::before {
     content: '';
     flex: none;
@@ -179,78 +422,9 @@ const words = title.split(' ').map((word) => ({
     clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
   }
 
-  @keyframes hero-fade {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  /* Lede a la izquierda, CTA anclado a la derecha: la fila usa todo el ancho
-     del cartel para que el botón no quede huérfano junto al texto */
-  .hero__foot {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    flex-wrap: wrap;
-  }
-
-  /* En el hero el botón sube de escala: compite con el titular, no con el pie.
-     Sobre navy el btn-primary (fondo navy) desaparecería, así que se invierte
-     a rojo de marca con blanco encima (5.4:1; con tinta oscura no pasaría) */
-  .hero__cta {
-    font-size: 0.9375rem;
-    padding: 1.15em 2.1em;
-    background: var(--rust);
-    color: var(--paper);
-  }
-
-  .hero__cta:hover {
-    background: var(--paper);
-    color: var(--ink);
-  }
-
-  .hero__cta span {
-    transition: transform 0.2s ease;
-  }
-
-  .hero__cta:hover span {
-    transform: translateX(4px);
-  }
-
-  /* Plata sobre carbón: el par del propio logo. El rojo aquí no sería legible */
-  .hero__lede {
-    max-width: 50ch;
-    color: var(--chrome);
-    font-weight: 500;
-    font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
-    text-wrap: pretty;
-  }
-
-  /* Una sola columna: el logo encabeza la composición y el texto va debajo */
+  /* Al envolverse, la fila se lee como lista: que todas lleven tuerca,
+     no solo las que caen después de un salto */
   @media (max-width: 880px) {
-    .hero__grid {
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        'logo'
-        'body'
-        'creds';
-      min-height: 0;
-    }
-
-    .hero__logo {
-      justify-self: center;
-      width: clamp(220px, 58vw, 380px);
-    }
-
-    /* Al envolverse, la fila se lee como lista: que todas lleven tuerca,
-       no solo las que caen después de un salto */
     .hero__credentials li:first-child::before {
       content: '';
       flex: none;
@@ -261,23 +435,28 @@ const words = title.split(' ').map((word) => ({
     }
   }
 
+  /* Reduced motion: el cartel y el círculo quedan puestos, sin subida ni
+     dibujado. Se conserva el fundido, que ayuda a entender que la página
+     terminó de cargar */
   @media (prefers-reduced-motion: reduce) {
-    .hero__cta span,
-    .hero__cta:hover span {
-      transition: none;
-      transform: none;
-    }
-
-    .hero__ch {
-      transform: none;
-      opacity: 1;
-      animation: none;
-    }
-
+    .hero__rise,
+    .hero__foot,
     .hero__credentials {
       opacity: 1;
       transform: none;
       animation: none;
+    }
+
+    .hero__loop path {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+
+    .hero__cta,
+    .hero__cta:active,
+    .hero__cta span {
+      transition: none;
+      transform: none;
     }
   }
 </style>

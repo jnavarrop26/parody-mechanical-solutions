@@ -6,8 +6,8 @@ import { pairEntries, altPaths, servicePageSchema } from '@/lib/detail-paths';
 
 export function getStaticPaths() {
   return pairEntries(en.categories, es.categories).map((pair) => ({
-    params: { slug: pair.en.slug },
-    props: { item: pair.en, alternates: altPaths({ en: 'services', es: 'servicios' }, { en: pair.en.slug, es: pair.es.slug }) },
+    params: { slug: pair.es.slug },
+    props: { item: pair.es, alternates: altPaths({ en: 'services', es: 'servicios' }, { en: pair.en.slug, es: pair.es.slug }) },
   }));
 }
 
@@ -17,22 +17,22 @@ const schema = servicePageSchema({
   site: Astro.site,
   name: item.name,
   description: item.longDesc,
-  path: alternates.en,
-  sectionLabel: 'Services',
-  sectionPath: '/#services',
-  homePath: '/',
+  path: alternates.es,
+  sectionLabel: 'Servicios',
+  sectionPath: '/es/#services',
+  homePath: '/es/',
 });
 ---
 
 <DetailPage
-  pageTitle={`${item.name} — Diesel & Fleet Maintenance in Utah`}
+  pageTitle={`${item.name} — Mecánica Diésel y Flotas en Utah`}
   pageDesc={item.longDesc}
-  kicker="Services"
-  backHref="/#services"
+  kicker="Servicios"
+  backHref="/es/#services"
   title={item.name}
   stamp={item.mode}
   intro={item.longDesc}
-  itemsLabel="What's included"
+  itemsLabel="Qué incluye"
   items={item.items}
   alternates={alternates}
   schema={schema}
