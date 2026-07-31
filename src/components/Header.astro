@@ -1,7 +1,16 @@
 ---
 import { content } from '@/i18n/content';
 import { ui } from '@/i18n/ui';
-import { localizePath, toLocale } from '@/i18n/config';
+import { defaultLocale, localeMeta, locales, localizePath, toLocale, type Locale } from '@/i18n/config';
+
+interface Props {
+  /* Rutas equivalentes por idioma para el switcher. Solo hace falta pasarlas
+     cuando los slugs difieren entre idiomas (páginas de detalle); si se
+     omite, se derivan del path actual igual que en Layout.astro. */
+  alternates?: Partial<Record<Locale, string>>;
+}
+
+const { alternates } = Astro.props;
 
 const data = content<any>('Header', Astro.currentLocale);
 
@@ -9,6 +18,22 @@ const { mark, menuLabel, links } = data;
 
 /* El emblema vuelve a la home del idioma que se está leyendo, no siempre a la inglesa */
 const locale = toLocale(Astro.currentLocale);
+
+/* Misma derivación que Layout.astro: el path sin el prefijo de idioma, para
+   poder ofrecer el equivalente en el otro idioma cuando la página no pasa
+   alternates explícitos (home, 404). */
+const basePath =
+  locale === defaultLocale
+    ? Astro.url.pathname
+    : Astro.url.pathname.replace(new RegExp(`^/${locale}`), '') || '/';
+
+const langLinks = locales.map((l) => ({
+  code: l,
+  label: localeMeta[l].label,
+  hreflang: localeMeta[l].hreflang,
+  href: alternates?.[l] ?? localizePath(l, basePath),
+  current: l === locale,
+}));
 
 /* El lockup se arma desde `mark.sub`, no con dos campos en el JSON: la
    primera palabra es el nombre y el resto la especialidad, que es como se
@@ -55,28 +80,59 @@ const markDescriptor = markRest.join(' ');
     <nav id="main-menu" class="header__nav" aria-label={ui('navLabel', Astro.currentLocale)}>
       <ul>
         {
-          links.map((link) => (
+          links.map((link, i) => (
             <li class:list={['nav__item', link.children && 'nav__item--sub']}>
-              <a href={link.href}>
-                {link.label}
+              <div class="nav__item-row">
+                <a href={link.href}>{link.label}</a>
                 {link.children && (
-                  <span class="nav__caret" aria-hidden="true">
-                    ▾
-                  </span>
+                  <button
+                    type="button"
+                    class="nav__caret-btn"
+                    aria-expanded="false"
+                    aria-controls={`nav-sub-${i}`}
+                    aria-label={`${ui('toggleSubmenu', Astro.currentLocale)}: ${link.label}`}
+                  >
+                    <span class="nav__caret" aria-hidden="true">
+                      ▾
+                    </span>
+                  </button>
                 )}
-              </a>
+              </div>
               {link.children && (
-                <ul class="nav__sub">
-                  {link.children.map((child) => (
-                    <li>
-                      <a href={child.href}>{child.label}</a>
-                    </li>
-                  ))}
-                </ul>
+                <div class="nav__sub-wrap" id={`nav-sub-${i}`}>
+                  <ul class="nav__sub">
+                    {link.children.map((child) => (
+                      <li>
+                        <a href={child.href}>{child.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </li>
           ))
         }
+        <li class="nav__item nav__item--lang">
+          {/* La etiqueta solo se ve en el panel móvil (ver CSS): en la barra
+             de escritorio el propio EN/ES ya se explica solo y un texto al
+             lado sería ruido junto a seis links de una palabra */}
+          <span class="nav__lang-label" aria-hidden="true">{ui('languageLabel', Astro.currentLocale)}</span>
+          <div class="lang-switch" role="group" aria-label={ui('languageLabel', Astro.currentLocale)}>
+            {
+              langLinks.map((l) =>
+                l.current ? (
+                  <span class="lang-switch__opt is-current" aria-current="true" lang={l.code}>
+                    {l.code.toUpperCase()}
+                  </span>
+                ) : (
+                  <a class="lang-switch__opt" href={l.href} hreflang={l.hreflang} lang={l.code} title={l.label}>
+                    {l.code.toUpperCase()}
+                  </a>
+                )
+              )
+            }
+          </div>
+        </li>
       </ul>
     </nav>
   </div>
@@ -88,16 +144,40 @@ const markDescriptor = markRest.join(' ');
   const nav = document.querySelector('.header__nav');
 
   if (header && toggle && nav) {
+    const subItems = Array.from(nav.querySelectorAll<HTMLElement>('.nav__item--sub'));
+    const caretButtons = Array.from(nav.querySelectorAll<HTMLButtonElement>('.nav__caret-btn'));
+
+    const closeSubmenus = () => {
+      for (const item of subItems) item.removeAttribute('data-open');
+      for (const btn of caretButtons) btn.setAttribute('aria-expanded', 'false');
+    };
+
     const setOpen = (open: boolean) => {
       header.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', String(open));
+      /* Al cerrar el panel entero se resetean los submenús: si no, la
+         próxima vez que se abra el hamburguesa aparece con los que se
+         habían dejado abiertos la vez anterior */
+      if (!open) closeSubmenus();
     };
 
     toggle.addEventListener('click', () => {
       setOpen(!header.classList.contains('is-open'));
     });
 
-    /* Los enlaces son anclas de la misma página: al elegir una, el menú se cierra */
+    for (const btn of caretButtons) {
+      btn.addEventListener('click', () => {
+        const item = btn.closest<HTMLElement>('.nav__item--sub');
+        if (!item) return;
+        const isOpen = item.hasAttribute('data-open');
+        item.toggleAttribute('data-open', !isOpen);
+        btn.setAttribute('aria-expanded', String(!isOpen));
+      });
+    }
+
+    /* Los enlaces son anclas de la misma página: al elegir una, el menú se cierra.
+       .nav__caret-btn no es <a>, así que closest('a') no lo agarra y solo
+       despliega/colapsa su propio submenú sin cerrar el panel entero */
     nav.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('a')) setOpen(false);
     });
@@ -298,6 +378,44 @@ const markDescriptor = markRest.join(' ');
     position: relative;
   }
 
+  .nav__item-row {
+    display: flex;
+    align-items: center;
+  }
+
+  /* El link crece para llenar el ancho disponible en el panel móvil
+     (tap target de fila completa); en la barra horizontal de escritorio
+     no hay espacio libre que ceder, así que no cambia nada visualmente */
+  .nav__item-row > a {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Fila del selector de idioma: en escritorio la etiqueta está oculta y
+     este flex no tiene nada que repartir; en móvil (ver media query) es lo
+     que separa "Language" del switch a los dos extremos de la fila */
+  .nav__item--lang {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav__lang-label {
+    display: none;
+  }
+
+  .nav__caret-btn {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    line-height: 1;
+  }
+
   /* --steel sobre el rojo da 1.65:1 (invisible). Papel algo apagado lo
      mantiene por debajo de la etiqueta sin desaparecer */
   .nav__caret {
@@ -383,6 +501,45 @@ const markDescriptor = markRest.join(' ');
     outline-color: var(--enamel);
   }
 
+  /* ——— Selector de idioma ——— */
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: 1px solid color-mix(in srgb, var(--paper) 55%, transparent);
+    padding: 0.2rem;
+  }
+
+  /* Aparte de `nav a` a propósito: hereda familia/mayúsculas de mono pero
+     no el subrayado de hover ni (en móvil) el tratamiento display grande
+     de los enlaces de sección — es un control, no un link de navegación */
+  .lang-switch__opt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    padding: 0.25rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--paper);
+    border-bottom: none;
+  }
+
+  a.lang-switch__opt:hover {
+    border-color: transparent;
+    background: color-mix(in srgb, var(--paper) 18%, transparent);
+  }
+
+  .lang-switch__opt.is-current {
+    background: var(--paper);
+    color: var(--ink);
+    cursor: default;
+  }
+
   /* ——— Panel desplegable en móvil ——— */
   @media (max-width: 920px) {
     .header__toggle {
@@ -398,8 +555,8 @@ const markDescriptor = markRest.join(' ');
     .header__nav {
       position: absolute;
       top: 100%;
-      left: calc(-1 * var(--gutter));
-      right: calc(-1 * var(--gutter));
+      left: 0;
+      right: 0;
       background: var(--paper);
       border-bottom: 2px solid var(--ink);
       visibility: hidden;
@@ -441,12 +598,46 @@ const markDescriptor = markRest.join(' ');
       border-color: transparent;
     }
 
-    /* En el panel móvil los hijos van indentados, siempre visibles */
-    .nav__caret {
-      display: none;
+    /* El caret ya no se esconde: ahora es el indicador de abierto/cerrado
+       del acordeón, igual que en escritorio pero disparado por click.
+       Sigue en --paper del bloque de escritorio (papel sobre rojo); acá el
+       panel es claro y ese mismo blanco quedaba invisible sobre --paper */
+    .nav__caret-btn {
+      padding: 0.8rem 0.2rem 0.8rem 0.9rem;
     }
 
+    .nav__caret {
+      color: var(--ink-soft);
+      opacity: 1;
+      font-size: 1rem;
+    }
+
+    /* El acordeón vive en el wrap, no en .nav__sub: el hijo directo lleva
+       overflow:hidden + min-height:0 — si fueran el mismo elemento el
+       grid no tendría nada que recortar mientras anima */
+    .nav__sub-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .nav__item--sub[data-open] .nav__sub-wrap {
+      grid-template-rows: 1fr;
+    }
+
+    .nav__item--sub[data-open] .nav__caret {
+      transform: rotate(180deg);
+    }
+
+    /* Sin padding propio a propósito: este es el elemento que el grid del
+       wrap fuerza a 0 de alto mientras colapsa. Un padding-bottom acá no se
+       puede recortar del todo (box-sizing:border-box no deja que el padding
+       propio empuje la caja a menos que su propia suma), y quedaba un
+       filete visible incluso cerrado. El aire de cierre va en el último
+       hijo, que sí es contenido recortable */
     .nav__sub {
+      overflow: hidden;
+      min-height: 0;
       position: static;
       visibility: visible;
       opacity: 1;
@@ -455,8 +646,12 @@ const markDescriptor = markRest.join(' ');
       border: none;
       box-shadow: none;
       background: none;
-      padding: 0 0 0.6rem;
+      padding: 0;
       transition: none;
+    }
+
+    .nav__sub li:last-child {
+      padding-bottom: 0.6rem;
     }
 
     .nav__sub::before {
@@ -479,6 +674,40 @@ const markDescriptor = markRest.join(' ');
 
     .nav__sub a:hover {
       background: none;
+    }
+
+    .nav__item--lang {
+      padding-block: 0.9rem;
+    }
+
+    /* Acá sí se muestra: en el panel angosto el switch solo no explica qué
+       controla, y "LANGUAGE"/"IDIOMA" es la misma etiqueta mono que ya usan
+       los rótulos de spec del resto del sitio (plate__speclabel, etc.) */
+    .nav__lang-label {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .lang-switch {
+      border-color: var(--line-strong);
+    }
+
+    .lang-switch__opt {
+      color: var(--ink-soft);
+    }
+
+    a.lang-switch__opt:hover {
+      background: var(--paper-dim);
+    }
+
+    .lang-switch__opt.is-current {
+      background: var(--ink);
+      color: var(--paper);
     }
   }
 
@@ -517,6 +746,7 @@ const markDescriptor = markRest.join(' ');
     .header__nav,
     .is-open .header__nav,
     .nav__sub,
+    .nav__sub-wrap,
     .nav__item--sub:hover .nav__sub,
     .nav__item--sub:focus-within .nav__sub,
     .nav__caret {

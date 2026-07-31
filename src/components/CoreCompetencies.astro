@@ -1,6 +1,7 @@
 ---
 import { content } from '@/i18n/content';
 import { detailHref } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
 
 const data = content<any>('CoreCompetencies', Astro.currentLocale);
 
@@ -32,18 +33,28 @@ const code = (name: string, i: number) =>
                 href={detailHref('competencies', item.slug, Astro.currentLocale)}
                 data-comp-row={item.slug}
                 data-active={i === 0 ? '' : undefined}
+                aria-expanded="false"
+                aria-controls={`comp-inline-${i}`}
               >
                 <span class="competencies__name">{item.name}</span>
                 <span class="competencies__go" aria-hidden="true">→</span>
               </a>
 
-              <div class="competencies__inline">
-                <p>{item.longDesc}</p>
-                {item.sub.length > 0 && (
-                  <p class="competencies__inlinesub">
-                    Covers: {item.sub.join(' · ')}
-                  </p>
-                )}
+              <div class="competencies__inline" id={`comp-inline-${i}`}>
+                <div class="competencies__inline-content">
+                  <p>{item.longDesc}</p>
+                  {item.sub.length > 0 && (
+                    <p class="competencies__inlinesub">
+                      {ui('covers', Astro.currentLocale)}: {item.sub.join(' · ')}
+                    </p>
+                  )}
+                  <a
+                    class="competencies__inline-link"
+                    href={detailHref('competencies', item.slug, Astro.currentLocale)}
+                  >
+                    {ui('viewCompetency', Astro.currentLocale)} <span aria-hidden="true">→</span>
+                  </a>
+                </div>
               </div>
             </li>
           ))
@@ -68,7 +79,7 @@ const code = (name: string, i: number) =>
 
               {item.sub.length > 0 && (
                 <div class="plate__spec">
-                  <p class="plate__speclabel">Covers</p>
+                  <p class="plate__speclabel">{ui('covers', Astro.currentLocale)}</p>
                   <ul class="plate__chips">
                     {item.sub.map((s) => (
                       <li>{s}</li>
@@ -78,7 +89,7 @@ const code = (name: string, i: number) =>
               )}
 
               <a class="plate__go" href={detailHref('competencies', item.slug, Astro.currentLocale)}>
-                View competency <span aria-hidden="true">→</span>
+                {ui('viewCompetency', Astro.currentLocale)} <span aria-hidden="true">→</span>
               </a>
             </article>
           ))
@@ -109,6 +120,28 @@ const code = (name: string, i: number) =>
         if (canHover.matches) activate(row.dataset.compRow);
       });
       row.addEventListener('focusin', () => activate(row.dataset.compRow));
+    }
+
+    /* Acordeón móvil: independiente de data-active/data-comp-row, que
+       siguen gobernando el panel de escritorio (oculto acá, pero el
+       listener de foco/hover sigue corriendo). En pantallas angostas el
+       mismo <a> deja de navegar y en cambio abre/cierra su descripción
+       inline; un solo ítem abierto a la vez. */
+    const isStacked = window.matchMedia('(max-width: 880px)');
+
+    const setExpanded = (row: HTMLElement, expanded: boolean) => {
+      row.toggleAttribute('data-expanded', expanded);
+      row.setAttribute('aria-expanded', String(expanded));
+    };
+
+    for (const row of rows) {
+      row.addEventListener('click', (e) => {
+        if (!isStacked.matches) return;
+        e.preventDefault();
+        const alreadyOpen = row.hasAttribute('data-expanded');
+        for (const r of rows) setExpanded(r, false);
+        setExpanded(row, !alreadyOpen);
+      });
     }
   }
 </script>
@@ -381,13 +414,40 @@ const code = (name: string, i: number) =>
       display: none;
     }
 
-    .competencies__inline {
-      display: grid;
-      gap: 0.5rem;
-      padding-bottom: clamp(0.9rem, 2.2vw, 1.3rem);
+    /* Feedback táctil: sin panel de escritorio que confirme el tap, el
+       propio renglón se comprime un poco al presionarlo — la fila es el
+       control del acordeón, tiene que sentirse pulsable */
+    .competencies__row {
+      transition: transform 120ms var(--ease-out);
     }
 
-    .competencies__inline p {
+    .competencies__row:active {
+      transform: scale(0.98);
+    }
+
+    /* Acordeón: el alto real de .competencies__inline-content nunca se
+       calcula a mano, lo resuelve grid-template-rows 0fr→1fr. El
+       overflow:hidden vive en el HIJO, no en este elemento: si fueran el
+       mismo, el grid no tendría nada que recortar mientras anima */
+    .competencies__inline {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 220ms var(--ease-out);
+    }
+
+    /* Sin padding propio: es este elemento el que el grid de arriba fuerza
+       a 0 de alto. box-sizing:border-box no deja que un padding propio
+       baje de su propia suma, así que quedaba un renglón de texto asomando
+       incluso cerrado — el mismo problema que .nav__sub en Header.astro.
+       El aire de cierre va en .competencies__inline-link, que sí es hijo */
+    .competencies__inline-content {
+      overflow: hidden;
+      min-height: 0;
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .competencies__inline-content p {
       color: var(--ink-soft);
       font-size: 0.95rem;
       line-height: 1.5;
@@ -399,6 +459,23 @@ const code = (name: string, i: number) =>
       font-size: var(--fs-mono);
       letter-spacing: 0.04em;
       text-transform: uppercase;
+    }
+
+    .competencies__inline-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      width: fit-content;
+      margin-top: 0.2rem;
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: calc(0.2em + clamp(0.9rem, 2.2vw, 1.3rem));
     }
 
     .competencies__row {
@@ -418,6 +495,26 @@ const code = (name: string, i: number) =>
     .competencies__row[data-active] .competencies__go {
       color: var(--steel);
       transform: none;
+    }
+
+    /* Estado del acordeón — declarado DESPUÉS de [data-active] a propósito:
+       misma especificidad (clase + atributo + clase); en un empate gana
+       el que aparece último en la hoja de estilos */
+    .competencies__row[data-expanded] + .competencies__inline {
+      grid-template-rows: 1fr;
+    }
+
+    .competencies__row[data-expanded] .competencies__name {
+      color: var(--enamel);
+    }
+
+    .competencies__row[data-expanded] .competencies__name::before {
+      transform: translateY(0.02em) rotate(90deg);
+    }
+
+    .competencies__row[data-expanded] .competencies__go {
+      color: var(--rust);
+      transform: rotate(90deg);
     }
   }
 
@@ -444,6 +541,23 @@ const code = (name: string, i: number) =>
     .competencies__row[data-active] .competencies__name,
     .competencies__row[data-active] .competencies__name::before,
     .competencies__row[data-active] .competencies__go {
+      transform: none;
+    }
+
+    .competencies__inline {
+      transition: none;
+    }
+
+    .competencies__row {
+      transition: none;
+    }
+
+    .competencies__row:active {
+      transform: none;
+    }
+
+    .competencies__row[data-expanded] .competencies__name::before,
+    .competencies__row[data-expanded] .competencies__go {
       transform: none;
     }
 

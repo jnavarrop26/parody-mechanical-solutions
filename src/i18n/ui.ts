@@ -14,6 +14,10 @@ const strings = {
     ctaLede:
       "Tell us what equipment you run and we'll reply within one business day with a preliminary quote.",
     ctaButton: 'Request a quote',
+    languageLabel: 'Language',
+    toggleSubmenu: 'Toggle submenu',
+    viewCompetency: 'View competency',
+    covers: 'Covers',
   },
   es: {
     navLabel: 'Principal',
@@ -24,6 +28,10 @@ const strings = {
     ctaLede:
       'Cuéntanos qué equipo manejas y te respondemos en un día hábil con una cotización preliminar.',
     ctaButton: 'Pedir cotización',
+    languageLabel: 'Idioma',
+    toggleSubmenu: 'Mostrar submenú',
+    viewCompetency: 'Ver competencia',
+    covers: 'Incluye',
   },
 } satisfies Record<Locale, Record<string, string>>;
 

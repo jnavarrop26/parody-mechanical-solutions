@@ -13,7 +13,7 @@ export const business = {
   shortName: 'Parody Mechanical Solutions',
   telephone: '+1-385-589-2318',
   telephoneAlt: '+1-385-391-6049',
-  email: 'kevinparody135@gmail.com',
+  email: 'diagnostic@parody-mechanical.us',
   locality: 'Tooele',
   region: 'UT',
   regionName: 'Utah',
