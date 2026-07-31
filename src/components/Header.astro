@@ -512,8 +512,18 @@ const markDescriptor = markRest.join(' ');
 
   /* Aparte de `nav a` a propósito: hereda familia/mayúsculas de mono pero
      no el subrayado de hover ni (en móvil) el tratamiento display grande
-     de los enlaces de sección — es un control, no un link de navegación */
-  .lang-switch__opt {
+     de los enlaces de sección — es un control, no un link de navegación.
+
+     Calificado con `.lang-switch` por delante y no como clase suelta: Astro
+     le agrega el atributo de scope a CADA selector simple de una regla
+     compuesta, así que `nav a` compila a `nav[data-cid] a[data-cid]` (dos
+     atributos) y empata en especificidad con una `.lang-switch__opt[data-cid]`
+     suelta (un atributo + una clase) — y gana por tener más selectores de
+     tipo. El "ES" del switch (un <a>, a diferencia del "EN" activo que es
+     un <span> y nunca compite con `nav a`) se veía en Anton y no en mono
+     por esto exacto. Calificando con el padre se sube a tres selectores de
+     clase/atributo, por encima de esa regla en cualquier contexto */
+  .lang-switch .lang-switch__opt {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -529,12 +539,15 @@ const markDescriptor = markRest.join(' ');
     border-bottom: none;
   }
 
-  a.lang-switch__opt:hover {
+  .lang-switch a.lang-switch__opt:hover {
     border-color: transparent;
     background: color-mix(in srgb, var(--paper) 18%, transparent);
   }
 
-  .lang-switch__opt.is-current {
+  /* Con el mismo prefijo `.lang-switch` que el selector base de arriba: si
+     este se queda corto, el base (ahora más específico que antes) le gana
+     el color al estado activo — texto blanco sobre fondo blanco */
+  .lang-switch .lang-switch__opt.is-current {
     background: var(--paper);
     color: var(--ink);
     cursor: default;
@@ -697,15 +710,15 @@ const markDescriptor = markRest.join(' ');
       border-color: var(--line-strong);
     }
 
-    .lang-switch__opt {
+    .lang-switch .lang-switch__opt {
       color: var(--ink-soft);
     }
 
-    a.lang-switch__opt:hover {
+    .lang-switch a.lang-switch__opt:hover {
       background: var(--paper-dim);
     }
 
-    .lang-switch__opt.is-current {
+    .lang-switch .lang-switch__opt.is-current {
       background: var(--ink);
       color: var(--paper);
     }
