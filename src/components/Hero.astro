@@ -235,6 +235,11 @@ const tail = rest.join(' ');
     font-size: calc(100cqw / 9.5688);
     word-spacing: 0.35em;
     color: var(--paper);
+    /* Va después de PARODY en el cartel, pero antes en el DOM (así el <h1>
+       oculto para lectores de pantalla sigue leyendo el nombre completo en
+       orden). `order` reacomoda solo el pintado del grid — no toca el
+       reveal ni el lazo dibujado a mano, que quedan intactos */
+    order: 1;
   }
 
   .hero__row--name {
