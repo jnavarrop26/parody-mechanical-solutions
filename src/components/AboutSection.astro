@@ -17,6 +17,19 @@ const { title, statement, paragraphs, facts } = data;
       <div class="about__copy reveal">
         {paragraphs.map((p, i) => <p class={i === 0 ? 'about__lead-p' : undefined}>{p}</p>)}
       </div>
+
+      {
+        facts && facts.length > 0 && (
+          <dl class="about__facts reveal">
+            {facts.map((f: any) => (
+              <div class="about__fact">
+                <dt>{f.label}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
     </div>
   </div>
 </section>
@@ -89,6 +102,30 @@ const { title, statement, paragraphs, facts } = data;
 
   .about__copy p + p {
     margin-top: 0.9rem;
+  }
+
+  .about__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.1rem 1.5rem;
+    margin: clamp(1.75rem, 4vw, 3rem) 0 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .about__fact dt {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+
+  .about__fact dd {
+    margin: 0.25rem 0 0;
+    font-weight: 600;
+    color: var(--ink);
+    overflow-wrap: anywhere;
   }
 
   /* Capitular editorial en el primer párrafo */

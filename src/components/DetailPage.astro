@@ -14,6 +14,8 @@ interface Props {
   title: string;
   stamp?: string;
   intro: string;
+  paragraphs?: string[];
+  signals?: string[];
   itemsLabel?: string;
   items?: string[];
   /* Se reenvían al Layout: los slugs difieren entre idiomas, así que el
@@ -30,6 +32,8 @@ const {
   title,
   stamp,
   intro,
+  paragraphs = [],
+  signals = [],
   itemsLabel = ui('included', Astro.currentLocale),
   items = [],
   alternates,
@@ -52,9 +56,28 @@ const locale = toLocale(Astro.currentLocale);
         <a class="detail__back" href={backHref}>← {kicker}</a>
         <h1 class="detail__title" data-text={title}>{title}</h1>
         {stamp && <p class="detail__stamp">{stamp}</p>}
-        <p class="detail__intro">{intro}</p>
+        {paragraphs.length > 0 ? (
+          paragraphs.map((p) => <p class="detail__intro">{p}</p>)
+        ) : (
+          <p class="detail__intro">{intro}</p>
+        )}
       </div>
     </section>
+
+    {
+      signals.length > 0 && (
+        <section class="detail__signals">
+          <div class="wrap">
+            <h2 class="detail__scope-title">{ui('signalsLabel', locale)}</h2>
+            <ul class="detail__signal-list">
+              {signals.map((s) => (
+                <li class="reveal">{s}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
 
     {
       items.length > 0 && (
@@ -160,8 +183,32 @@ const locale = toLocale(Astro.currentLocale);
     color: var(--ink-soft);
   }
 
-  .detail__scope {
+  .detail__scope,
+  .detail__signals {
     padding-block: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  .detail__signals {
+    border-top: 1px solid var(--line);
+  }
+
+  .detail__signal-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .detail__signal-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    font-size: 1.0625rem;
+    color: var(--ink-soft);
+  }
+
+  .detail__signal-list li::before {
+    content: '—';
+    flex: none;
+    color: var(--rust);
   }
 
   .detail__scope-title {

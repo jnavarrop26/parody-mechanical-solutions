@@ -18,6 +18,7 @@ const strings = {
     toggleSubmenu: 'Toggle submenu',
     viewCompetency: 'View competency',
     covers: 'Covers',
+    signalsLabel: 'Equipment & process',
   },
   es: {
     navLabel: 'Principal',
@@ -32,6 +33,7 @@ const strings = {
     toggleSubmenu: 'Mostrar submenú',
     viewCompetency: 'Ver competencia',
     covers: 'Incluye',
+    signalsLabel: 'Equipo y proceso',
   },
 } satisfies Record<Locale, Record<string, string>>;
 

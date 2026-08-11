@@ -7,6 +7,15 @@
       "name": "Diagnóstico y escaneo de sistemas",
       "desc": "Monitoreo en tiempo real de líneas y flujos de datos, detección de códigos de falla activos y restauración de las redes de comunicación del vehículo.",
       "longDesc": "Monitoreo en tiempo real de líneas y flujos de datos, detección de códigos de falla activos y restauración de las redes de comunicación del vehículo — encontramos la causa raíz antes de tocar una sola pieza, y te la explicamos antes de cotizar.",
+      "paragraphs": [
+        "Antes de tocar una sola pieza, conectamos el vehículo o la máquina a equipo de escaneo multimarca para leer los códigos de falla activos y pendientes, revisar los flujos de datos en tiempo real y aislar si el problema está en un sensor, un módulo o la red de comunicación (CAN, J1939). Esto evita el error más caro en mecánica diésel: cambiar piezas por prueba y error.",
+        "Un caso típico: un camión con testigo de motor encendido de forma intermitente. En vez de asumir que es el sensor más común, comparamos los flujos de datos del ECM contra los valores esperados del fabricante y confirmamos la causa raíz antes de cotizar cualquier repuesto — muchas veces el problema es un conector oxidado o una tierra floja, no el sensor."
+      ],
+      "signals": [
+        "Escáneres multimarca (OEM y genéricos)",
+        "Lectura de redes CAN / J1939",
+        "Reporte de códigos con fecha, kilometraje y causa raíz"
+      ],
       "sub": [
         "Monitoreo de líneas de datos",
         "Detección de códigos de falla",
@@ -18,6 +27,15 @@
       "name": "Electricidad automotriz e industrial",
       "desc": "Rastreo y reparación de cortocircuitos, diagnóstico avanzado de alternadores, conectores, sensores y relés automotrices e industriales.",
       "longDesc": "Rastreo y reparación de cortocircuitos, más diagnóstico avanzado de alternadores, conectores, sensores y relés automotrices e industriales, con verificación documentada del circuito antes de la entrega.",
+      "paragraphs": [
+        "Rastreamos cortocircuitos y fallas intermitentes con multímetro y diagramas eléctricos por sistema, no a ojo — así confirmamos con datos si el problema está en el alternador, un conector oxidado, un sensor o un relé antes de desarmar nada.",
+        "En equipo industrial y flotas comerciales, una falla eléctrica mal diagnosticada suele volver a los pocos días. Por eso dejamos verificación documentada del circuito reparado — voltaje, continuidad y carga — antes de entregar la unidad."
+      ],
+      "signals": [
+        "Multímetros y osciloscopio para fallas intermitentes",
+        "Diagramas eléctricos por marca y modelo",
+        "Verificación de circuito documentada antes de entrega"
+      ],
       "sub": [
         "Cortocircuitos",
         "Alternadores",
@@ -31,6 +49,15 @@
       "name": "Sistemas hidráulicos de alta presión",
       "desc": "Diagnóstico y reparación de fugas en líneas, mangueras, bombas de presión, cilindros hidráulicos, válvulas y sistemas de control de maquinaria pesada.",
       "longDesc": "Diagnóstico y reparación de fugas en líneas, mangueras, bombas de presión, cilindros hidráulicos, válvulas y sistemas de control de maquinaria pesada — presión estable, sin fugas y probado con carga antes de entregar.",
+      "paragraphs": [
+        "Diagnosticamos fugas y pérdida de presión en líneas, mangueras, bombas, cilindros y válvulas de maquinaria pesada — identificando si la causa es un sello desgastado, contaminación del fluido o una válvula que no cicla correctamente.",
+        "Después de la reparación probamos el sistema bajo carga real, no solo en vacío: solo así confirmamos que la presión se mantiene estable en el ciclo de trabajo real de la máquina, antes de devolverla a operación."
+      ],
+      "signals": [
+        "Manómetros y equipo de prueba de presión",
+        "Diagnóstico de contaminación de fluido hidráulico",
+        "Prueba de sistema bajo carga antes de entrega"
+      ],
       "sub": [
         "Líneas y mangueras",
         "Bombas de presión",
@@ -44,6 +71,15 @@
       "name": "Mecánica general de flotas",
       "desc": "Servicios mecánicos correctivos y preventivos para camiones diésel de carga pesada, vehículos a gasolina y utilitarios.",
       "longDesc": "Servicios mecánicos correctivos y preventivos para camiones diésel de carga pesada, vehículos a gasolina y utilitarios, con historial de servicio por unidad y ventanas de mantenimiento pactadas por contrato.",
+      "paragraphs": [
+        "Cubrimos mantenimiento correctivo y preventivo para camiones diésel de carga pesada, vehículos a gasolina y utilitarios — llevamos un historial de servicio por unidad para que la flota tenga trazabilidad real, no solo facturas sueltas.",
+        "Coordinamos las ventanas de mantenimiento por contrato con el coordinador de flota para minimizar el tiempo fuera de operación, y entregamos cada vehículo con reporte y fotos del trabajo realizado."
+      ],
+      "signals": [
+        "Historial de servicio por unidad/placa",
+        "Ventanas de mantenimiento pactadas por contrato",
+        "Reporte con fotos en cada entrega"
+      ],
       "sub": [
         "Camiones diésel",
         "Vehículos a gasolina",
@@ -56,6 +92,15 @@
       "name": "Servicio mecánico a domicilio",
       "desc": "Despliegue de unidades móviles totalmente equipadas con herramienta avanzada para resolver fallas en zonas de difícil acceso o proyectos remotos.",
       "longDesc": "Despliegue de unidades móviles totalmente equipadas con herramienta avanzada para resolver fallas en zonas de difícil acceso o proyectos remotos: el taller llega a donde opera tu equipo.",
+      "paragraphs": [
+        "Desplegamos unidades móviles equipadas con herramienta de diagnóstico y reparación para atender maquinaria y flotas directamente en obra, bodega o donde esté detenido el equipo — sin necesidad de trasladarlo a un taller.",
+        "Esto es clave para maquinaria pesada difícil de mover o proyectos con cronograma ajustado: el objetivo es resolver la falla en sitio y que el equipo vuelva a producir el mismo día siempre que sea posible."
+      ],
+      "signals": [
+        "Unidades móviles con herramienta de diagnóstico y reparación",
+        "Atención en obra, bodega o sitio remoto",
+        "Prioridad: equipo operando el mismo día"
+      ],
       "sub": []
     },
     {
@@ -63,6 +108,15 @@
       "name": "Asistencia mecánica en carretera",
       "desc": "Respuesta rápida en carreteras y rutas de transporte para reducir al mínimo el tiempo detenido de vehículos comerciales y maquinaria pesada.",
       "longDesc": "Respuesta rápida en carreteras y rutas de transporte para reducir al mínimo el tiempo detenido de vehículos comerciales y maquinaria pesada. Un solo objetivo: que tu operación vuelva a moverse.",
+      "paragraphs": [
+        "Respondemos en carretera y rutas de transporte cuando un vehículo comercial o maquinaria pesada queda detenido — el objetivo es resolver la falla en el lugar o dejar la unidad en condición segura de traslado, minimizando el tiempo de parada.",
+        "Coordinamos directamente con el conductor o el coordinador de flota para confirmar ubicación, tipo de falla y prioridad, y salimos con la herramienta necesaria según el diagnóstico inicial reportado."
+      ],
+      "signals": [
+        "Respuesta en ruta para flotas comerciales",
+        "Diagnóstico inicial telefónico antes de salir",
+        "Prioridad: mínimo tiempo de parada"
+      ],
       "sub": []
     },
     {
@@ -70,6 +124,15 @@
       "name": "Recuperación de piezas y componentes",
       "desc": "Recuperación, desarme y evaluación de piezas y componentes reutilizables para bajar costos y alargar la vida útil del equipo.",
       "longDesc": "Recuperación, desarme y evaluación de piezas y componentes reutilizables para bajar costos y alargar la vida útil del equipo — valor rescatado de máquinas que otros darían de baja.",
+      "paragraphs": [
+        "Desarmamos y evaluamos piezas y componentes de equipo dado de baja o fuera de servicio para determinar cuáles siguen siendo funcionales — una alternativa real a comprar repuesto nuevo cuando el componente recuperado cumple la misma función.",
+        "Cada pieza recuperada se prueba antes de reutilizarse o venderse; esto reduce costos de mantenimiento en flotas con equipo antiguo y alarga la vida útil de máquinas que de otra forma se darían de baja."
+      ],
+      "signals": [
+        "Evaluación funcional antes de reutilizar una pieza",
+        "Alternativa de menor costo a repuesto nuevo",
+        "Aplica a equipo antiguo o fuera de producción"
+      ],
       "sub": []
     }
   ]

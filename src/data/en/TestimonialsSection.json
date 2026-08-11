@@ -1,20 +1,29 @@
 {
-  "title": "Testimonios",
+  "title": "Testimonials",
+  "casesTitle": "Past performance",
+  "cases": [
+    {
+      "client": "FedEx Ground contractor (transportation & logistics)",
+      "scope": "Fleet maintenance and roadside support for a 33-unit step van fleet: Ford E350 (700 cu ft) and Freightliner MT55G (600 cu ft), GVWR 10,001–23,000 lbs.",
+      "contractType": "Labor-Hour",
+      "note": "Ten years providing commercial fleet maintenance and roadside repair prior to forming the company."
+    }
+  ],
   "items": [
     {
-      "quote": "Nos entregan cada vehículo con reporte y fotos. La flota no ha vuelto a parar por mantenimiento atrasado.",
-      "author": "Coordinadora de flota",
-      "detail": "Empresa de logística · 34 vehículos"
+      "quote": "They hand back every vehicle with a report and photos. The fleet hasn't gone down for overdue maintenance since.",
+      "author": "Fleet coordinator",
+      "detail": "Logistics company · 34 vehicles"
     },
     {
-      "quote": "El diagnóstico fue exacto y la garantía es de verdad: volvió un ruido y lo resolvieron sin cobrar ni discutir.",
-      "author": "Dueño de camioneta particular",
-      "detail": "Cliente desde 2015"
+      "quote": "The diagnosis was spot-on and the warranty is real: a noise came back and they fixed it with no charge, no argument.",
+      "author": "Private truck owner",
+      "detail": "Customer since 2015"
     },
     {
-      "quote": "Cumplen las ventanas de mantenimiento que pactamos por contrato. Eso, en este gremio, no es común.",
-      "author": "Jefe de transporte",
-      "detail": "Entidad pública · 12 vehículos"
+      "quote": "They hit the maintenance windows we agreed on by contract. In this trade, that's not common.",
+      "author": "Transportation manager",
+      "detail": "Public agency · 12 vehicles"
     }
   ]
 }

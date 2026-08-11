@@ -25,7 +25,15 @@
       },
       {
         "label": "Registro",
-        "value": "Activo en SAM.gov - U3P"
+        "value": "Activo en SAM.gov"
+      },
+      {
+        "label": "UEI",
+        "value": "PC1PADR7WZY4"
+      },
+      {
+        "label": "CAGE Code",
+        "value": "214X9"
       }
     ]
   },
@@ -84,6 +92,21 @@
         "code": "811118",
         "name": "Reparación mecánica y eléctrica automotriz especializada",
         "primary": false
+      }
+    ],
+    "pscLabel": "Códigos PSC",
+    "psc": [
+      {
+        "code": "J019",
+        "name": "Vehículos motorizados"
+      },
+      {
+        "code": "J038",
+        "name": "Equipo de construcción y excavación"
+      },
+      {
+        "code": "J061",
+        "name": "Equipo eléctrico"
       }
     ]
   },

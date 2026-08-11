@@ -3,32 +3,32 @@
   "reasons": [
     {
       "name": "Fast Response",
-      "desc": "",
+      "desc": "We confirm location, fault, and priority by phone and roll out with the right tools from the first visit.",
       "icon": "ignition-svgrepo-com.svg"
     },
     {
       "name": "On-Site Service",
-      "desc": "",
+      "desc": "Fully equipped mobile units that come to your job site, yard, or roadside — no need to haul equipment to a shop.",
       "icon": "steering-wheel-svgrepo-com.svg"
     },
     {
       "name": "Certified Diagnostics",
-      "desc": "",
+      "desc": "Technicians hold ASE, EPA 609 (refrigerant), and OSHA 10/30 certification, plus factory training on the systems we repair.",
       "icon": "diagnostic-svgrepo-com.svg"
     },
     {
       "name": "Heavy Equipment Experience",
-      "desc": "",
+      "desc": "Hydraulic, electrical, and diesel systems on commercial and industrial equipment, not just light vehicles.",
       "icon": "piston-svgrepo-com.svg"
     },
     {
       "name": "Commercial Fleet Specialists",
-      "desc": "",
+      "desc": "Service history per unit and contract-based maintenance windows, with a photo report on every handover.",
       "icon": "tire-svgrepo-com.svg"
     },
     {
       "name": "Preventive & Predictive Maintenance",
-      "desc": "",
+      "desc": "We schedule service before the failure, instead of reacting after the fleet is already down.",
       "icon": "oil-svgrepo-com.svg"
     }
   ]

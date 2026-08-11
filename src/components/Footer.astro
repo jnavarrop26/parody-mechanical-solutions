@@ -94,6 +94,22 @@ const markWords = mark.word.split(" ").map((word: string) => ({
             ))
           }
         </ul>
+
+        {registry.psc && registry.psc.length > 0 && (
+          <>
+            <p class="footer__col-label footer__col-label--psc">{registry.pscLabel}</p>
+            <ul class="footer__naics">
+              {
+                registry.psc.map((p) => (
+                  <li>
+                    <span class="footer__naics-code">{p.code}</span>
+                    <span>{p.name}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </>
+        )}
       </div>
     </div>
 
@@ -372,6 +388,10 @@ const markWords = mark.word.split(" ").map((word: string) => ({
   .footer__naics {
     display: grid;
     gap: 0.65rem;
+  }
+
+  .footer__col-label--psc {
+    margin-top: 1.1rem;
   }
 
   .footer__naics li {

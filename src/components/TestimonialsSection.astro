@@ -3,7 +3,7 @@ import { content } from '@/i18n/content';
 
 const data = content<any>('TestimonialsSection', Astro.currentLocale);
 
-const { title, items } = data;
+const { title, items, casesTitle, cases = [] } = data;
 ---
 
 <section id="testimonios" class="testimonials">
@@ -11,6 +11,26 @@ const { title, items } = data;
     <div class="testimonials__head reveal">
       <h2 class="testimonials__title">{title}</h2>
     </div>
+
+    {
+      cases.length > 0 && (
+        <div class="testimonials__cases">
+          {casesTitle && <h3 class="testimonials__cases-title">{casesTitle}</h3>}
+          <ul class="testimonials__case-list">
+            {cases.map((c: any) => (
+              <li class="testimonials__case reveal">
+                <p class="testimonials__case-client">{c.client}</p>
+                <p class="testimonials__case-scope">{c.scope}</p>
+                <p class="testimonials__case-meta">
+                  <span class="testimonials__case-badge">{c.contractType}</span>
+                  {c.note}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
 
     <ul class="testimonials__list">
       {
@@ -47,6 +67,62 @@ const { title, items } = data;
     line-height: 1;
     text-transform: uppercase;
     color: var(--ink);
+  }
+
+  .testimonials__cases {
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .testimonials__cases-title {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 1rem;
+  }
+
+  .testimonials__case-list {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .testimonials__case {
+    display: grid;
+    gap: 0.5rem;
+    border-left: 4px solid var(--rust);
+    background: var(--paper-dim);
+    padding: 1.1rem 1.4rem;
+  }
+
+  .testimonials__case-client {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .testimonials__case-scope {
+    color: var(--ink-soft);
+    max-width: 68ch;
+  }
+
+  .testimonials__case-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    color: var(--steel);
+  }
+
+  .testimonials__case-badge {
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--enamel);
+    padding: 0.2em 0.6em;
   }
 
   .testimonials__list {

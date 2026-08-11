@@ -3,32 +3,32 @@
   "reasons": [
     {
       "name": "Respuesta rápida",
-      "desc": "",
+      "desc": "Coordinamos ubicación, falla y prioridad por teléfono y salimos con la herramienta correcta desde la primera visita.",
       "icon": "ignition-svgrepo-com.svg"
     },
     {
       "name": "Mecánico a domicilio",
-      "desc": "",
+      "desc": "Unidades móviles equipadas que llegan a obra, bodega o carretera — sin trasladar el equipo a un taller.",
       "icon": "steering-wheel-svgrepo-com.svg"
     },
     {
       "name": "Diagnóstico certificado",
-      "desc": "",
+      "desc": "Técnicos con certificación ASE, EPA 609 (refrigerantes) y OSHA 10/30, más entrenamiento de fábrica en los sistemas que reparamos.",
       "icon": "diagnostic-svgrepo-com.svg"
     },
     {
       "name": "Experiencia en maquinaria pesada",
-      "desc": "",
+      "desc": "Sistemas hidráulicos, eléctricos y de diésel de equipo comercial e industrial, no solo vehículos livianos.",
       "icon": "piston-svgrepo-com.svg"
     },
     {
       "name": "Especialistas en flotas comerciales",
-      "desc": "",
+      "desc": "Historial de servicio por unidad y ventanas de mantenimiento pactadas por contrato, con reporte y fotos en cada entrega.",
       "icon": "tire-svgrepo-com.svg"
     },
     {
       "name": "Mantenimiento preventivo y predictivo",
-      "desc": "",
+      "desc": "Programamos el servicio antes de la falla, en vez de reaccionar después de que la flota se detiene.",
       "icon": "oil-svgrepo-com.svg"
     }
   ]

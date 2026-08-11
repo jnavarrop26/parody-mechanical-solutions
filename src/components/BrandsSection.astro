@@ -19,6 +19,8 @@ const { title, intro, brands } = data;
    papel casi blanco se va a rosa pálido si baja de ahí (a 0.08 daba #F0E5E8,
    indistinguible del fondo). Verificado que el titular queda en 12.5:1 y el
    intro en 5.2:1 sobre la mancha, así que la copia sigue holgada. */
+/* Cada marca aparece dos veces (posición original + eco en el cuadrante
+   opuesto) para que el fondo se vea más lleno sin sumar logos nuevos. */
 const marks = [
   { icon: 'caterpillar-svgrepo-com.svg', x: 5, y: 18, size: 8.4, rot: -12, o: 0.17 },
   { icon: 'PACCAR.svg', x: 46, y: 7, size: 13, rot: -4, o: 0.15, ratio: 4.82 },
@@ -27,6 +29,13 @@ const marks = [
   { icon: 'isuzu-svgrepo-com.svg', x: 62, y: 85, size: 7.5, rot: 14, o: 0.14 },
   { icon: 'chevrolet-svgrepo-com.svg', x: 88, y: 75, size: 10, rot: -9, o: 0.15 },
   { icon: 'scania-svgrepo-com.svg', x: 32, y: 95, size: 7.2, rot: 8, o: 0.16 },
+  { icon: 'caterpillar-svgrepo-com.svg', x: 78, y: 48, size: 6.5, rot: 9, o: 0.13 },
+  { icon: 'PACCAR.svg', x: 12, y: 88, size: 11, rot: 5, o: 0.12, ratio: 4.82 },
+  { icon: 'cummins-logo.svg', x: 38, y: 40, size: 5.5, rot: -16, o: 0.14 },
+  { icon: 'ford-svgrepo-com.svg', x: 70, y: 12, size: 7.8, rot: 15, o: 0.13 },
+  { icon: 'isuzu-svgrepo-com.svg', x: 8, y: 60, size: 6, rot: -10, o: 0.12 },
+  { icon: 'chevrolet-svgrepo-com.svg', x: 50, y: 88, size: 8, rot: 12, o: 0.13 },
+  { icon: 'scania-svgrepo-com.svg', x: 95, y: 55, size: 6, rot: -6, o: 0.13 },
 ];
 ---
 

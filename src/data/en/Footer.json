@@ -11,7 +11,9 @@
       { "label": "Business Structure", "value": "Limited Liability Company (LLC)" },
       { "label": "Location", "value": "Tooele, Utah, USA" },
       { "label": "Industry", "value": "Commercial & Industrial Equipment Maintenance" },
-      { "label": "Registry", "value": "Active in SAM.gov - U3P" }
+      { "label": "Registry", "value": "Active in SAM.gov" },
+      { "label": "UEI", "value": "PC1PADR7WZY4" },
+      { "label": "CAGE Code", "value": "214X9" }
     ]
   },
   "nav": {
@@ -51,6 +53,21 @@
         "code": "811118",
         "name": "Specialized Automotive Mechanical & Electrical Repair",
         "primary": false
+      }
+    ],
+    "pscLabel": "PSC Codes",
+    "psc": [
+      {
+        "code": "J019",
+        "name": "Motor Vehicles"
+      },
+      {
+        "code": "J038",
+        "name": "Construction & Excavating Equipment"
+      },
+      {
+        "code": "J061",
+        "name": "Electrical Equipment"
       }
     ]
   },

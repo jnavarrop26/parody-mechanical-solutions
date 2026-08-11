@@ -21,6 +21,18 @@
     {
       "label": "Registro federal",
       "value": "Activo en SAM.gov"
+    },
+    {
+      "label": "UEI",
+      "value": "PC1PADR7WZY4"
+    },
+    {
+      "label": "CAGE Code",
+      "value": "214X9"
+    },
+    {
+      "label": "NAICS",
+      "value": "811310 · 811111 · 811118"
     }
   ]
 }

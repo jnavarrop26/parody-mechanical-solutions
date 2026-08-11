@@ -7,6 +7,15 @@
       "name": "System Diagnostics & Scanning",
       "desc": "Real-time monitoring of data lines and flows, active fault code detection, and restoration of vehicle communication networks.",
       "longDesc": "Real-time monitoring of data lines and flows, active fault code detection, and restoration of vehicle communication networks — we find the root cause before touching a single part, and explain it before we quote.",
+      "paragraphs": [
+        "Before we touch a single part, we connect the vehicle or machine to multi-brand scan equipment to read active and pending fault codes, review live data streams, and isolate whether the problem sits in a sensor, a module, or the communication network (CAN, J1939). This avoids the most expensive mistake in diesel mechanics: swapping parts by trial and error.",
+        "A typical case: a truck with an intermittent check-engine light. Instead of assuming it's the most common sensor, we compare ECM data streams against manufacturer-expected values and confirm the root cause before quoting any part — often the problem is a corroded connector or a loose ground, not the sensor itself."
+      ],
+      "signals": [
+        "Multi-brand scan tools (OEM and generic)",
+        "CAN / J1939 network data reading",
+        "Fault code report with date, mileage, and root cause"
+      ],
       "sub": [
         "Data line monitoring",
         "Fault code detection",
@@ -18,6 +27,15 @@
       "name": "Electrical Problem Solving",
       "desc": "Tracing and repair of short circuits, advanced alternator, connector, sensor, and automotive & industrial relay diagnostics.",
       "longDesc": "Tracing and repair of short circuits, plus advanced diagnostics of alternators, connectors, sensors, and automotive & industrial relays, with documented circuit verification before delivery.",
+      "paragraphs": [
+        "We trace short circuits and intermittent faults with a multimeter and system-specific wiring diagrams, not by guesswork — confirming with data whether the issue is the alternator, a corroded connector, a sensor, or a relay before disassembling anything.",
+        "On industrial equipment and commercial fleets, a misdiagnosed electrical fault often comes back within days. That's why we leave documented circuit verification — voltage, continuity, and load — before handing the unit back."
+      ],
+      "signals": [
+        "Multimeters and oscilloscope for intermittent faults",
+        "Wiring diagrams by make and model",
+        "Documented circuit verification before handover"
+      ],
       "sub": [
         "Short circuits",
         "Alternators",
@@ -31,6 +49,15 @@
       "name": "High-Pressure Hydraulic Systems",
       "desc": "Diagnostics and repair of leaks in lines, hoses, pressure pumps, hydraulic cylinders, valves, and heavy equipment control systems.",
       "longDesc": "Diagnostics and repair of leaks in lines, hoses, pressure pumps, hydraulic cylinders, valves, and heavy equipment control systems — stable pressure, no leaks, load-tested before handover.",
+      "paragraphs": [
+        "We diagnose leaks and pressure loss in lines, hoses, pumps, cylinders, and valves on heavy equipment — identifying whether the cause is a worn seal, fluid contamination, or a valve that isn't cycling correctly.",
+        "After the repair we test the system under real load, not just idle: that's the only way to confirm pressure stays stable through the machine's actual duty cycle before it goes back into operation."
+      ],
+      "signals": [
+        "Pressure gauges and hydraulic test equipment",
+        "Hydraulic fluid contamination diagnostics",
+        "Load-tested before handover"
+      ],
       "sub": [
         "Lines & hoses",
         "Pressure pumps",
@@ -44,6 +71,15 @@
       "name": "Fleet General Mechanics",
       "desc": "Corrective and preventive mechanical services for heavy-duty diesel trucks, gasoline and utility vehicles.",
       "longDesc": "Corrective and preventive mechanical services for heavy-duty diesel trucks, gasoline and utility vehicles, with a service record per vehicle and contract-based maintenance windows.",
+      "paragraphs": [
+        "We cover corrective and preventive maintenance for heavy-duty diesel trucks, gasoline vehicles, and utility vehicles — keeping a service history per unit so the fleet has real traceability, not just loose invoices.",
+        "We coordinate contract-based maintenance windows with the fleet coordinator to minimize downtime, and hand back every vehicle with a report and photos of the work done."
+      ],
+      "signals": [
+        "Service history per unit/plate",
+        "Contract-based maintenance windows",
+        "Photo report on every handover"
+      ],
       "sub": [
         "Diesel trucks",
         "Gasoline vehicles",
@@ -56,6 +92,15 @@
       "name": "On-Site Mobile Support",
       "desc": "Deployment of fully equipped mobile units with advanced tools to solve technical issues in hard-to-access work areas or remote projects.",
       "longDesc": "Deployment of fully equipped mobile units with advanced tools to solve technical issues in hard-to-access work areas or remote projects: the shop comes to where your equipment operates.",
+      "paragraphs": [
+        "We deploy fully equipped mobile units with diagnostic and repair tools to work on machinery and fleets directly on-site — at a job site, a yard, or wherever the equipment is down — without hauling it to a shop.",
+        "This matters most for heavy equipment that's hard to move, or projects on a tight schedule: the goal is to fix the fault on-site and get the equipment back in production the same day whenever possible."
+      ],
+      "signals": [
+        "Mobile units with diagnostic and repair tools",
+        "On-site service at job sites, yards, or remote locations",
+        "Priority: equipment running again the same day"
+      ],
       "sub": []
     },
     {
@@ -63,6 +108,15 @@
       "name": "Roadside Mechanical Assistance",
       "desc": "Rapid response on highways and transport routes to minimize commercial vehicle and heavy equipment downtime.",
       "longDesc": "Rapid response on highways and transport routes to minimize commercial vehicle and heavy equipment downtime. One goal: getting your operation moving again.",
+      "paragraphs": [
+        "We respond on highways and transport routes when a commercial vehicle or heavy equipment goes down — the goal is to fix it on the spot or get the unit into a safe condition for towing, minimizing downtime.",
+        "We coordinate directly with the driver or fleet coordinator to confirm location, fault type, and priority, and roll out with the tools needed based on the initial reported diagnosis."
+      ],
+      "signals": [
+        "Roadside response for commercial fleets",
+        "Initial phone diagnosis before dispatch",
+        "Priority: minimum downtime"
+      ],
       "sub": []
     },
     {
@@ -70,6 +124,15 @@
       "name": "Salvage & Component Recovery",
       "desc": "Recovery, disassembly and evaluation of parts and reusable components to reduce costs and extend the useful life of equipment.",
       "longDesc": "Recovery, disassembly and evaluation of parts and reusable components to reduce costs and extend the useful life of equipment — value recovered from machines others would write off.",
+      "paragraphs": [
+        "We disassemble and evaluate parts and components from decommissioned or out-of-service equipment to determine which ones are still functional — a real alternative to buying new when a recovered component does the same job.",
+        "Every recovered part is tested before it's reused or sold; this cuts maintenance costs for fleets running older equipment and extends the useful life of machines that would otherwise be scrapped."
+      ],
+      "signals": [
+        "Functional testing before reuse",
+        "Lower-cost alternative to new parts",
+        "Applies to older or discontinued equipment"
+      ],
       "sub": []
     }
   ]
