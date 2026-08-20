@@ -203,8 +203,8 @@ const tail = rest.join(' ');
      un clamp(): sale de dividir el ancho disponible por el ancho real de
      cada cadena en Anton, medido sobre el TTF (hmtx + cmap):
 
-       "MECHANICAL SOLUTIONS"  9.5688em  con tracking .02em y word .35em
-       "PARODY"                2.9799em  con tracking .02em
+       "MECHANICAL SOLUTIONS LLC"  11.5023em  con tracking .02em y word .35em
+       "PARODY"                     2.9799em  con tracking .02em
 
      Los dos anchos incluyen el tracking que el navegador agrega también
      después del último carácter, así que la caja cierra exacta.
@@ -232,7 +232,7 @@ const tail = rest.join(' ');
        cuelga del último carácter). De acá sale el tamaño del lazo: si algún
        día cambia la palabra, este es el único número que hay que recalcular */
     --trade-word: 4.878em;
-    font-size: calc(100cqw / 9.5688);
+    font-size: calc(100cqw / 11.5023);
     word-spacing: 0.35em;
     color: var(--paper);
     /* Va después de PARODY en el cartel, pero antes en el DOM (así el <h1>
