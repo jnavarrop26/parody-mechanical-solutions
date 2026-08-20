@@ -2,7 +2,7 @@
   "title": "Contact",
   "lede": "Tell us what equipment you run and what's going on. We reply within one business day with a preliminary quote.",
   "form": {
-    "action": "#",
+    "action": "https://formspree.io/f/xjyblwkp",
     "fields": [
       { "name": "name", "label": "Full name", "type": "text", "required": true },
       { "name": "company", "label": "Company (if applicable)", "type": "text", "required": false },
@@ -56,6 +56,11 @@
       }
     },
     "submit": "Request Service",
-    "note": "Your information is only used to respond to this request."
+    "note": "Your information is only used to respond to this request.",
+    "status": {
+      "sending": "Sending…",
+      "success": "Thanks — your request was sent. We'll reply within one business day.",
+      "error": "Something went wrong sending your request. Please try again, or call us directly."
+    }
   }
 }

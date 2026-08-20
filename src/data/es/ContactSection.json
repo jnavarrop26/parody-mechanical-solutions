@@ -2,7 +2,7 @@
   "title": "Contacto",
   "lede": "Cuéntanos qué equipo manejas y qué está pasando. Respondemos en un día hábil con una cotización preliminar.",
   "form": {
-    "action": "#",
+    "action": "https://formspree.io/f/xjyblwkp",
     "fields": [
       {
         "name": "name",
@@ -101,6 +101,11 @@
       }
     },
     "submit": "Solicitar servicio",
-    "note": "Tus datos se usan únicamente para responder esta solicitud."
+    "note": "Tus datos se usan únicamente para responder esta solicitud.",
+    "status": {
+      "sending": "Enviando…",
+      "success": "Listo — tu solicitud fue enviada. Respondemos en un día hábil.",
+      "error": "Hubo un problema al enviar tu solicitud. Intenta de nuevo o llámanos directamente."
+    }
   }
 }
